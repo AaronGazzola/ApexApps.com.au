@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "description": "Apex Apps promotional website and project dashboard",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
