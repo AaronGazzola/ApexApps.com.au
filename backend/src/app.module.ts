@@ -1,3 +1,5 @@
+import { CommandModule } from 'nestjs-command';
+import { SeedsModule } from './shared/seeds.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,6 +16,8 @@ import { AuthModule } from './auth/auth.module';
       useUnifiedTopology: true,
       useCreateIndex: true,
     }),
+    CommandModule,
+    SeedsModule,
     AuthModule],
   controllers: [AppController],
   providers: [AppService],

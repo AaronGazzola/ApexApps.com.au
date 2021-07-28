@@ -1,3 +1,4 @@
+import { UserDto } from './dto/user-credentials.dto';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,15 +12,43 @@ import { User } from './interfaces/user.interface';
 export class AuthService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { username, password } = authCredentialsDto;
+    const { userName, password, email } = authCredentialsDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new this.userModel({ username, password: hashedPassword });
+    const user = new this.userModel({
+      userName,
+      clientName: userName,
+      password: hashedPassword,
+      email,
+    });
+
+    try {
+      await user.save();
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new ConflictException('User already exists');
+      }
+      throw error;
+    }
+  }
+
+  async seedUser(userDto: UserDto): Promise<void> {
+    const { userName, password, email, isAdmin } = userDto;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new this.userModel({
+      userName,
+      clientName: userName,
+      password: hashedPassword,
+      email,
+      isAdmin,
+    });
 
     try {
       await user.save();
@@ -32,14 +61,14 @@ export class AuthService {
   }
 
   async signIn(user: User) {
-    const payload = { username: user.username, sub: user._id };
+    const payload = { userName: user.userName, sub: user._id };
     return {
       accessToken: this.jwtService.sign(payload),
     };
   }
 
-  async validateUser(username: string, pass: string): Promise<User> {
-    const user = await this.userModel.findOne({ username });
+  async validateUser(email: string, pass: string): Promise<User> {
+    const user = await this.userModel.findOne({ email });
 
     if (!user) {
       return null;
