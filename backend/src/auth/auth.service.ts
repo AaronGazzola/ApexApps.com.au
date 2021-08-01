@@ -1,11 +1,11 @@
-import { UserDto } from './dto/user-credentials.dto';
+import { SeedUserDto } from './dto/seed-user.dto';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { SignupUserDto } from './dto/signup-user.dto';
 import { User } from './interfaces/user.interface';
 
 @Injectable()
@@ -15,14 +15,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { userName, password, email } = authCredentialsDto;
+  async signup(signupUserDto: SignupUserDto): Promise<void> {
+    const { username, password, email } = signupUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new this.userModel({
-      userName,
-      clientName: userName,
+      username,
       password: hashedPassword,
       email,
     });
@@ -37,14 +36,13 @@ export class AuthService {
     }
   }
 
-  async seedUser(userDto: UserDto): Promise<void> {
-    const { userName, password, email, isAdmin } = userDto;
+  async seedUser(seedUserDto: SeedUserDto): Promise<void> {
+    const { username, password, email, isAdmin } = seedUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new this.userModel({
-      userName,
-      clientName: userName,
+      username,
       password: hashedPassword,
       email,
       isAdmin,
@@ -60,24 +58,28 @@ export class AuthService {
     }
   }
 
-  async signIn(user: User) {
-    const payload = { userName: user.userName, sub: user._id };
+  async login(user: User) {
+    const payload = { username: user.username, sub: user._id };
     return {
-      accessToken: this.jwtService.sign(payload),
+      user,
+      success: true,
+      token: this.jwtService.sign(payload),
     };
   }
 
-  async validateUser(email: string, pass: string): Promise<User> {
-    const user = await this.userModel.findOne({ email });
+  async validateUser(email: string, password: string): Promise<User> {
+    const user = await this.userModel.findOne({ email }).select('+password');
 
     if (!user) {
       return null;
     }
 
-    const valid = await bcrypt.compare(pass, user.password);
+    const valid = await bcrypt.compare(password, user.password);
+
+    const returnUser = await this.userModel.findById(user._id);
 
     if (valid) {
-      return user;
+      return returnUser;
     }
 
     return null;
