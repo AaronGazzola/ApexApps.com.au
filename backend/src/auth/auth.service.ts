@@ -15,7 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(signupUserDto: SignupUserDto): Promise<void> {
+  async signup(signupUserDto: SignupUserDto) {
     const { username, password, email } = signupUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,9 +25,16 @@ export class AuthService {
       password: hashedPassword,
       email,
     });
+    const payload = { username: user.username, sub: user._id };
 
     try {
       await user.save();
+      const returnUser = await this.userModel.findById(user._id);
+      return {
+        user: returnUser,
+        success: true,
+        token: this.jwtService.sign(payload),
+      };
     } catch (error) {
       if (error.code === 11000) {
         throw new ConflictException('User already exists');
@@ -59,12 +66,24 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { username: user.username, sub: user._id };
+    const payload = { username: user.email, sub: user._id };
     return {
       user,
       success: true,
       token: this.jwtService.sign(payload),
     };
+  }
+
+  async getUser(_id: string) {
+    try {
+      const user = await this.userModel.findById(_id);
+      return {
+        user,
+        success: true,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async validateUser(email: string, password: string): Promise<User> {

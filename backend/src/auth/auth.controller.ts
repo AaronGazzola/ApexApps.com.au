@@ -8,6 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 
+import { User } from './interfaces/user.interface';
 import { SignupUserDto } from './dto/signup-user.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -18,9 +19,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
-  async signup(
-    @Body(ValidationPipe) signupUserDto: SignupUserDto,
-  ): Promise<void> {
+  async signup(@Body(ValidationPipe) signupUserDto: SignupUserDto) {
     return await this.authService.signup(signupUserDto);
   }
 
@@ -33,6 +32,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getMe(@Request() req) {
-    return req.user;
+    return this.authService.getUser(req.user._id);
   }
 }

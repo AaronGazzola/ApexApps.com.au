@@ -25,7 +25,7 @@ export interface SignupData {
 	username: string;
 }
 
-export interface Response {
+export interface UserResponse {
 	data: {
 		success: boolean;
 		token?: string;
