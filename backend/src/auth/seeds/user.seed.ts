@@ -14,16 +14,10 @@ export class UserSeed {
   })
   async create() {
     await this.authService.seedUser({
-      username: 'Admin User',
+      userName: 'Admin User',
       email: 'admin@example.com',
       password: process.env.USER_PASSWORD,
       isAdmin: true,
     });
-    // await this.authService.seedUser({
-    //   username: 'Example User',
-    //   email: 'example@example.com',
-    //   password: process.env.USER_PASSWORD,
-    //   isAdmin: false,
-    // });
   }
 }

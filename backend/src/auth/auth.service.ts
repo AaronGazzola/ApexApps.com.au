@@ -16,16 +16,16 @@ export class AuthService {
   ) {}
 
   async signup(signupUserDto: SignupUserDto) {
-    const { username, password, email } = signupUserDto;
+    const { userName, password, email } = signupUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new this.userModel({
-      username,
+      userName,
       password: hashedPassword,
       email,
     });
-    const payload = { username: user.username, sub: user._id };
+    const payload = { username: user.userName, sub: user._id };
 
     try {
       await user.save();
@@ -44,12 +44,12 @@ export class AuthService {
   }
 
   async seedUser(seedUserDto: SeedUserDto): Promise<void> {
-    const { username, password, email, isAdmin } = seedUserDto;
+    const { userName, password, email, isAdmin } = seedUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new this.userModel({
-      username,
+      userName,
       password: hashedPassword,
       email,
       isAdmin,

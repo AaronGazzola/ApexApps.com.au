@@ -10,7 +10,7 @@ export class SeedUserDto {
   @IsString()
   @MinLength(2, { message: 'Name is too short (2 characters min)' })
   @MaxLength(20, { message: 'Name is too long (20 characters max)' })
-  username: string;
+  userName: string;
 
   @IsEmail()
   email: string;

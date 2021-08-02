@@ -1,5 +1,5 @@
 export interface User {
-	username: string;
+	userName: string;
 	email: string;
 	newEmail?: string;
 	isVerified: boolean;
@@ -22,7 +22,7 @@ export interface LoginData {
 export interface SignupData {
 	email: string;
 	password: string;
-	username: string;
+	userName: string;
 }
 
 export interface UserResponse {
