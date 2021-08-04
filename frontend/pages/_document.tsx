@@ -16,7 +16,7 @@ class MyDocument extends Document {
 					<link rel='manifest' href='/manifest.json' />
 					<link rel='stylesheet' href='/fonts.css' />
 				</Head>
-				<body>
+				<body className='font-body'>
 					<Main />
 					<NextScript />
 				</body>
