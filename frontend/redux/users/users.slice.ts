@@ -58,7 +58,7 @@ export const getUser = createAsyncThunk(
 	'users/getuser',
 	async (_, { rejectWithValue, getState }) => {
 		const {
-			user: { token }
+			users: { token }
 		} = getState() as RootState;
 
 		try {

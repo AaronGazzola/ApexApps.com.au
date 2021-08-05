@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-	font-family: 'Montserrat', sans-serif;
+@layer base {
+	body {
+		font-family: 'Montserrat', sans-serif;
+	}
+}
+
+@layer components {
+	@responsive {
+		.text-xxxs {
+			font-size: 8px;
+		}
+		.text-xxs {
+			font-size: 12px;
+		}
+	}
 }

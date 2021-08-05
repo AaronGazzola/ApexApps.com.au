@@ -6,5 +6,9 @@ export default function Home() {
 	// const { isAuth, token } = useAppSelector(state => state.user);
 	// const dispatch = useAppDispatch();
 
-	return <></>;
+	return (
+		<>
+			<p>About</p>
+		</>
+	);
 }
