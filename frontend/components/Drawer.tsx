@@ -3,6 +3,7 @@ import DrawerLink from './DrawerLink';
 
 interface drawerProps {
 	headerHeight: number;
+	minDrawerWidth: number;
 }
 
 const navItems = [
@@ -73,16 +74,18 @@ const navItems = [
 ];
 
 const Drawer = (props: drawerProps) => {
-	const { headerHeight } = props;
+	const { headerHeight, minDrawerWidth } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
 
 	return (
 		<div
-			className='fixed  -left-3 w-min bg-blue-lightest'
+			className='fixed -left-3 w-min bg-blue-lightest'
 			style={{
 				top: headerHeight,
 				height: `calc(100% - ${headerHeight}px)`,
-				transform: drawerIsOpen ? '' : 'translateX(calc(-100% + 48px))',
+				transform: drawerIsOpen
+					? ''
+					: `translateX(calc(-100% + ${minDrawerWidth + 12}px))`,
 				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )'
 			}}
 		>

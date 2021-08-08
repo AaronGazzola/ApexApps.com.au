@@ -13,6 +13,21 @@ module.exports = {
 				},
 				background: {
 					DEFAULT: '#FAFBFC'
+				},
+				green: {
+					DEFAULT: '#41992B'
+				},
+				gray: {
+					dark: '#474545',
+					DEFAULT: '#7A7A7A',
+					light: '#C1C1C1'
+				},
+				yellow: {
+					dark: '#995C00',
+					DEFAULT: '#992820'
+				},
+				red: {
+					DEFAULT: '#992820'
 				}
 			}
 		}

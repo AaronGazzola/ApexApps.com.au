@@ -27,7 +27,7 @@ const navItems = [
 const Header = (props: HeaderProps) => {
 	const { headerHeight } = props;
 	return (
-		<div className='w-full bg-blue-lightest flex justify-center'>
+		<header className='w-full bg-blue-lightest flex justify-center'>
 			<div
 				className='container max-w-sm sm:max-w-3xl flex justify-between items-center overflow-x-auto px-1.5 sm:px-10'
 				style={{ height: headerHeight }}
@@ -37,7 +37,7 @@ const Header = (props: HeaderProps) => {
 					<HeaderLink path={item.path} key={item.path} title={item.title} />
 				))}
 			</div>
-		</div>
+		</header>
 	);
 };
 
