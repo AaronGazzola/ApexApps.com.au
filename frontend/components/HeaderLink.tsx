@@ -18,7 +18,7 @@ const HeaderLink = (props: HeaderLinkProps) => {
 					pathIsActive ? `text-blue-darkest` : `text-white`
 				}`}
 			>
-				<div className='w-1.5 sm:w-3'>
+				<div className='w-2 sm:w-3.5'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
 						viewBox='0 -1 8 16'
@@ -31,7 +31,7 @@ const HeaderLink = (props: HeaderLinkProps) => {
 				<p className='font-semibold text-xs mx-0.5 sm:mx-2 sm:text-lg whitespace-nowrap text-blue-darkest'>
 					{title}
 				</p>
-				<div className='w-1.5 sm:w-3'>
+				<div className='w-2 sm:w-3.5'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
 						viewBox='0 -1 8 16'
