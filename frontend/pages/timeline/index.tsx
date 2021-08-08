@@ -5,7 +5,7 @@ const index = () => {
 		<>
 			<Meta title='Contact Aaron | Apex Apps' />
 			<div>
-				<p>Contact</p>
+				<p>Timeliene</p>
 			</div>
 		</>
 	);

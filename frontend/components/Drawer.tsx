@@ -4,6 +4,7 @@ import DrawerLink from './DrawerLink';
 interface drawerProps {
 	headerHeight: number;
 	minDrawerWidth: number;
+	screenIsXL: boolean;
 }
 
 const navItems = [
@@ -74,41 +75,45 @@ const navItems = [
 ];
 
 const Drawer = (props: drawerProps) => {
-	const { headerHeight, minDrawerWidth } = props;
+	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
 
 	return (
 		<div
-			className='fixed -left-3 w-min bg-blue-lightest'
+			className='fixed -left-3 w-min bg-blue-lightest select-none overflow-visible'
 			style={{
 				top: headerHeight,
 				height: `calc(100% - ${headerHeight}px)`,
-				transform: drawerIsOpen
-					? ''
-					: `translateX(calc(-100% + ${minDrawerWidth + 12}px))`,
+				transform:
+					drawerIsOpen || screenIsXL
+						? ''
+						: `translateX(calc(-100% + ${minDrawerWidth + 12}px))`,
 				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )'
 			}}
 		>
-			<div
-				className='group flex justify-end items-center h-7 pr-1.5 cursor-pointer bg-blue-light hover:bg-blue-darkest'
-				onClick={() => setDrawerIsOpen(prev => !prev)}
-			>
-				<svg
-					className={`fill-current text-blue-darkest group-hover:text-white ${
-						drawerIsOpen ? 'transform -rotate-180' : ''
-					}`}
-					xmlns='http://www.w3.org/2000/svg'
-					viewBox='-5 -5 24 24'
-					width='24'
-					height='24'
-					preserveAspectRatio='xMinYMin'
-					style={{
-						transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )'
-					}}
+			{!screenIsXL && (
+				<div
+					className='group flex justify-end items-center h-7 pr-1.5 cursor-pointer bg-blue-light hover:bg-blue-darkest'
+					onClick={() => setDrawerIsOpen(prev => !prev)}
 				>
-					<path d='M10.586 5.657l-3.95-3.95A1 1 0 0 1 8.05.293l5.657 5.657a.997.997 0 0 1 0 1.414L8.05 13.021a1 1 0 1 1-1.414-1.414l3.95-3.95H1a1 1 0 1 1 0-2h9.586z'></path>
-				</svg>
-			</div>
+					<svg
+						className={`fill-current text-blue-darkest group-hover:text-white ${
+							drawerIsOpen || screenIsXL ? 'transform -rotate-180' : ''
+						}`}
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='-5 -5 24 24'
+						width='24'
+						height='24'
+						preserveAspectRatio='xMinYMin'
+						style={{
+							transition:
+								'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )'
+						}}
+					>
+						<path d='M10.586 5.657l-3.95-3.95A1 1 0 0 1 8.05.293l5.657 5.657a.997.997 0 0 1 0 1.414L8.05 13.021a1 1 0 1 1-1.414-1.414l3.95-3.95H1a1 1 0 1 1 0-2h9.586z'></path>
+					</svg>
+				</div>
+			)}
 			{navItems.map(item => (
 				<DrawerLink
 					key={item.title}

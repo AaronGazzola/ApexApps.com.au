@@ -18,19 +18,31 @@ const Layout = (props: LayoutProps) => {
 	const headerHeight = breakpoint === 'xs' ? 56 : 82;
 	const footerHeight = 80;
 	const minDrawerWidth = 36;
+	const maxDrawerWidth = 147;
+	const screenIsXL: boolean =
+		breakpoint !== 'xs' &&
+		breakpoint !== 'sm' &&
+		breakpoint !== 'md' &&
+		breakpoint !== 'lg';
 	return (
 		<>
 			<Meta />
 			<Header headerHeight={headerHeight} />
-			<Drawer headerHeight={headerHeight} minDrawerWidth={minDrawerWidth} />
+			<Drawer
+				headerHeight={headerHeight}
+				minDrawerWidth={minDrawerWidth}
+				screenIsXL={screenIsXL}
+			/>
 			<main
 				className='flex flex-col items-center'
 				style={{
 					height: `calc(100vh - ${headerHeight + footerHeight}px)`,
-					width: `calc(100vw - ${
-						minDrawerWidth * (breakpoint === 'xs' ? 1 : 2)
-					}px)`,
-					marginLeft: minDrawerWidth
+					width: screenIsXL
+						? `calc(100vw - ${maxDrawerWidth * 2}px)`
+						: `calc(100vw - ${
+								minDrawerWidth * (breakpoint === 'xs' ? 1 : 2)
+						  }px)`,
+					marginLeft: screenIsXL ? maxDrawerWidth : minDrawerWidth
 				}}
 			>
 				{props.children}
