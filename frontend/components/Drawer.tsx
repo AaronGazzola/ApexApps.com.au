@@ -87,11 +87,11 @@ const Drawer = (props: drawerProps) => {
 			}}
 		>
 			<div
-				className='flex justify-end items-center h-7 pr-1.5 cursor-pointer bg-blue-dark hover:bg-blue-darkest'
+				className='group flex justify-end items-center h-7 pr-1.5 cursor-pointer bg-blue-light hover:bg-blue-darkest'
 				onClick={() => setDrawerIsOpen(prev => !prev)}
 			>
 				<svg
-					className={`fill-current text-white ${
+					className={`fill-current text-blue-darkest group-hover:text-white ${
 						drawerIsOpen ? 'transform -rotate-180' : ''
 					}`}
 					xmlns='http://www.w3.org/2000/svg'
