@@ -19,11 +19,7 @@ const Layout = (props: LayoutProps) => {
 	const footerHeight = 80;
 	const minDrawerWidth = 36;
 	const maxDrawerWidth = 147;
-	const screenIsXL: boolean =
-		breakpoint !== 'xs' &&
-		breakpoint !== 'sm' &&
-		breakpoint !== 'md' &&
-		breakpoint !== 'lg';
+	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 	return (
 		<>
 			<Meta />

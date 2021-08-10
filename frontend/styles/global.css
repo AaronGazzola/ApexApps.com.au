@@ -17,4 +17,9 @@
 			font-size: 12px;
 		}
 	}
+	.form-input:placeholder-shown + .form-label {
+		opacity: 0;
+		visibility: hidden;
+		transform: translate(0.5rem, -2rem);
+	}
 }
