@@ -32,7 +32,7 @@ const Input = (props: InputProps) => {
 				className={`form-input w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark ${
 					!isValid && isTouched
 						? 'border-red placeholder-red'
-						: isTouched
+						: isValid
 						? 'border-green'
 						: 'border-gray-light focus:border-blue-darkest placeholder-gray-400'
 				}`}
@@ -47,7 +47,7 @@ const Input = (props: InputProps) => {
 				className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold ${
 					!isValid && isTouched
 						? 'text-red'
-						: isTouched
+						: isValid
 						? 'text-green form-label'
 						: 'text-blue-darkest form-label'
 				}`}

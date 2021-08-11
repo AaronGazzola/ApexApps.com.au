@@ -32,7 +32,9 @@ const Layout = (props: LayoutProps) => {
 			<main
 				className='relative flex flex-col items-center h-min'
 				style={{
-					minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`,
+					minHeight: `calc((var(--vh) * 100) - ${
+						headerHeight + footerHeight
+					}px)`,
 					width: screenIsXL
 						? `calc(100vw - ${maxDrawerWidth * 2}px)`
 						: `calc(100vw - ${

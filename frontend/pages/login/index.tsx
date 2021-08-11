@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { login } from '../../redux/users/users.slice';
 
 const index = () => {
 	const dispatch = useAppDispatch();
+	const { loading } = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
 		email: {
 			value: '',
@@ -46,15 +47,34 @@ const index = () => {
 		});
 	};
 
+	const buttonClickHandler = (e: React.MouseEvent) => {
+		if (!formState.email.isValid || !formState.password.isValid) {
+			setFormState({
+				...formState,
+				email: {
+					...formState.email,
+					isTouched: true
+				},
+				password: {
+					...formState.password,
+					isTouched: true
+				}
+			});
+		}
+	};
+
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		dispatch(
-			login({
-				username: formState.email.value,
-				password: formState.password.value
-			})
-		);
+		if (formState.email.isValid && formState.password.isValid) {
+			dispatch(
+				login({
+					username: formState.email.value,
+					password: formState.password.value
+				})
+			);
+		}
 	};
+
 	return (
 		<>
 			<h1 className='text-4xl text-blue-darkest my-4'>Log in</h1>
@@ -92,7 +112,9 @@ const index = () => {
 					fullWidth
 					color='green'
 					variant='contained'
-					disabled={!formState.email.isValid || !formState.email.isValid}
+					disabled={!formState.email.isValid || !formState.password.isValid}
+					clickHandler={buttonClickHandler}
+					loading={loading}
 				/>
 			</form>
 		</>

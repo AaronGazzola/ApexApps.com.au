@@ -10,6 +10,15 @@ const setScreenDimensions = () => {
 
 	useEffect(() => {
 		const handleResize = () => {
+			// add variable to css :root to specify 1vh for android devices
+			const cssRoot = document.querySelector(':root');
+			if (cssRoot !== null) {
+				(cssRoot as HTMLInputElement).style.setProperty(
+					'--vh',
+					window.innerHeight / 100 + 'px'
+				);
+			}
+			// Set screen dimensions and breakpoints
 			const width = window.innerWidth;
 			const height = window.innerHeight;
 			dispatch(
