@@ -22,6 +22,7 @@ const DrawerLink = (props: DrawerLinkProps) => {
 					pathIsActive ? 'bg-blue-darkest text-white' : 'text-blue-darkest'
 				}`}
 				onClick={breakpoint === 'xs' ? () => setDrawerIsOpen(false) : () => {}}
+				style={{ WebkitBackfaceVisibility: 'hidden' }}
 			>
 				<p
 					className={`font-semibold mr-4 group-hover:text-white ${

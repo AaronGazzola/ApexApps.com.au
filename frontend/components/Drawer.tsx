@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import DrawerLink from './DrawerLink';
+import Logo from './Logo';
 
 interface drawerProps {
 	headerHeight: number;
@@ -80,20 +81,28 @@ const Drawer = (props: drawerProps) => {
 
 	return (
 		<div
-			className='fixed -left-3 w-min bg-blue-lightest select-none overflow-visible'
+			className='fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-10'
 			style={{
-				top: headerHeight,
-				height: `calc(100% - ${headerHeight}px)`,
 				transform:
 					drawerIsOpen || screenIsXL
-						? ''
-						: `translateX(calc(-100% + ${minDrawerWidth + 12}px))`,
-				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )'
+						? 'translateX(-12px)'
+						: `translateX(calc(-100% + ${minDrawerWidth}px))`,
+				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
+				WebkitBackfaceVisibility: 'hidden'
 			}}
 		>
+			<div
+				className={`w-full flex p-1 ${
+					drawerIsOpen || screenIsXL ? 'justify-center' : 'justify-end'
+				}`}
+				style={{ height: headerHeight }}
+			>
+				<Logo variant='drawer' drawerIsOpen={drawerIsOpen} />
+			</div>
 			{!screenIsXL && (
 				<div
 					className='group flex justify-end items-center h-7 pr-1.5 cursor-pointer bg-blue-light hover:bg-blue-darkest'
+					style={{ WebkitBackfaceVisibility: 'hidden' }}
 					onClick={() => setDrawerIsOpen(prev => !prev)}
 				>
 					<svg
@@ -107,7 +116,8 @@ const Drawer = (props: drawerProps) => {
 						preserveAspectRatio='xMinYMin'
 						style={{
 							transition:
-								'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )'
+								'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
+							WebkitBackfaceVisibility: 'hidden'
 						}}
 					>
 						<path d='M10.586 5.657l-3.95-3.95A1 1 0 0 1 8.05.293l5.657 5.657a.997.997 0 0 1 0 1.414L8.05 13.021a1 1 0 1 1-1.414-1.414l3.95-3.95H1a1 1 0 1 1 0-2h9.586z'></path>

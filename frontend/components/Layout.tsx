@@ -16,7 +16,7 @@ const Layout = (props: LayoutProps) => {
 	const { breakpoint } = useAppSelector(state => state.utils);
 	// set layout component dimensions
 	const headerHeight = breakpoint === 'xs' ? 56 : 82;
-	const footerHeight = 80;
+	const footerHeight = 112;
 	const minDrawerWidth = 36;
 	const maxDrawerWidth = 147;
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
@@ -30,15 +30,16 @@ const Layout = (props: LayoutProps) => {
 				screenIsXL={screenIsXL}
 			/>
 			<main
-				className='flex flex-col items-center'
+				className='relative flex flex-col items-center h-min'
 				style={{
-					height: `calc(100vh - ${headerHeight + footerHeight}px)`,
+					minHeight: `calc(100vh - ${headerHeight + footerHeight}px)`,
 					width: screenIsXL
 						? `calc(100vw - ${maxDrawerWidth * 2}px)`
 						: `calc(100vw - ${
 								minDrawerWidth * (breakpoint === 'xs' ? 1 : 2)
 						  }px)`,
-					marginLeft: screenIsXL ? maxDrawerWidth : minDrawerWidth
+					marginLeft: screenIsXL ? maxDrawerWidth : minDrawerWidth,
+					marginTop: headerHeight
 				}}
 			>
 				{props.children}

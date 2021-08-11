@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { useAppDispatch } from '../../redux/hooks';
+import { login } from '../../redux/users/users.slice';
 
 const index = () => {
+	const dispatch = useAppDispatch();
 	const [formState, setFormState] = useState({
 		email: {
 			value: '',
@@ -45,6 +48,12 @@ const index = () => {
 
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
+		dispatch(
+			login({
+				username: formState.email.value,
+				password: formState.password.value
+			})
+		);
 	};
 	return (
 		<>

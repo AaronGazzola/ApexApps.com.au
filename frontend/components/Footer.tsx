@@ -10,7 +10,7 @@ const Footer = (props: FooterProps) => {
 	const { footerHeight } = props;
 	return (
 		<footer
-			className='flex flex-col items-center ml-8 sm:ml-0'
+			className='flex flex-col items-center pt-8 ml-8 sm:ml-0'
 			style={{ height: footerHeight }}
 		>
 			<hr className='w-72 h-0.5 bg-gray-300 my-2' />
