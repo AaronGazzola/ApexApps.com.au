@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAppSelector } from '../redux/hooks';
 
 interface LogoProps {
-	variant: 'header' | 'drawer';
-	drawerIsOpen?: boolean;
+	variant: 'header' | 'drawer-sm' | 'drawer-lg';
 }
 
 const Logo = (props: LogoProps) => {
-	const { variant, drawerIsOpen } = props;
+	const { variant } = props;
 	const { breakpoint } = useAppSelector(state => state.utils);
 
 	let width = 40;
@@ -19,13 +17,11 @@ const Logo = (props: LogoProps) => {
 		case 'header':
 			width = height = breakpoint === 'xs' ? 40 : 60;
 			break;
-		case 'drawer':
-			width = height =
-				drawerIsOpen && breakpoint === 'xs'
-					? 40
-					: drawerIsOpen || breakpoint === 'xl' || breakpoint === '2xl'
-					? 55
-					: 30;
+		case 'drawer-sm':
+			width = height = 30;
+			break;
+		case 'drawer-lg':
+			width = height = 55;
 			break;
 		default:
 			break;
@@ -40,10 +36,7 @@ const Logo = (props: LogoProps) => {
 					width={width}
 					height={height}
 				/>
-				{(variant === 'header' ||
-					breakpoint === 'xl' ||
-					breakpoint === '2xl' ||
-					drawerIsOpen) && (
+				{variant !== 'drawer-sm' && (
 					<p className='font-extrabold text-xxxs sm:text-xxs text-blue-darkest whitespace-nowrap'>
 						APEX APPS
 					</p>

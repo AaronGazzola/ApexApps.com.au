@@ -91,13 +91,22 @@ const Drawer = (props: drawerProps) => {
 				WebkitBackfaceVisibility: 'hidden'
 			}}
 		>
-			<div
-				className={`w-full flex p-1 ${
-					drawerIsOpen || screenIsXL ? 'justify-center' : 'justify-end'
-				}`}
-				style={{ height: headerHeight }}
-			>
-				<Logo variant='drawer' drawerIsOpen={drawerIsOpen} />
+			<div className={`relative w-full`} style={{ height: headerHeight }}>
+				<div
+					className={`flex w-full absolute top-0 left-0 justify-center transition-opacity duration-300 ${
+						drawerIsOpen || screenIsXL ? '' : 'opacity-0'
+					}`}
+				>
+					<Logo variant='drawer-lg' />
+				</div>
+
+				<div
+					className={`flex w-full absolute top-0 left-0 justify-end p-1 transition-opacity duration-300 ${
+						drawerIsOpen || screenIsXL ? 'opacity-0' : ''
+					}`}
+				>
+					<Logo variant='drawer-sm' />
+				</div>
 			</div>
 			{!screenIsXL && (
 				<div
