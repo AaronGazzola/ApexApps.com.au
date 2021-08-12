@@ -77,11 +77,8 @@ const index = () => {
 
 	return (
 		<>
-			<h1 className='text-4xl text-blue-darkest my-4'>Log in</h1>
-			<form
-				onSubmit={submitHandler}
-				className='bg-white rounded-2xl shadow-lg p-4 flex flex-col w-80'
-			>
+			<h1 className='title'>Log in</h1>
+			<form onSubmit={submitHandler} className='box'>
 				<Input
 					placeholder='Email'
 					type='text'

@@ -13,6 +13,7 @@ export type UserState = {
 	token?: string;
 	user?: User;
 	error?: string;
+	success?: string;
 	redirect?: string;
 };
 

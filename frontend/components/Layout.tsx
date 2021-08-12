@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Meta from './Meta';
 import Header from './Header';
 import setScreenDimensions from '../hooks/setScreenDimensions';
@@ -7,7 +7,7 @@ import Footer from './Footer';
 import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { getUser } from '../redux/users/users.slice';
+import { clearUsers, getUser } from '../redux/users/users.slice';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -22,22 +22,20 @@ const Layout = (props: LayoutProps) => {
 	const { isAuth, redirect: userRedirect } = useAppSelector(
 		state => state.users
 	);
+	const [onMount, setOnMount] = useState(true);
 
 	// check for user and login on page load
 	// prevent redirect from initial logged out state by storing pathname on the get user action, and redirecting on api response
 	useEffect(() => {
-		if (!isAuth && !userRedirect) {
+		if (onMount) {
+			// if first page load, check for user
 			dispatch(getUser(router.pathname));
-		} else if (!!userRedirect) {
-			router.push(userRedirect);
-		} else if (isAuth) {
-			switch (router.pathname) {
-				case '/login':
-					router.push('/project');
-				default:
-					break;
-			}
-		} else {
+			setOnMount(false);
+		} else if (isAuth && router.pathname === '/login') {
+			// if logged in, redirect from /login to /projects
+			router.push('/');
+		} else if (!isAuth) {
+			// if not logged in redirect from drawer links to home
 			switch (router.pathname) {
 				case '/project':
 				case '/timeline':
@@ -48,7 +46,7 @@ const Layout = (props: LayoutProps) => {
 					break;
 			}
 		}
-	}, [isAuth, dispatch]);
+	}, [isAuth, dispatch, userRedirect]);
 
 	// set layout component dimensions
 	const headerHeight = breakpoint === 'xs' ? 56 : 82;

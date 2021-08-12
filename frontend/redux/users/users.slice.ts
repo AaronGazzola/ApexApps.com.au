@@ -4,7 +4,8 @@ import {
 	UserState,
 	LoginData,
 	SignupData,
-	UserResponse
+	UserResponse,
+	User
 } from './users.interface';
 import axios from 'axios';
 
@@ -76,7 +77,7 @@ export const getUser = createAsyncThunk(
 					}
 				}
 			);
-			return { ...data, redirect: pathname };
+			return data;
 		} catch (error) {
 			return rejectWithValue(
 				error.response && error.response.data.message
@@ -87,9 +88,18 @@ export const getUser = createAsyncThunk(
 	}
 );
 
+const initialUser: User = {
+	userName: '',
+	email: '',
+	isVerified: false,
+	isAdmin: false,
+	_id: 0
+};
+
 const initialState: UserState = {
 	loading: false,
-	isAuth: false
+	isAuth: false,
+	user: initialUser
 };
 
 const usersSlice = createSlice({
@@ -98,14 +108,12 @@ const usersSlice = createSlice({
 	reducers: {
 		logout(state) {
 			state.isAuth = false;
-			state.user = {
-				userName: '',
-				email: '',
-				isVerified: false,
-				isAdmin: false,
-				_id: 0
-			};
+			state.user = initialUser;
 			localStorage.removeItem('userData');
+		},
+		clearUsers(state) {
+			state.error = '';
+			state.success = '';
 		}
 	},
 	extraReducers: builder => {
@@ -117,6 +125,7 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
+
 			localStorage.setItem(
 				'userData',
 				JSON.stringify({
@@ -157,7 +166,6 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
-			state.redirect = action.payload.redirect;
 		});
 		builder.addCase(getUser.rejected, (state, action) => {
 			state.error = action.payload as string;
@@ -168,5 +176,5 @@ const usersSlice = createSlice({
 		});
 	}
 });
-export const { logout } = usersSlice.actions;
+export const { logout, clearUsers } = usersSlice.actions;
 export default usersSlice.reducer;
