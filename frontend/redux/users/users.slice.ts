@@ -58,8 +58,14 @@ export const getUser = createAsyncThunk(
 	'users/getuser',
 	async (_, { rejectWithValue, getState }) => {
 		const {
-			users: { token }
+			users: { token: stateToken }
 		} = getState() as RootState;
+
+		const localUserData: UserState | '' = JSON.parse(
+			localStorage.getItem('userData') || ''
+		);
+
+		const token = localUserData ? localUserData.token : stateToken;
 
 		try {
 			const { data }: UserResponse = await axios.get(
@@ -89,7 +95,19 @@ const initialState: UserState = {
 const usersSlice = createSlice({
 	name: 'users',
 	initialState,
-	reducers: {},
+	reducers: {
+		logout(state) {
+			state.isAuth = false;
+			state.user = {
+				userName: '',
+				email: '',
+				isVerified: false,
+				isAdmin: false,
+				_id: 0
+			};
+			localStorage.removeItem('userData');
+		}
+	},
 	extraReducers: builder => {
 		builder.addCase(login.pending, (state, action) => {
 			state.loading = true;
@@ -99,6 +117,14 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
+			localStorage.setItem(
+				'userData',
+				JSON.stringify({
+					user: action.payload.user,
+					isAuth: !!action.payload.token,
+					token: action.payload.token
+				})
+			);
 		});
 		builder.addCase(login.rejected, (state, action) => {
 			state.error = action.payload as string;
@@ -141,5 +167,5 @@ const usersSlice = createSlice({
 		});
 	}
 });
-
+export const { logout } = usersSlice.actions;
 export default usersSlice.reducer;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAppSelector } from '../redux/hooks';
 import DrawerLink from './DrawerLink';
 import Logo from './Logo';
 
@@ -8,10 +9,23 @@ interface drawerProps {
 	screenIsXL: boolean;
 }
 
+const lockIcon = (
+	<svg
+		className='fill-current group-hover:text-white'
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='-5 -2 24 24'
+		width='24'
+		height='24'
+		preserveAspectRatio='xMinYMin'
+	>
+		<path d='M2 12v6h10v-6H2zm10-2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2V5a5 5 0 1 1 10 0v5zm-2 0V5a3 3 0 1 0-6 0v5h6zm-3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z'></path>
+	</svg>
+);
+
 const navItems = [
 	{
-		title: 'Summary',
-		path: '/summary',
+		title: 'Project',
+		path: '/project',
 		icon: (
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
@@ -78,23 +92,27 @@ const navItems = [
 const Drawer = (props: drawerProps) => {
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
+	const { isAuth } = useAppSelector(state => state.users);
 
 	return (
 		<div
 			className='fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-10'
 			style={{
 				transform:
-					drawerIsOpen || screenIsXL
+					isAuth && (drawerIsOpen || screenIsXL)
 						? 'translateX(-12px)'
 						: `translateX(calc(-100% + ${minDrawerWidth}px))`,
 				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
 				WebkitBackfaceVisibility: 'hidden'
 			}}
 		>
+			{/* 
+				// Logo
+			*/}
 			<div className={`relative w-full`} style={{ height: headerHeight }}>
 				<div
 					className={`flex w-full absolute top-0 left-0 justify-center transition-opacity duration-300 ${
-						drawerIsOpen || screenIsXL ? '' : 'opacity-0'
+						isAuth && (drawerIsOpen || screenIsXL) ? '' : 'opacity-0'
 					}`}
 				>
 					<Logo variant='drawer-lg' />
@@ -102,7 +120,7 @@ const Drawer = (props: drawerProps) => {
 
 				<div
 					className={`flex w-full absolute top-0 left-0 justify-end p-1 transition-opacity duration-300 ${
-						drawerIsOpen || screenIsXL ? 'opacity-0' : ''
+						isAuth && (drawerIsOpen || screenIsXL) ? 'opacity-0' : ''
 					}`}
 				>
 					<Logo variant='drawer-sm' />
@@ -140,6 +158,7 @@ const Drawer = (props: drawerProps) => {
 					path={item.path}
 					icon={item.icon}
 					setDrawerIsOpen={setDrawerIsOpen}
+					lockIcon={lockIcon}
 				/>
 			))}
 		</div>

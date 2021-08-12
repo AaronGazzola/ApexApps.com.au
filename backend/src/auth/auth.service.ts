@@ -77,9 +77,11 @@ export class AuthService {
   async getUser(_id: string) {
     try {
       const user = await this.userModel.findById(_id);
+      const payload = { username: user.email, sub: user._id };
       return {
         user,
         success: true,
+        token: this.jwtService.sign(payload),
       };
     } catch (error) {
       throw error;

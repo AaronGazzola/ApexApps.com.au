@@ -1,24 +1,26 @@
 interface ButtonProps {
 	label: string;
-	type: 'submit' | 'button' | 'reset';
+	type?: 'submit' | 'button' | 'reset';
 	color: string;
 	variant: 'outlined' | 'contained';
-	fullWidth: boolean;
-	disabled: boolean;
+	fullWidth?: boolean;
+	disabled?: boolean;
 	clickHandler: React.MouseEventHandler;
 	loading: boolean;
+	size?: 'small' | 'medium' | 'large';
 }
 
 const Button = (props: ButtonProps) => {
 	const {
 		label,
 		type = 'button',
-		fullWidth,
+		fullWidth = false,
 		color,
 		variant,
-		disabled,
+		disabled = false,
 		clickHandler,
-		loading
+		loading,
+		size = 'medium'
 	} = props;
 
 	return (
@@ -39,7 +41,10 @@ const Button = (props: ButtonProps) => {
 		>
 			{loading ? (
 				<div className='flex justify-center'>
-					<div className='w-6 h-6 border-t-2 border-l-2 border-current rounded-full animate-spin'></div>
+					<div
+						className='w-6 h-6 border-t-2 border-l-2 border-current animate-spin'
+						style={{ borderRadius: '50%' }}
+					></div>
 				</div>
 			) : (
 				label
