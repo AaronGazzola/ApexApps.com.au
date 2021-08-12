@@ -6,7 +6,7 @@ interface ButtonProps {
 	fullWidth?: boolean;
 	disabled?: boolean;
 	clickHandler: React.MouseEventHandler;
-	loading: boolean;
+	loading?: boolean;
 	size?: 'small' | 'medium' | 'large';
 }
 
@@ -19,15 +19,24 @@ const Button = (props: ButtonProps) => {
 		variant,
 		disabled = false,
 		clickHandler,
-		loading,
+		loading = false,
 		size = 'medium'
 	} = props;
 
 	return (
 		<button
-			className={`${
-				fullWidth ? 'w-full' : 'w-min whitespace-nowrap px-3'
-			} font-semibold rounded-md p-1.5 ${
+			className={`
+			rounded-md
+			${
+				size === 'small'
+					? 'text-xs p-0.5 font-bold'
+					: size === 'large'
+					? 'text-lg p-2 font-medium'
+					: 'text-maxDrawerWidth p-1.5 font-semibold'
+			}
+			${fullWidth ? 'w-full' : 'w-min whitespace-nowrap px-3'} 
+			
+			${
 				variant === 'contained' && disabled
 					? `cursor-default bg-gray-light text-white`
 					: variant === 'contained'

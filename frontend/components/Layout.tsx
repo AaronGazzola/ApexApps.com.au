@@ -7,7 +7,6 @@ import Footer from './Footer';
 import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { UserState } from '../redux/users/users.interface';
 import { getUser } from '../redux/users/users.slice';
 
 interface LayoutProps {
@@ -20,11 +19,18 @@ const Layout = (props: LayoutProps) => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const { breakpoint } = useAppSelector(state => state.utils);
-	const { isAuth } = useAppSelector(state => state.users);
+	const { isAuth, redirect: userRedirect } = useAppSelector(
+		state => state.users
+	);
 
-	// If user is unauthorized, logout and redirect to '/'
+	// check for user and login on page load
+	// prevent redirect from initial logged out state by storing pathname on the get user action, and redirecting on api response
 	useEffect(() => {
-		if (isAuth) {
+		if (!isAuth && !userRedirect) {
+			dispatch(getUser(router.pathname));
+		} else if (!!userRedirect) {
+			router.push(userRedirect);
+		} else if (isAuth) {
 			switch (router.pathname) {
 				case '/login':
 					router.push('/project');
@@ -42,11 +48,6 @@ const Layout = (props: LayoutProps) => {
 					break;
 			}
 		}
-	}, [isAuth, router]);
-
-	// check for user and login on page load
-	useEffect(() => {
-		dispatch(getUser());
 	}, [isAuth, dispatch]);
 
 	// set layout component dimensions

@@ -13,6 +13,7 @@ export type UserState = {
 	token?: string;
 	user?: User;
 	error?: string;
+	redirect?: string;
 };
 
 export interface LoginData {

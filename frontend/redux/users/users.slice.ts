@@ -56,7 +56,7 @@ export const signup = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
 	'users/getuser',
-	async (_, { rejectWithValue, getState }) => {
+	async (pathname: string, { rejectWithValue, getState }) => {
 		const {
 			users: { token: stateToken }
 		} = getState() as RootState;
@@ -65,7 +65,7 @@ export const getUser = createAsyncThunk(
 			localStorage.getItem('userData') || ''
 		);
 
-		const token = localUserData ? localUserData.token : stateToken;
+		const token = !!localUserData ? localUserData.token : stateToken;
 
 		try {
 			const { data }: UserResponse = await axios.get(
@@ -76,7 +76,7 @@ export const getUser = createAsyncThunk(
 					}
 				}
 			);
-			return data;
+			return { ...data, redirect: pathname };
 		} catch (error) {
 			return rejectWithValue(
 				error.response && error.response.data.message
@@ -157,6 +157,7 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
+			state.redirect = action.payload.redirect;
 		});
 		builder.addCase(getUser.rejected, (state, action) => {
 			state.error = action.payload as string;

@@ -20,9 +20,8 @@ const index = () => {
 					label='Log out'
 					color='red'
 					variant='outlined'
-					size='small'
+					size='medium'
 					clickHandler={logoutHandler}
-					loading={usersLoading}
 				/>
 			</div>
 		</>
