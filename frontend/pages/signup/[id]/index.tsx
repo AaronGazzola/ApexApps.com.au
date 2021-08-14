@@ -33,7 +33,7 @@ const index = () => {
 		const target = e.currentTarget;
 		const isValid =
 			target.id === 'name'
-				? target.value.length < 30
+				? target.value.length && target.value.length < 30
 				: target.id === 'email'
 				? /^\S+@\S+\.\S+$/.test(target.value)
 				: target.value.length >= 6;
@@ -155,6 +155,18 @@ const index = () => {
 					type='link'
 					fullWidth
 					color='yellow'
+					variant='outlined'
+					size='small'
+					classes='mt-3 uppercase px-1 py-0.5'
+				/>
+				<Button
+					label='Take a tour'
+					path='#'
+					startIcon={<div className='w-7'></div>}
+					endIcon={<SVG name='map' className='fill-current' />}
+					type='link'
+					fullWidth
+					color='green-700'
 					variant='outlined'
 					size='small'
 					classes='mt-3 uppercase px-1 py-0.5'
