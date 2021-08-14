@@ -2,17 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAppSelector } from '../redux/hooks';
+import SVG from './SVG';
 
 interface DrawerLinkProps {
 	title: string;
 	path: string;
-	icon: React.ReactNode;
-	lockIcon: React.ReactNode;
+	icon: string;
 	setDrawerIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DrawerLink = (props: DrawerLinkProps) => {
-	const { path, title, icon, setDrawerIsOpen, lockIcon } = props;
+	const { path, title, icon, setDrawerIsOpen } = props;
 	const router = useRouter();
 	const pathIsActive = router.pathname === path;
 	const { breakpoint } = useAppSelector(state => state.utils);
@@ -33,7 +33,10 @@ const DrawerLink = (props: DrawerLinkProps) => {
 				>
 					{title}
 				</p>
-				{!isAuth ? lockIcon : icon}
+				<SVG
+					name={isAuth ? icon : 'lock'}
+					className='fill-current group-hover:text-white'
+				/>
 			</div>
 		</Link>
 	);

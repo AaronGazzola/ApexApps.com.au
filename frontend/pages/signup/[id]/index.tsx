@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { login } from '../../redux/users/users.slice';
-import SVG from '../../components/SVG';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { login, signup } from '../../../redux/users/users.slice';
+import SVG from '../../../components/SVG';
 
 const index = () => {
 	const dispatch = useAppDispatch();
 	const { loading } = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
+		name: {
+			value: '',
+			isValid: false,
+			isTouched: false
+		},
 		email: {
 			value: '',
 			isValid: false,
@@ -20,11 +25,15 @@ const index = () => {
 			isTouched: false
 		}
 	} as { [index: string]: any });
+	const { name, email, password } = formState;
+	const formIsValid = name.isValid && email.isValid && password.isValid;
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
 		const isValid =
-			target.id === 'email'
+			target.id === 'name'
+				? target.value.length < 30
+				: target.id === 'email'
 				? /^\S+@\S+\.\S+$/.test(target.value)
 				: target.value.length >= 6;
 		setFormState({
@@ -68,8 +77,9 @@ const index = () => {
 		e.preventDefault();
 		if (formState.email.isValid && formState.password.isValid) {
 			dispatch(
-				login({
-					username: formState.email.value,
+				signup({
+					userName: formState.name.value,
+					email: formState.email.value,
 					password: formState.password.value
 				})
 			);
@@ -78,7 +88,7 @@ const index = () => {
 
 	return (
 		<>
-			<h1 className='title'>Log in</h1>
+			<h1 className='title'>Sign Up</h1>
 			<form onSubmit={submitHandler} className='box-xs sm:box-sm'>
 				<Input
 					placeholder='Email'
@@ -105,22 +115,22 @@ const index = () => {
 					label='Password'
 				/>
 				<Button
-					label='Log in'
+					label='Sign up'
 					type='submit'
 					size='large'
 					fullWidth
 					color='green'
 					variant='contained'
-					disabled={!formState.email.isValid || !formState.password.isValid}
+					disabled={!formIsValid}
 					clickHandler={buttonClickHandler}
 					loading={loading}
 					extendClass='p-2'
 				/>
 				<Button
-					label='Request signup link'
-					path='/contact'
+					label='Back to log in'
+					path='/login'
 					startIcon={<div className='w-7'></div>}
-					endIcon={<SVG name='key' className='fill-current' />}
+					endIcon={<SVG className='fill-current' name='key' />}
 					type='link'
 					fullWidth
 					color='yellow'

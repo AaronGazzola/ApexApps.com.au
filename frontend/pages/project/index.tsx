@@ -15,27 +15,25 @@ const index = () => {
 	const editProfileHandler = (e: SyntheticEvent) => {};
 	return (
 		<>
-			<Meta title='Contact Aaron | Apex Apps' />
-			<div>
-				<h1 className='title'>Project</h1>
-				<div className='box'>
-					{user && <h2 className='title-sm'>{}</h2>}
-					<div className='flex justify-between'>
-						<Button
-							label='Log out'
-							color='red'
-							variant='outlined'
-							size='small'
-							clickHandler={logoutHandler}
-						/>
-						<Button
-							label='Edit profile'
-							color='yellow'
-							variant='outlined'
-							size='small'
-							clickHandler={editProfileHandler}
-						/>
-					</div>
+			<Meta title='Your Project | Apex Apps' />
+			<h1 className='title'>Project</h1>
+			<div className='box-xs sm:box-sm'>
+				{user && <h2 className='title-sm'>{user.userName}</h2>}
+				<div className='flex justify-between'>
+					<Button
+						label='Log out'
+						color='red'
+						variant='outlined'
+						size='small'
+						clickHandler={logoutHandler}
+					/>
+					<Button
+						label='Edit profile'
+						color='yellow'
+						variant='outlined'
+						size='small'
+						clickHandler={editProfileHandler}
+					/>
 				</div>
 			</div>
 		</>

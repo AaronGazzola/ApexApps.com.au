@@ -1,13 +1,20 @@
+import Link from 'next/link';
+
 interface ButtonProps {
 	label: string;
-	type?: 'submit' | 'button' | 'reset';
+	type?: 'submit' | 'button' | 'reset' | 'link';
 	color: string;
 	variant: 'outlined' | 'contained';
 	fullWidth?: boolean;
 	disabled?: boolean;
-	clickHandler: React.MouseEventHandler;
+	clickHandler?: React.MouseEventHandler;
 	loading?: boolean;
 	size?: 'small' | 'medium' | 'large';
+	endIcon?: React.ReactNode;
+	startIcon?: React.ReactNode;
+	path?: string;
+	extendClass?: string;
+	borderWidth?: number;
 }
 
 const Button = (props: ButtonProps) => {
@@ -18,36 +25,44 @@ const Button = (props: ButtonProps) => {
 		color,
 		variant,
 		disabled = false,
-		clickHandler,
+		clickHandler = () => {},
 		loading = false,
-		size = 'medium'
+		size = 'medium',
+		endIcon = null,
+		startIcon = null,
+		path = '',
+		extendClass = '',
+		borderWidth = 2
 	} = props;
 
-	return (
+	const component = (
 		<button
 			className={`
-			rounded-md
-			${
-				size === 'small'
-					? 'text-xs p-0.5 font-bold'
-					: size === 'large'
-					? 'text-lg p-2 font-medium'
-					: 'text-maxDrawerWidth p-1.5 font-semibold'
-			}
-			${fullWidth ? 'w-full' : 'w-min whitespace-nowrap px-3'} 
-			
-			${
-				variant === 'contained' && disabled
-					? `cursor-default bg-gray-light text-white`
-					: variant === 'contained'
-					? `bg-${color} text-white`
-					: disabled
-					? `cursor-default border-2 border-gray-light text-gray-light`
-					: `border border-${color} text-${color}`
-			}`}
-			type={type}
-			onClick={clickHandler}
+					rounded-md flex justify-${
+						endIcon || startIcon ? 'between' : 'center'
+					} items-center
+					${extendClass}
+					${
+						size === 'small'
+							? 'text-xs font-bold'
+							: size === 'large'
+							? 'text-lg  font-medium'
+							: 'text-maxDrawerWidth font-semibold'
+					}
+					${fullWidth ? 'w-full' : 'w-min whitespace-nowrap'} 
+					${
+						variant === 'contained' && disabled
+							? `cursor-default bg-gray-light text-white`
+							: variant === 'contained'
+							? `bg-${color} text-white`
+							: disabled
+							? `cursor-default border-2 border-gray-light text-gray-light`
+							: `border-${borderWidth} border-${color} text-${color}`
+					}`}
+			type={type !== 'link' ? type : undefined}
+			onClick={type === 'link' ? () => {} : clickHandler}
 		>
+			{startIcon && startIcon}
 			{loading ? (
 				<div className='flex justify-center'>
 					<div
@@ -58,8 +73,15 @@ const Button = (props: ButtonProps) => {
 			) : (
 				label
 			)}
+			{endIcon && endIcon}
 		</button>
 	);
+
+	if (type === 'link') {
+		return <Link href={path}>{component}</Link>;
+	} else {
+		return component;
+	}
 };
 
 export default Button;

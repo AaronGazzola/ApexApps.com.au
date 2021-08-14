@@ -31,9 +31,12 @@ const Layout = (props: LayoutProps) => {
 			// if first page load, check for user
 			dispatch(getUser(router.pathname));
 			setOnMount(false);
-		} else if (isAuth && router.pathname === '/login') {
+		} else if (
+			isAuth &&
+			(router.pathname === '/login' || router.pathname.startsWith('/signup'))
+		) {
 			// if logged in, redirect from /login to /projects
-			router.push('/');
+			router.push('/project');
 		} else if (!isAuth) {
 			// if not logged in redirect from drawer links to home
 			switch (router.pathname) {
@@ -64,7 +67,7 @@ const Layout = (props: LayoutProps) => {
 				screenIsXL={screenIsXL}
 			/>
 			<main
-				className='relative flex flex-col items-center h-min'
+				className='relative flex flex-col items-center h-min overflow-x-hidden'
 				style={{
 					minHeight: `calc((var(--vh) * 100) - ${
 						headerHeight + footerHeight
