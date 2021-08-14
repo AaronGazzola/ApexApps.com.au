@@ -11,6 +11,8 @@ interface InputProps {
 	helperText: string;
 	touchHandler: React.FocusEventHandler<HTMLInputElement>;
 	label: string;
+	passwordIsHidden?: boolean;
+	endIcon?: React.ReactNode;
 }
 
 const Input = (props: InputProps) => {
@@ -24,10 +26,17 @@ const Input = (props: InputProps) => {
 		helperText,
 		isTouched,
 		touchHandler,
-		label
+		label,
+		passwordIsHidden = true,
+		endIcon
 	} = props;
 	return (
-		<div className='flex flex-col mb-0.5 last:mb-0'>
+		<div className='flex flex-col mb-0.5 last:mb-0 relative'>
+			{endIcon && (
+				<div className='absolute right-7 top-1/2 transform -translate-y-full'>
+					{endIcon}
+				</div>
+			)}
 			<input
 				className={`form-input w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark ${
 					!isValid && isTouched
@@ -35,7 +44,8 @@ const Input = (props: InputProps) => {
 						: isValid
 						? 'border-green'
 						: 'border-gray-light focus:border-blue-darkest placeholder-gray-400'
-				}`}
+				}
+				${type === 'password' && passwordIsHidden ? 'tracking-widest' : ''}`}
 				type={type}
 				placeholder={placeholder}
 				value={value}

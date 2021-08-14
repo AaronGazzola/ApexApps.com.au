@@ -27,6 +27,7 @@ const index = () => {
 	} as { [index: string]: any });
 	const { name, email, password } = formState;
 	const formIsValid = name.isValid && email.isValid && password.isValid;
+	const [passwordIsHidden, setPasswordIsHidden] = useState(true);
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
@@ -91,28 +92,48 @@ const index = () => {
 			<h1 className='title'>Sign Up</h1>
 			<form onSubmit={submitHandler} className='box-xs sm:box-sm'>
 				<Input
+					placeholder='Name'
+					type='text'
+					value={formState.name.value}
+					changeHandler={changeHandler}
+					id='name'
+					isValid={formState.name.isValid}
+					helperText='Please enter a name under 30 characters'
+					isTouched={formState.name.isTouched}
+					touchHandler={touchHandler}
+					label='Name'
+				/>
+				<Input
 					placeholder='Email'
 					type='text'
 					value={formState.email.value}
 					changeHandler={changeHandler}
 					id='email'
 					isValid={formState.email.isValid}
-					helperText='Please enter your email address'
+					helperText='Please enter a valid email address'
 					isTouched={formState.email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
 				/>
 				<Input
 					placeholder='Password'
-					type='password'
+					type={passwordIsHidden ? 'password' : 'text'}
 					value={formState.password.value}
 					changeHandler={changeHandler}
 					id='password'
 					isValid={formState.password.isValid}
-					helperText='Please enter your password'
+					helperText='Password must be 6 or more characters'
 					isTouched={formState.password.isTouched}
 					touchHandler={touchHandler}
 					label='Password'
+					passwordIsHidden={passwordIsHidden}
+					endIcon={
+						<SVG
+							name={passwordIsHidden ? 'eyeOpen' : 'eyeClosed'}
+							className='fill-current text-gray cursor-pointer'
+							onClick={() => setPasswordIsHidden(prev => !prev)}
+						/>
+					}
 				/>
 				<Button
 					label='Sign up'
@@ -122,7 +143,7 @@ const index = () => {
 					color='green'
 					variant='contained'
 					disabled={!formIsValid}
-					clickHandler={buttonClickHandler}
+					onClick={buttonClickHandler}
 					loading={loading}
 					classes='p-2'
 				/>
@@ -136,7 +157,7 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase p-1'
+					classes='mt-3 uppercase px-1 py-0.5'
 				/>
 			</form>
 		</>

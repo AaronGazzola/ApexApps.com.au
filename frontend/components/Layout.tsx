@@ -8,8 +8,7 @@ import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../redux/users/users.slice';
-import Dialog from './Dialog';
-import Snackbar from './Snackbar';
+import UserFeedback from './UserFeedback';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -68,8 +67,7 @@ const Layout = (props: LayoutProps) => {
 				minDrawerWidth={minDrawerWidth}
 				screenIsXL={screenIsXL}
 			/>
-			<Dialog />
-			<Snackbar />
+			<UserFeedback />
 			<main
 				className='relative flex flex-col items-center h-min overflow-x-hidden pt-3 sm:pt-4'
 				style={{

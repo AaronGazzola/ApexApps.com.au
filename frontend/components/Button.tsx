@@ -7,7 +7,7 @@ interface ButtonProps {
 	variant: 'outlined' | 'contained';
 	fullWidth?: boolean;
 	disabled?: boolean;
-	clickHandler?: React.MouseEventHandler;
+	onClick?: React.MouseEventHandler;
 	loading?: boolean;
 	size?: 'small' | 'medium' | 'large';
 	endIcon?: React.ReactNode;
@@ -25,7 +25,7 @@ const Button = (props: ButtonProps) => {
 		color,
 		variant,
 		disabled = false,
-		clickHandler = () => {},
+		onClick = () => {},
 		loading = false,
 		size = 'medium',
 		endIcon = null,
@@ -57,10 +57,10 @@ const Button = (props: ButtonProps) => {
 							? `bg-${color} text-white`
 							: disabled
 							? `cursor-default border-2 border-gray-light text-gray-light`
-							: `border-${borderWidth} border-${color} text-${color}`
+							: `border-${borderWidth} border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5`
 					}`}
 			type={type !== 'link' ? type : undefined}
-			onClick={type === 'link' ? () => {} : clickHandler}
+			onClick={type === 'link' ? () => {} : onClick}
 		>
 			{startIcon && startIcon}
 			{loading ? (

@@ -112,12 +112,12 @@ const index = () => {
 					color='green'
 					variant='contained'
 					disabled={!formState.email.isValid || !formState.password.isValid}
-					clickHandler={buttonClickHandler}
+					onClick={buttonClickHandler}
 					loading={loading}
 					classes='p-2'
 				/>
 				<Button
-					label='Request signup link'
+					label='Request signup'
 					path='/contact'
 					startIcon={<div className='w-7'></div>}
 					endIcon={<SVG name='key' className='fill-current' />}
@@ -126,7 +126,19 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase p-1'
+					classes='mt-3 uppercase px-1 py-0.5'
+				/>
+				<Button
+					label='Take a tour'
+					path='#'
+					startIcon={<div className='w-7'></div>}
+					endIcon={<SVG name='map' className='fill-current' />}
+					type='link'
+					fullWidth
+					color='green-700'
+					variant='outlined'
+					size='small'
+					classes='mt-3 uppercase px-1 py-0.5'
 				/>
 			</form>
 		</>

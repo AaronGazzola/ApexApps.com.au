@@ -25,14 +25,14 @@ const index = () => {
 						color='red'
 						variant='outlined'
 						size='small'
-						clickHandler={logoutHandler}
+						onClick={logoutHandler}
 					/>
 					<Button
 						label='Edit profile'
 						color='yellow'
 						variant='outlined'
 						size='small'
-						clickHandler={editProfileHandler}
+						onClick={editProfileHandler}
 					/>
 				</div>
 			</div>
