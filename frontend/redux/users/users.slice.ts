@@ -125,7 +125,7 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
-
+			state.success = `Welcome ${action.payload.user?.userName}!`;
 			localStorage.setItem(
 				'userData',
 				JSON.stringify({

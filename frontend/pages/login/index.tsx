@@ -114,7 +114,7 @@ const index = () => {
 					disabled={!formState.email.isValid || !formState.password.isValid}
 					clickHandler={buttonClickHandler}
 					loading={loading}
-					extendClass='p-2'
+					classes='p-2'
 				/>
 				<Button
 					label='Request signup link'
@@ -126,7 +126,7 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					extendClass='mt-3 uppercase p-1'
+					classes='mt-3 uppercase p-1'
 				/>
 			</form>
 		</>

@@ -124,7 +124,7 @@ const index = () => {
 					disabled={!formIsValid}
 					clickHandler={buttonClickHandler}
 					loading={loading}
-					extendClass='p-2'
+					classes='p-2'
 				/>
 				<Button
 					label='Back to log in'
@@ -136,7 +136,7 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					extendClass='mt-3 uppercase p-1'
+					classes='mt-3 uppercase p-1'
 				/>
 			</form>
 		</>

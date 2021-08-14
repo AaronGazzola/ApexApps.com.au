@@ -7,7 +7,9 @@ import Footer from './Footer';
 import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { clearUsers, getUser } from '../redux/users/users.slice';
+import { getUser } from '../redux/users/users.slice';
+import Dialog from './Dialog';
+import Snackbar from './Snackbar';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -66,8 +68,10 @@ const Layout = (props: LayoutProps) => {
 				minDrawerWidth={minDrawerWidth}
 				screenIsXL={screenIsXL}
 			/>
+			<Dialog />
+			<Snackbar />
 			<main
-				className='relative flex flex-col items-center h-min overflow-x-hidden'
+				className='relative flex flex-col items-center h-min overflow-x-hidden pt-3 sm:pt-4'
 				style={{
 					minHeight: `calc((var(--vh) * 100) - ${
 						headerHeight + footerHeight
