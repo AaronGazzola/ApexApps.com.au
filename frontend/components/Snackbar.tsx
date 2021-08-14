@@ -13,8 +13,8 @@ const Snackbar = (props: SnackbarProps) => {
 
 	return (
 		<div
-			className={`fixed bottom-2 left-1/2 transform -translate-x-1/2 bg-green flex justify-between text-white py-3 px-4 rounded-xl items-center shadow-md transition-transform duration-150 ease-in-out
-      ${show ? '' : 'translate-y-16'}`}
+			className={`fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-700 flex justify-between text-white py-3 px-4 rounded-xl items-center shadow-md transition-transform duration-150 ease-in-out z-50
+      ${show ? '' : 'translate-y-20'}`}
 			onClick={onClick}
 		>
 			<p className='font-medium text-lg'>{message ? message : 'Success!'}</p>

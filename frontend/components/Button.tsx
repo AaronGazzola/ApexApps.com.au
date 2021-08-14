@@ -14,7 +14,6 @@ interface ButtonProps {
 	startIcon?: React.ReactNode;
 	path?: string;
 	classes?: string;
-	borderWidth?: number;
 }
 
 const Button = (props: ButtonProps) => {
@@ -31,8 +30,7 @@ const Button = (props: ButtonProps) => {
 		endIcon = null,
 		startIcon = null,
 		path = '',
-		classes = '',
-		borderWidth = 2
+		classes = ''
 	} = props;
 
 	const component = (
@@ -57,7 +55,7 @@ const Button = (props: ButtonProps) => {
 							? `bg-${color} text-white`
 							: disabled
 							? `cursor-default border-2 border-gray-light text-gray-light`
-							: `border-${borderWidth} border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5`
+							: `border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5 shadow-sm`
 					}`}
 			type={type !== 'link' ? type : undefined}
 			onClick={type === 'link' ? () => {} : onClick}

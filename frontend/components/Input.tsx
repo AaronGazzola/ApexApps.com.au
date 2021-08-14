@@ -13,6 +13,7 @@ interface InputProps {
 	label: string;
 	passwordIsHidden?: boolean;
 	endIcon?: React.ReactNode;
+	fullWidth?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -28,10 +29,15 @@ const Input = (props: InputProps) => {
 		touchHandler,
 		label,
 		passwordIsHidden = true,
-		endIcon
+		endIcon,
+		fullWidth = true
 	} = props;
 	return (
-		<div className='flex flex-col mb-0.5 last:mb-0 relative'>
+		<div
+			className={`flex flex-col mb-0.5 last:mb-0 relative ${
+				fullWidth ? 'w-full' : ''
+			}`}
+		>
 			{endIcon && (
 				<div className='absolute right-7 top-1/2 transform -translate-y-full'>
 					{endIcon}

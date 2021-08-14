@@ -116,6 +116,7 @@ const index = () => {
 					loading={loading}
 					classes='p-2'
 				/>
+
 				<Button
 					label='Request signup'
 					path='/contact'
@@ -126,7 +127,7 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase px-1 py-0.5'
+					classes='mt-3 uppercase px-1 py-0.5 border-b border-l'
 				/>
 				<Button
 					label='Take a tour'
@@ -138,7 +139,7 @@ const index = () => {
 					color='green-700'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase px-1 py-0.5'
+					classes='mt-3 uppercase px-1 py-0.5 border-b border-l'
 				/>
 			</form>
 		</>
