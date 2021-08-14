@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAppSelector } from '../redux/hooks';
 import DrawerLink from './DrawerLink';
 import Logo from './Logo';
+import SVG from './SVG';
 
 interface drawerProps {
 	headerHeight: number;
@@ -76,6 +77,7 @@ const Drawer = (props: drawerProps) => {
 					onClick={() => setDrawerIsOpen(prev => !prev)}
 				>
 					<SVG
+						name='arrow'
 						className={`fill-current text-blue-darkest group-hover:text-white ${
 							drawerIsOpen || screenIsXL ? 'transform -rotate-180' : ''
 						}`}

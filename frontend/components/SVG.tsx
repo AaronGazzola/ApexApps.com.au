@@ -1,6 +1,9 @@
+import CSS from 'csstype';
+
 interface SVGProps {
 	name: string;
 	className?: string;
+	style?: CSS.Properties;
 }
 
 interface Icon {
@@ -149,12 +152,12 @@ const icons: Icons = {
 };
 
 const SVG = (props: SVGProps) => {
-	const { name = 'lock', className = '' } = props;
+	const { name = 'lock', className = '', style = {} } = props;
 
 	const iconName = name in icons ? name : 'lock';
 
 	return (
-		<svg {...icons[iconName].props} className={className}>
+		<svg {...icons[iconName].props} className={className} style={style}>
 			{icons[iconName].path}
 		</svg>
 	);
