@@ -145,7 +145,7 @@ const index = () => {
 					disabled={!formIsValid}
 					onClick={buttonClickHandler}
 					loading={loading}
-					classes='p-2'
+					className='p-2'
 				/>
 				<Button
 					label='Back to log in'
@@ -157,7 +157,7 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase px-1 py-0.5 border-b border-l'
+					className='mt-3 uppercase px-1 py-0.5 border-b'
 				/>
 				<Button
 					label='Take a tour'
@@ -169,7 +169,7 @@ const index = () => {
 					color='green-700'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase px-1 py-0.5 border-b border-l'
+					className='mt-3 uppercase px-1 py-0.5 border-b'
 				/>
 			</form>
 		</>

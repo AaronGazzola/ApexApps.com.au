@@ -27,7 +27,7 @@ const Dialog = (props: DialogProps) => {
 						label='OK'
 						color='blue-darkest'
 						variant='outlined'
-						classes='px-4'
+						className='px-4'
 					/>
 				</div>
 			</div>

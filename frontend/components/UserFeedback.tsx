@@ -27,7 +27,10 @@ const UserFeedback = () => {
 
 	// clear users after timeout
 	useEffect(() => {
-		let timer = setTimeout(() => dispatch(clearUsers()), 3000);
+		let timer: ReturnType<typeof setTimeout>;
+		if (users.success) {
+			timer = setTimeout(() => dispatch(clearUsers()), 3000);
+		}
 		return () => {
 			clearTimeout(timer);
 		};

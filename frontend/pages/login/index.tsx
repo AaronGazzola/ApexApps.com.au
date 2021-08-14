@@ -114,11 +114,11 @@ const index = () => {
 					disabled={!formState.email.isValid || !formState.password.isValid}
 					onClick={buttonClickHandler}
 					loading={loading}
-					classes='p-2'
+					className='p-2'
 				/>
 
 				<Button
-					label='Request signup'
+					label='Request access'
 					path='/contact'
 					startIcon={<div className='w-7'></div>}
 					endIcon={<SVG name='key' className='fill-current' />}
@@ -127,7 +127,7 @@ const index = () => {
 					color='yellow'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase px-1 py-0.5 border-b border-l'
+					className='mt-3 uppercase px-1 py-0.5 border-b'
 				/>
 				<Button
 					label='Take a tour'
@@ -139,7 +139,7 @@ const index = () => {
 					color='green-700'
 					variant='outlined'
 					size='small'
-					classes='mt-3 uppercase px-1 py-0.5 border-b border-l'
+					className='mt-3 uppercase px-1 py-0.5 border-b'
 				/>
 			</form>
 		</>

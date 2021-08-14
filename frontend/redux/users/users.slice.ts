@@ -57,7 +57,7 @@ export const signup = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
 	'users/getuser',
-	async (pathname: string, { rejectWithValue, getState }) => {
+	async (_, { rejectWithValue, getState }) => {
 		const {
 			users: { token: stateToken }
 		} = getState() as RootState;

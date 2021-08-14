@@ -13,7 +13,7 @@ interface ButtonProps {
 	endIcon?: React.ReactNode;
 	startIcon?: React.ReactNode;
 	path?: string;
-	classes?: string;
+	className?: string;
 }
 
 const Button = (props: ButtonProps) => {
@@ -30,7 +30,7 @@ const Button = (props: ButtonProps) => {
 		endIcon = null,
 		startIcon = null,
 		path = '',
-		classes = ''
+		className = ''
 	} = props;
 
 	const component = (
@@ -39,7 +39,7 @@ const Button = (props: ButtonProps) => {
 					rounded-md flex justify-${
 						endIcon || startIcon ? 'between' : 'center'
 					} items-center
-					${classes}
+					${className}
 					${
 						size === 'small'
 							? 'text-xs font-bold'

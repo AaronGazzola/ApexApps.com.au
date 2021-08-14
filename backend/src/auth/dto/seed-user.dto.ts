@@ -22,4 +22,7 @@ export class SeedUserDto {
 
   @IsBoolean()
   isAdmin: boolean;
+
+  @IsBoolean()
+  isVerified: boolean;
 }

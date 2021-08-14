@@ -30,7 +30,7 @@ const Layout = (props: LayoutProps) => {
 	useEffect(() => {
 		if (onMount) {
 			// if first page load, check for user
-			dispatch(getUser(router.pathname));
+			dispatch(getUser());
 			setOnMount(false);
 		} else if (
 			isAuth &&
@@ -45,7 +45,7 @@ const Layout = (props: LayoutProps) => {
 				case '/timeline':
 				case '/milestones':
 				case '/proposal':
-					router.push('/');
+					router.push('/login');
 				default:
 					break;
 			}

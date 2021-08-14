@@ -25,7 +25,7 @@ export class AuthService {
       password: hashedPassword,
       email,
     });
-    const payload = { username: user.userName, sub: user._id };
+    const payload = { username: user.email, sub: user._id };
 
     try {
       await user.save();
@@ -77,6 +77,9 @@ export class AuthService {
   async getUser(_id: string) {
     try {
       const user = await this.userModel.findById(_id);
+      if (!user) {
+        throw new Error('No user found');
+      }
       const payload = { username: user.email, sub: user._id };
       return {
         user,

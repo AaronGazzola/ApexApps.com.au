@@ -18,6 +18,7 @@ export class UserSeed {
       email: 'admin@example.com',
       password: process.env.USER_PASSWORD,
       isAdmin: true,
+      isVerified: true,
     });
   }
 }
