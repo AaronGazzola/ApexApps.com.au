@@ -78,7 +78,7 @@ const Drawer = (props: drawerProps) => {
 				>
 					<SVG
 						name='arrow'
-						className={`fill-current text-blue-darkest group-hover:text-white ${
+						classes={`fill-current text-blue-darkest group-hover:text-white ${
 							drawerIsOpen || screenIsXL ? 'transform -rotate-180' : ''
 						}`}
 						style={{

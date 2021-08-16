@@ -2,7 +2,7 @@ import CSS from 'csstype';
 
 interface SVGProps {
 	name: string;
-	className?: string;
+	classes?: string;
 	style?: CSS.Properties;
 	onClick?: React.MouseEventHandler;
 }
@@ -32,6 +32,66 @@ const icons: Icons = {
 		},
 		path: (
 			<path d='M2 12v6h10v-6H2zm10-2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2V5a5 5 0 1 1 10 0v5zm-2 0V5a3 3 0 1 0-6 0v5h6zm-3 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z'></path>
+		)
+	},
+	doubleArrow: {
+		props: {
+			xmlns: 'http://www.w3.org/2000/svg',
+			viewBox: '-2 -2 24 24',
+			width: '24',
+			height: '24',
+			preserveAspectRatio: 'xMinYMin'
+		},
+		path: (
+			<path d='M1 0h6a1 1 0 1 1 0 2H3.414L18 16.586V13a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1h-6a1 1 0 0 1 0-2h3.586L2 3.414V7a1 1 0 1 1-2 0V1a1 1 0 0 1 1-1z'></path>
+		)
+	},
+	medical: {
+		props: {
+			xmlns: 'http://www.w3.org/2000/svg',
+			viewBox: '-2 -2 24 24',
+			width: '24',
+			height: '24',
+			preserveAspectRatio: 'xMinYMin'
+		},
+		path: (
+			<path d='M7 12.917v.583a4.5 4.5 0 1 0 9 0v-1.67a3.001 3.001 0 1 1 2 0v1.67a6.5 6.5 0 1 1-13 0v-.583A6.002 6.002 0 0 1 0 7V2a2 2 0 0 1 2-2h1a1 1 0 1 1 0 2H2v5a4 4 0 1 0 8 0V2H9a1 1 0 1 1 0-2h1a2 2 0 0 1 2 2v5a6.002 6.002 0 0 1-5 5.917zM17 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'></path>
+		)
+	},
+	deleteUser: {
+		props: {
+			xmlns: 'http://www.w3.org/2000/svg',
+			viewBox: '-2 -2 24 24',
+			width: '24',
+			height: '24',
+			preserveAspectRatio: 'xMinYMin'
+		},
+		path: (
+			<path d='M3.534 10.07a1 1 0 1 1 .733 1.86A3.579 3.579 0 0 0 2 15.26V17a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1.647a3.658 3.658 0 0 0-2.356-3.419 1 1 0 1 1 .712-1.868A5.658 5.658 0 0 1 14 15.353V17a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3v-1.74a5.579 5.579 0 0 1 3.534-5.19zM7 0a4 4 0 0 1 4 4v2a4 4 0 1 1-8 0V4a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v2a2 2 0 1 0 4 0V4a2 2 0 0 0-2-2zm10.414 4l1.414 1.414a1 1 0 0 1-1.414 1.414L16 7.414l-1.414 1.414a1 1 0 1 1-1.414-1.414L14.586 6l-1.414-1.414a1 1 0 0 1 1.414-1.414L16 4.586l1.414-1.414a1 1 0 1 1 1.414 1.414L17.414 6z'></path>
+		)
+	},
+	door: {
+		props: {
+			xmlns: 'http://www.w3.org/2000/svg',
+			viewBox: '-6 -2 24 24',
+			width: '24',
+			height: '24',
+			preserveAspectRatio: 'xMinYMin'
+		},
+		path: (
+			<path d='M2 0h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm0 2v16h8V2H2zm2 7h1a1 1 0 1 1 0 2H4a1 1 0 0 1 0-2z'></path>
+		)
+	},
+	pencil: {
+		props: {
+			xmlns: 'http://www.w3.org/2000/svg',
+			viewBox: '-2.5 -2.5 24 24',
+			width: '24',
+			height: '24',
+			preserveAspectRatio: 'xMinYMin'
+		},
+		path: (
+			<path d='M12.238 5.472L3.2 14.51l-.591 2.016 1.975-.571 9.068-9.068-1.414-1.415zM13.78 3.93l1.414 1.414 1.318-1.318a.5.5 0 0 0 0-.707l-.708-.707a.5.5 0 0 0-.707 0L13.781 3.93zm3.439-2.732l.707.707a2.5 2.5 0 0 1 0 3.535L5.634 17.733l-4.22 1.22a1 1 0 0 1-1.237-1.241l1.248-4.255 12.26-12.26a2.5 2.5 0 0 1 3.535 0z'></path>
 		)
 	},
 	key: {
@@ -213,19 +273,14 @@ const icons: Icons = {
 };
 
 const SVG = (props: SVGProps) => {
-	const {
-		name = 'lock',
-		className = '',
-		style = {},
-		onClick = () => {}
-	} = props;
+	const { name = 'lock', classes = '', style = {}, onClick = () => {} } = props;
 
 	const iconName = name in icons ? name : 'lock';
 
 	return (
 		<svg
 			{...icons[iconName].props}
-			className={className}
+			className={classes}
 			style={style}
 			onClick={onClick}
 		>

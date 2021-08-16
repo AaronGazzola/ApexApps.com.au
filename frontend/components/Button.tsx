@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 interface ButtonProps {
 	label: string;
-	type?: 'submit' | 'button' | 'reset' | 'link';
 	color: string;
-	variant: 'outlined' | 'contained';
+	variant: 'simple' | 'contained';
+	type?: 'submit' | 'button' | 'reset' | 'link';
 	fullWidth?: boolean;
 	disabled?: boolean;
 	onClick?: React.MouseEventHandler;
@@ -13,7 +13,7 @@ interface ButtonProps {
 	endIcon?: React.ReactNode;
 	startIcon?: React.ReactNode;
 	path?: string;
-	className?: string;
+	buttonClasses?: string;
 }
 
 const Button = (props: ButtonProps) => {
@@ -30,7 +30,7 @@ const Button = (props: ButtonProps) => {
 		endIcon = null,
 		startIcon = null,
 		path = '',
-		className = ''
+		buttonClasses = ''
 	} = props;
 
 	const component = (
@@ -39,7 +39,7 @@ const Button = (props: ButtonProps) => {
 					rounded-md flex justify-${
 						endIcon || startIcon ? 'between' : 'center'
 					} items-center
-					${className}
+					${buttonClasses}
 					${
 						size === 'small'
 							? 'text-xs font-bold'
@@ -55,7 +55,7 @@ const Button = (props: ButtonProps) => {
 							? `bg-${color} text-white`
 							: disabled
 							? `cursor-default border-2 border-gray-light text-gray-light`
-							: `border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5 shadow-sm`
+							: `border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5 `
 					}`}
 			type={type !== 'link' ? type : undefined}
 			onClick={type === 'link' ? () => {} : onClick}

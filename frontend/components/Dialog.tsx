@@ -15,7 +15,7 @@ const Dialog = (props: DialogProps) => {
 
 	return (
 		<>
-			<div className='box-xs xm:box-sm fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'>
+			<div className='box xs:w-72 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'>
 				<h2 className={`title-sm text-red`}>
 					{title ? title : type[0].toUpperCase() + type.slice(1)}
 				</h2>
@@ -26,8 +26,8 @@ const Dialog = (props: DialogProps) => {
 						onClick={onClick}
 						label='OK'
 						color='blue-darkest'
-						variant='outlined'
-						className='px-4'
+						variant='simple'
+						buttonClasses='px-4'
 					/>
 				</div>
 			</div>

@@ -35,7 +35,7 @@ const DrawerLink = (props: DrawerLinkProps) => {
 				</p>
 				<SVG
 					name={isAuth ? icon : 'lock'}
-					className='fill-current group-hover:text-white'
+					classes='fill-current group-hover:text-white'
 				/>
 			</div>
 		</Link>

@@ -90,36 +90,38 @@ const index = () => {
 	return (
 		<>
 			<h1 className='title'>Sign Up</h1>
-			<form onSubmit={submitHandler} className='box-xs sm:box-sm'>
+			<form onSubmit={submitHandler} className='box w-72 sm:w-80'>
 				<Input
 					placeholder='Name'
 					type='text'
 					value={formState.name.value}
-					changeHandler={changeHandler}
+					onChange={changeHandler}
 					id='name'
 					isValid={formState.name.isValid}
 					helperText='Please enter a name under 30 characters'
 					isTouched={formState.name.isTouched}
 					touchHandler={touchHandler}
 					label='Name'
+					containerClasses='mb-0.5 last:mb-0'
 				/>
 				<Input
 					placeholder='Email'
 					type='text'
 					value={formState.email.value}
-					changeHandler={changeHandler}
+					onChange={changeHandler}
 					id='email'
 					isValid={formState.email.isValid}
 					helperText='Please enter a valid email address'
 					isTouched={formState.email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
+					containerClasses='mb-0.5 last:mb-0'
 				/>
 				<Input
 					placeholder='Password'
 					type={passwordIsHidden ? 'password' : 'text'}
 					value={formState.password.value}
-					changeHandler={changeHandler}
+					onChange={changeHandler}
 					id='password'
 					isValid={formState.password.isValid}
 					helperText='Password must be 6 or more characters'
@@ -130,10 +132,11 @@ const index = () => {
 					endIcon={
 						<SVG
 							name={passwordIsHidden ? 'eyeOpen' : 'eyeClosed'}
-							className='fill-current text-gray cursor-pointer'
+							classes='fill-current text-gray cursor-pointer'
 							onClick={() => setPasswordIsHidden(prev => !prev)}
 						/>
 					}
+					containerClasses='mb-0.5 last:mb-0'
 				/>
 				<Button
 					label='Sign up'
@@ -145,31 +148,39 @@ const index = () => {
 					disabled={!formIsValid}
 					onClick={buttonClickHandler}
 					loading={loading}
-					className='p-2'
+					buttonClasses='p-2'
 				/>
 				<Button
 					label='Back to log in'
 					path='/login'
-					startIcon={<div className='w-7'></div>}
-					endIcon={<SVG className='fill-current' name='key' />}
+					startIcon={<div className='w-5'></div>}
+					endIcon={
+						<div className='w-5 h-5'>
+							<SVG name='key' classes='fill-current w-full' />
+						</div>
+					}
 					type='link'
 					fullWidth
 					color='yellow'
-					variant='outlined'
+					variant='simple'
 					size='small'
-					className='mt-3 uppercase px-1 py-0.5 border-b'
+					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
 				/>
 				<Button
 					label='Take a tour'
 					path='#'
-					startIcon={<div className='w-7'></div>}
-					endIcon={<SVG name='map' className='fill-current' />}
+					startIcon={<div className='w-5'></div>}
+					endIcon={
+						<div className='w-5 h-5'>
+							<SVG name='map' classes='fill-current w-full' />
+						</div>
+					}
 					type='link'
 					fullWidth
 					color='green-700'
-					variant='outlined'
+					variant='simple'
 					size='small'
-					className='mt-3 uppercase px-1 py-0.5 border-b'
+					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
 				/>
 			</form>
 		</>

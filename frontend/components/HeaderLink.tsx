@@ -13,9 +13,18 @@ const HeaderLink = (props: HeaderLinkProps) => {
 	const { isAuth } = useAppSelector(state => state.users);
 	const router = useRouter();
 	// set active
-	let pathIsActive =
-		router.pathname === path ||
-		(router.pathname === '/project' && path === '/login' && isAuth);
+	let pathIsActive = router.pathname === path;
+	if (isAuth && path === '/login') {
+		switch (router.pathname) {
+			case '/project':
+			case '/timeline':
+			case '/milestones':
+			case '/proposal':
+				pathIsActive = true;
+			default:
+				break;
+		}
+	}
 
 	return (
 		<Link href={isAuth && path === '/login' ? '/project' : path}>
@@ -25,11 +34,11 @@ const HeaderLink = (props: HeaderLinkProps) => {
 				}`}
 			>
 				<div className='w-2 sm:w-3.5'>
-					<SVG name='chevronLeft' className='fill-current w-full' />
+					<SVG name='chevronLeft' classes='fill-current w-full' />
 				</div>
 				{path === '/login' && isAuth ? (
 					<div className='w-5 m-1 sm:w-8 text-blue-darkest'>
-						<SVG className='fill-current w-full h-full' name='userCircle' />
+						<SVG classes='fill-current w-full h-full' name='userCircle' />
 					</div>
 				) : (
 					<p className='font-semibold text-xs mx-0.5 sm:mx-2 sm:text-lg whitespace-nowrap text-blue-darkest'>
@@ -37,7 +46,7 @@ const HeaderLink = (props: HeaderLinkProps) => {
 					</p>
 				)}
 				<div className='w-2 sm:w-3.5'>
-					<SVG className='fill-current w-full' name='chevronRight' />
+					<SVG classes='fill-current w-full' name='chevronRight' />
 				</div>
 			</a>
 		</Link>

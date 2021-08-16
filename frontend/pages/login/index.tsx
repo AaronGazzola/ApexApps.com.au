@@ -79,30 +79,32 @@ const index = () => {
 	return (
 		<>
 			<h1 className='title'>Log in</h1>
-			<form onSubmit={submitHandler} className='box-xs sm:box-sm'>
+			<form onSubmit={submitHandler} className='box w-72 sm:w-80'>
 				<Input
 					placeholder='Email'
 					type='text'
 					value={formState.email.value}
-					changeHandler={changeHandler}
+					onChange={changeHandler}
 					id='email'
 					isValid={formState.email.isValid}
 					helperText='Please enter your email address'
 					isTouched={formState.email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
+					containerClasses='mb-0.5 last:mb-0'
 				/>
 				<Input
 					placeholder='Password'
 					type='password'
 					value={formState.password.value}
-					changeHandler={changeHandler}
+					onChange={changeHandler}
 					id='password'
 					isValid={formState.password.isValid}
 					helperText='Please enter your password'
 					isTouched={formState.password.isTouched}
 					touchHandler={touchHandler}
 					label='Password'
+					containerClasses='mb-0.5 last:mb-0'
 				/>
 				<Button
 					label='Log in'
@@ -114,32 +116,55 @@ const index = () => {
 					disabled={!formState.email.isValid || !formState.password.isValid}
 					onClick={buttonClickHandler}
 					loading={loading}
-					className='p-2'
+					buttonClasses='p-2 shadow-sm'
 				/>
-
 				<Button
 					label='Request access'
 					path='/contact'
-					startIcon={<div className='w-7'></div>}
-					endIcon={<SVG name='key' className='fill-current' />}
+					startIcon={<div className='w-5'></div>}
+					endIcon={
+						<div className='w-5 h-5'>
+							<SVG name='key' classes='fill-current w-full' />
+						</div>
+					}
 					type='link'
 					fullWidth
 					color='yellow'
-					variant='outlined'
+					variant='simple'
 					size='small'
-					className='mt-3 uppercase px-1 py-0.5 border-b'
+					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
+				/>
+				<Button
+					label='Forgot password'
+					path='#'
+					startIcon={<div className='w-5'></div>}
+					endIcon={
+						<div className='w-5 h-5'>
+							<SVG name='medical' classes='fill-current w-full' />
+						</div>
+					}
+					type='link'
+					fullWidth
+					color='blue-darkest'
+					variant='simple'
+					size='small'
+					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
 				/>
 				<Button
 					label='Take a tour'
 					path='#'
-					startIcon={<div className='w-7'></div>}
-					endIcon={<SVG name='map' className='fill-current' />}
+					startIcon={<div className='w-5'></div>}
+					endIcon={
+						<div className='w-5 h-5'>
+							<SVG name='map' classes='fill-current w-full' />
+						</div>
+					}
 					type='link'
 					fullWidth
 					color='green-700'
-					variant='outlined'
+					variant='simple'
 					size='small'
-					className='mt-3 uppercase px-1 py-0.5 border-b'
+					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
 				/>
 			</form>
 		</>
