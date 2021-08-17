@@ -21,22 +21,24 @@ const setScreenDimensions = () => {
 			// Set screen dimensions and breakpoints
 			const width = window.innerWidth;
 			const height = window.innerHeight;
+			const breakpoint =
+				width < 640
+					? 'xs'
+					: width < 768
+					? 'sm'
+					: width < 1024
+					? 'md'
+					: width < 1280
+					? 'lg'
+					: width < 1536
+					? 'xl'
+					: '2xl';
 			dispatch(
 				setDimensions({
 					screenWidth: width,
 					screenHeight: height,
-					breakpoint:
-						width < 640
-							? 'xs'
-							: width < 768
-							? 'sm'
-							: width < 1024
-							? 'md'
-							: width < 1280
-							? 'lg'
-							: width < 1536
-							? 'xl'
-							: '2xl'
+					headerHeight: breakpoint === 'xs' ? 56 : 82,
+					breakpoint
 				})
 			);
 		};

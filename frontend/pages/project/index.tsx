@@ -6,6 +6,7 @@ import SVG from '../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/users/users.slice';
 import moment from 'moment';
+import Modal from '../../components/Modal';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -21,6 +22,9 @@ const index = () => {
 		costFrom: 10000,
 		costTo: 10000
 	});
+	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const [modalType, setModalType] = useState('');
+
 	const {
 		clientName,
 		projectName,
@@ -53,10 +57,25 @@ const index = () => {
 	const logoutHandler = (e: SyntheticEvent) => {
 		dispatch(logout());
 	};
-	const editProfileHandler = (e: SyntheticEvent) => {};
+	const editProfileHandler = (e: SyntheticEvent) => {
+		setModalIsOpen(true);
+	};
+
+	const renderModalContent = (param: string) => {
+		switch (param) {
+			case '':
+				return <></>;
+			default:
+				return <></>;
+		}
+	};
+
 	return (
 		<>
 			<Meta title='Your Project | Apex Apps' />
+			<Modal isOpen={modalIsOpen} setModal={setModalIsOpen}>
+				{renderModalContent(modalType)}
+			</Modal>
 			<h1 className='title'>Project</h1>
 			<div className='box w-72 sm:w-80'>
 				{usersLoading || !user ? (

@@ -19,14 +19,19 @@ const Layout = (props: LayoutProps) => {
 	setScreenDimensions();
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { breakpoint } = useAppSelector(state => state.utils);
+	const {
+		breakpoint,
+		headerHeight,
+		footerHeight,
+		minDrawerWidth,
+		maxDrawerWidth
+	} = useAppSelector(state => state.utils);
 	const { isAuth, redirect: userRedirect } = useAppSelector(
 		state => state.users
 	);
 	const [onMount, setOnMount] = useState(true);
 
 	// check for user and login on page load
-	// prevent redirect from initial logged out state by storing pathname on the get user action, and redirecting on api response
 	useEffect(() => {
 		if (onMount) {
 			// if first page load, check for user
@@ -52,11 +57,6 @@ const Layout = (props: LayoutProps) => {
 		}
 	}, [isAuth, dispatch, userRedirect]);
 
-	// set layout component dimensions
-	const headerHeight = breakpoint === 'xs' ? 56 : 82;
-	const footerHeight = 112;
-	const minDrawerWidth = 36;
-	const maxDrawerWidth = 147;
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 	return (
 		<>
