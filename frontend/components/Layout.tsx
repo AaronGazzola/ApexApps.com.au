@@ -26,9 +26,7 @@ const Layout = (props: LayoutProps) => {
 		minDrawerWidth,
 		maxDrawerWidth
 	} = useAppSelector(state => state.utils);
-	const { isAuth, redirect: userRedirect } = useAppSelector(
-		state => state.users
-	);
+	const { isAuth } = useAppSelector(state => state.users);
 	const [onMount, setOnMount] = useState(true);
 
 	// check for user and login on page load
@@ -37,25 +35,33 @@ const Layout = (props: LayoutProps) => {
 			// if first page load, check for user
 			dispatch(getUser());
 			setOnMount(false);
-		} else if (
-			isAuth &&
-			(router.pathname === '/login' || router.pathname.startsWith('/signup'))
-		) {
-			// if logged in, redirect from /login to /projects
-			router.push('/project');
+		} else if (isAuth) {
+			// if logged in, redirect from header links to /project
+			if (router.pathname.startsWith('/signup')) router.push('/project');
+			switch (router.pathname) {
+				case '/':
+				case '/portfolio':
+				case '/contact':
+				case '/login':
+					router.push('/project');
+					break;
+				default:
+					break;
+			}
 		} else if (!isAuth) {
-			// if not logged in redirect from drawer links to home
+			// if not logged in redirect from drawer links to /login
 			switch (router.pathname) {
 				case '/project':
 				case '/timeline':
 				case '/milestones':
 				case '/proposal':
 					router.push('/login');
+					break;
 				default:
 					break;
 			}
 		}
-	}, [isAuth, dispatch, userRedirect]);
+	}, [isAuth, dispatch]);
 
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 	return (

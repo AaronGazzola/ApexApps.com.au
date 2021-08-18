@@ -43,7 +43,7 @@ const Input = (props: InputProps) => {
 		inputClasses = '',
 		containerClasses = '',
 		labelTop = false,
-		validation = false
+		validation = true
 	} = props;
 
 	return (
@@ -54,7 +54,7 @@ const Input = (props: InputProps) => {
 			${containerClasses}`}
 		>
 			{endIcon && (
-				<div className='absolute right-7 top-1/2 transform -translate-y-full'>
+				<div className={`absolute right-7`} style={{ top: labelTop ? 30 : 9 }}>
 					{endIcon}
 				</div>
 			)}
@@ -100,7 +100,11 @@ const Input = (props: InputProps) => {
 								: 'border-gray-light focus:border-blue-darkest placeholder-gray-400'
 						}
 						${inputClasses}
-						${type === 'password' && passwordIsHidden ? 'tracking-widest' : ''}`}
+						${
+							type === 'password' && passwordIsHidden && value.length
+								? 'tracking-widest'
+								: ''
+						}`}
 						type={type}
 						placeholder={placeholder}
 						value={value}

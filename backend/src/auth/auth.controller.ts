@@ -8,7 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 
-import { User } from './interfaces/user.interface';
+import { User } from '../users/interfaces/user.interface';
 import { SignupUserDto } from './dto/signup-user.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';

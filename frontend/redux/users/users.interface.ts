@@ -14,7 +14,6 @@ export type UserState = {
 	user?: User;
 	error?: string;
 	success?: string;
-	redirect?: string;
 };
 
 export interface LoginData {
@@ -33,4 +32,11 @@ export interface UserResponse {
 		token?: string;
 		user?: User;
 	};
+}
+
+export interface UpdateData {
+	userName: string;
+	email: string;
+	currentPassword?: string;
+	newPassword?: string;
 }

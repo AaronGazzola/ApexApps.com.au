@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/users/users.slice';
 import moment from 'moment';
 import Modal from '../../components/Modal';
+import EditProfileModal from '../../components/EditProfileModal';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -57,14 +58,15 @@ const index = () => {
 	const logoutHandler = (e: SyntheticEvent) => {
 		dispatch(logout());
 	};
-	const editProfileHandler = (e: SyntheticEvent) => {
+	const openModalhandler = (e: SyntheticEvent, modalType: string) => {
 		setModalIsOpen(true);
+		setModalType(modalType);
 	};
 
 	const renderModalContent = (param: string) => {
 		switch (param) {
-			case '':
-				return <></>;
+			case 'editProfile':
+				return <EditProfileModal />;
 			default:
 				return <></>;
 		}
@@ -73,7 +75,7 @@ const index = () => {
 	return (
 		<>
 			<Meta title='Your Project | Apex Apps' />
-			<Modal isOpen={modalIsOpen} setModal={setModalIsOpen}>
+			<Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
 				{renderModalContent(modalType)}
 			</Modal>
 			<h1 className='title'>Project</h1>
@@ -89,7 +91,6 @@ const index = () => {
 						</div>
 						<div className='skeleton w-full h-8 mt-3'></div>
 						<div className='w-full flex justify-between mt-1'>
-							<div className='skeleton w-24 h-5'></div>
 							<div className='skeleton w-24 h-5'></div>
 						</div>
 					</>
@@ -118,7 +119,7 @@ const index = () => {
 								color='yellow'
 								variant='simple'
 								size='small'
-								onClick={editProfileHandler}
+								onClick={e => openModalhandler(e, 'editProfile')}
 								buttonClasses='ml-2 px-1 py-0.5'
 								startIcon={<div className='w-2'></div>}
 								endIcon={
@@ -180,13 +181,15 @@ const index = () => {
 								size='small'
 								buttonClasses='border py-0.5 px-1.5'
 							/>
-							<Button
-								label='Add project'
-								color='green'
-								variant='simple'
-								size='small'
-								buttonClasses='border py-0.5 px-1.5'
-							/>
+							{user.isAdmin && (
+								<Button
+									label='Add project'
+									color='green'
+									variant='simple'
+									size='small'
+									buttonClasses='border py-0.5 px-1.5'
+								/>
+							)}
 						</div>
 					</>
 				)}
@@ -211,6 +214,7 @@ const index = () => {
 							placeholder='Project description'
 							onChange={changeHandler}
 							label='Project description'
+							validation={false}
 						/>
 						<div className='flex justify-end w-full mt-2'>
 							<Button
