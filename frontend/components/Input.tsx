@@ -42,7 +42,7 @@ const Input = (props: InputProps) => {
 		options = [],
 		inputClasses = '',
 		containerClasses = '',
-		labelTop = false,
+		labelTop = true,
 		validation = true
 	} = props;
 
@@ -88,6 +88,18 @@ const Input = (props: InputProps) => {
 				</>
 			) : (
 				<>
+					<p
+						className={`text-xs font-semibold pl-1 pt-0.5 ${
+							!isValid && isTouched && validation
+								? 'text-red'
+								: isValid && validation
+								? 'text-green form-label'
+								: 'text-blue-darkest form-label'
+						}`}
+					>
+						{helperText}
+					</p>
+
 					<input
 						className={`form-input${
 							labelTop ? '-label-top' : '-label-bottom'
@@ -115,14 +127,14 @@ const Input = (props: InputProps) => {
 					<label
 						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold ${
 							!isValid && isTouched && validation
-								? 'text-red'
+								? 'text-red form-label'
 								: isValid && validation
 								? 'text-green form-label'
 								: 'text-blue-darkest form-label'
 						}`}
 						htmlFor={id}
 					>
-						{!isValid && isTouched ? helperText : label}
+						{label}
 					</label>
 				</>
 			)}

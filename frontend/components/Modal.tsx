@@ -5,12 +5,12 @@ import SVG from './SVG';
 interface ModalProps {
 	isOpen: boolean;
 	children: React.ReactNode;
-	setIsOpen: Dispatch<SetStateAction<boolean>>;
 	classes?: string;
+	onClose: () => void;
 }
 
 const Modal = (props: ModalProps) => {
-	const { isOpen, setIsOpen, classes = '' } = props;
+	const { isOpen, onClose, classes = '' } = props;
 	const [fadeIn, setFadeIn] = useState(false);
 	const { breakpoint } = useAppSelector(state => state.utils);
 
@@ -31,12 +31,12 @@ const Modal = (props: ModalProps) => {
 					<SVG
 						name='close'
 						classes='absolute top-2 left-2 fill-current text-gray hover:text-red cursor-pointer'
-						onClick={() => setIsOpen(false)}
+						onClick={onClose}
 					/>
 					{props.children}
 				</div>
 				<div
-					onClick={() => setIsOpen(false)}
+					onClick={onClose}
 					className={`fixed top-0 left-0 right-0 bottom-0 bg-gray-dark transition-opacity duration-300 z-40 flex
       ${fadeIn ? 'opacity-75' : 'opacity-0'}`}
 				></div>

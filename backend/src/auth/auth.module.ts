@@ -24,7 +24,6 @@ import { LocalStrategy } from './strategies/local.strategy';
   controllers: [AuthController],
   exports: [
     AuthService,
-    ConfigModule.forRoot(),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     PassportModule,
     JwtModule.register({

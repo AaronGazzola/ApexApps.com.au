@@ -10,4 +10,5 @@ export interface User extends Document {
   isVerified: boolean;
   verifyUserToken: string;
   verifyEmailToken: string;
+  _id: string;
 }

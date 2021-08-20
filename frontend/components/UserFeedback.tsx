@@ -1,8 +1,9 @@
 import Snackbar from './Snackbar';
-import Dialog from './Dialog';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { clearUsers } from '../redux/users/users.slice';
 import { useEffect, useState } from 'react';
+import Modal from './Modal';
+import Button from './Button';
 
 const UserFeedback = () => {
 	const dispatch = useAppDispatch();
@@ -37,9 +38,35 @@ const UserFeedback = () => {
 	}, [users.success]);
 	return (
 		<>
-			{!!users.error && (
-				<Dialog type='error' message={users.error} onClick={clickHandler} />
-			)}
+			<Modal
+				isOpen={!!users.alert || !!users.error}
+				onClose={() => dispatch(clearUsers())}
+			>
+				<h2 className={`title-sm ${users.error ? 'text-red' : ''}`}>
+					{users.error
+						? 'Error'
+						: users.alert?.title
+						? users.alert?.title
+						: 'Alert'}
+				</h2>
+				<p className={`font-medium text-gray-dark my-3`}>
+					{users.error
+						? users.error
+						: users.alert?.message
+						? users.alert?.message
+						: ''}
+				</p>
+				<div className='flex w-full justify-end'>
+					<Button
+						onClick={() => dispatch(clearUsers())}
+						type='button'
+						label='OK'
+						color='blue-darkest'
+						variant='simple'
+						buttonClasses='px-4'
+					/>
+				</div>
+			</Modal>
 			<Snackbar
 				type='success'
 				message={users.success}

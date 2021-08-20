@@ -13,12 +13,18 @@ const EditProfileModal = () => {
 		name: {
 			value: user?.userName || '',
 			isValid: user?.userName ? user?.userName.length < 30 : false,
-			isTouched: false
+			isTouched: false,
+			isChanged: false
 		},
 		email: {
-			value: user?.email || '',
-			isValid: user?.email ? /^\S+@\S+\.\S+$/.test(user?.email) : false,
-			isTouched: false
+			value: user?.newEmail || user?.email || '',
+			isValid: user?.newEmail
+				? /^\S+@\S+\.\S+$/.test(user?.newEmail)
+				: user?.email
+				? /^\S+@\S+\.\S+$/.test(user?.email)
+				: false,
+			isTouched: false,
+			isChanged: false
 		},
 		currentPassword: {
 			value: '',
@@ -35,11 +41,12 @@ const EditProfileModal = () => {
 	const [passwordIsHidden, setPasswordIsHidden] = useState(true);
 	const [passwordIsOpen, setPasswordIsOpen] = useState(false);
 	const formIsValid = passwordIsOpen
-		? name.isValid &&
+		? (name.isChanged || email.isChanged) &&
+		  name.isValid &&
 		  email.isValid &&
 		  currentPassword.isValid &&
 		  newPassword.isValid
-		: name.isValid && email.isValid;
+		: (name.isChanged || email.isChanged) && name.isValid && email.isValid;
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
@@ -49,12 +56,19 @@ const EditProfileModal = () => {
 				: target.id === 'email'
 				? /^\S+@\S+\.\S+$/.test(target.value)
 				: target.value.length >= 6;
+		const isChanged =
+			target.id === 'name'
+				? target.value !== user?.userName
+				: user?.newEmail
+				? target.value !== user?.newEmail
+				: target.value !== user?.email;
 		setState({
 			...state,
 			[target.id]: {
 				...state[target.id],
 				value: target.value,
-				isValid
+				isValid,
+				isChanged
 			}
 		});
 	};
@@ -93,7 +107,7 @@ const EditProfileModal = () => {
 			<h2 className='title-sm text-center'>Edit Profile</h2>
 			<Input
 				type='text'
-				validation
+				validation={name.isChanged}
 				isValid={name.isValid}
 				placeholder='Name'
 				value={name.value}
@@ -103,12 +117,15 @@ const EditProfileModal = () => {
 				isTouched={name.isTouched}
 				touchHandler={touchHandler}
 				fullWidth
-				helperText='Please enter a name below 30 characters'
-				labelTop
+				helperText={
+					name.isChanged && !name.isValid && name.isTouched
+						? 'Please enter a name below 30 characters'
+						: ''
+				}
 			/>
 			<Input
 				type='text'
-				validation
+				validation={email.isChanged}
 				isValid={email.isValid}
 				placeholder='Email'
 				value={email.value}
@@ -118,9 +135,17 @@ const EditProfileModal = () => {
 				isTouched={email.isTouched}
 				touchHandler={touchHandler}
 				fullWidth
-				helperText='Please enter a valid email'
-				labelTop
-				containerClasses='mt-2'
+				helperText={
+					user?.newEmail && !email.isChanged
+						? 'Please check your inbox to verify this email'
+						: !email.isValid && email.isTouched
+						? 'Please enter a valid email address'
+						: ''
+				}
+				inputClasses={
+					user?.newEmail && !email.isChanged ? 'bg-blue-lightest' : ''
+				}
+				containerClasses='mt-1'
 			/>
 			<div
 				className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4
@@ -160,7 +185,11 @@ const EditProfileModal = () => {
 					onChange={changeHandler}
 					id='currentPassword'
 					isValid={currentPassword.isValid}
-					helperText='Password must be 6 or more characters'
+					helperText={
+						currentPassword.isTouched && !currentPassword.isValid
+							? 'Password must be 6 or more characters'
+							: ''
+					}
 					isTouched={currentPassword.isTouched}
 					touchHandler={touchHandler}
 					label='Current password'
@@ -173,7 +202,6 @@ const EditProfileModal = () => {
 						/>
 					}
 					containerClasses='mt-2'
-					labelTop
 				/>
 				<Input
 					placeholder='New password'
@@ -182,7 +210,11 @@ const EditProfileModal = () => {
 					onChange={changeHandler}
 					id='newPassword'
 					isValid={newPassword.isValid}
-					helperText='Password must be 6 or more characters'
+					helperText={
+						newPassword.isTouched && !newPassword.isValid
+							? 'Password must be 6 or more characters'
+							: ''
+					}
 					isTouched={newPassword.isTouched}
 					touchHandler={touchHandler}
 					label='New password'
@@ -194,7 +226,7 @@ const EditProfileModal = () => {
 							onClick={() => setPasswordIsHidden(prev => !prev)}
 						/>
 					}
-					containerClasses='mt-2 mb-4'
+					containerClasses='mt-1 mb-2'
 					labelTop
 				/>
 			</div>

@@ -7,6 +7,7 @@ interface LogoProps {
 }
 
 const Logo = (props: LogoProps) => {
+	const { isAuth } = useAppSelector(state => state.users);
 	const { variant } = props;
 	const { breakpoint } = useAppSelector(state => state.utils);
 
@@ -28,7 +29,7 @@ const Logo = (props: LogoProps) => {
 	}
 
 	return (
-		<Link href='/'>
+		<Link href={isAuth ? '/project' : '/'}>
 			<div className='my-0.5 flex flex-col content-center cursor-pointer'>
 				<Image
 					src='/assets/svg/logo_50.svg'

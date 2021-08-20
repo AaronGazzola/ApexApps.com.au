@@ -5,6 +5,10 @@ export const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  clientName: {
+    type: String,
+    unique: true,
+  },
   password: {
     type: String,
     required: [true, 'Please add a password'],

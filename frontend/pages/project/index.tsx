@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, SyntheticEvent, useState } from 'react';
+import { BaseSyntheticEvent, SyntheticEvent, useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Meta from '../../components/Meta';
@@ -11,7 +11,12 @@ import EditProfileModal from '../../components/EditProfileModal';
 
 const index = () => {
 	const dispatch = useAppDispatch();
-	const { loading: usersLoading, user } = useAppSelector(state => state.users);
+	const {
+		loading: usersLoading,
+		user,
+		success: usersSuccess,
+		alert: usersAlert
+	} = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
 		clientName: '',
 		projectName: '',
@@ -72,10 +77,14 @@ const index = () => {
 		}
 	};
 
+	useEffect(() => {
+		if (usersSuccess || usersAlert) setModalIsOpen(false);
+	}, [usersSuccess, usersAlert]);
+
 	return (
 		<>
 			<Meta title='Your Project | Apex Apps' />
-			<Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
+			<Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
 				{renderModalContent(modalType)}
 			</Modal>
 			<h1 className='title'>Project</h1>

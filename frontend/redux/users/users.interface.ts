@@ -14,6 +14,10 @@ export type UserState = {
 	user?: User;
 	error?: string;
 	success?: string;
+	alert?: null | {
+		title?: string;
+		message: string;
+	};
 };
 
 export interface LoginData {

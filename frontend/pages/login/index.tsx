@@ -20,6 +20,7 @@ const index = () => {
 			isTouched: false
 		}
 	} as { [index: string]: any });
+	const { email, password } = formState;
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
@@ -49,15 +50,15 @@ const index = () => {
 	};
 
 	const buttonClickHandler = (e: React.MouseEvent) => {
-		if (!formState.email.isValid || !formState.password.isValid) {
+		if (!email.isValid || !password.isValid) {
 			setFormState({
 				...formState,
 				email: {
-					...formState.email,
+					...email,
 					isTouched: true
 				},
 				password: {
-					...formState.password,
+					...password,
 					isTouched: true
 				}
 			});
@@ -66,11 +67,11 @@ const index = () => {
 
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		if (formState.email.isValid && formState.password.isValid) {
+		if (email.isValid && password.isValid) {
 			dispatch(
 				login({
-					username: formState.email.value,
-					password: formState.password.value
+					username: email.value,
+					password: password.value
 				})
 			);
 		}
@@ -83,28 +84,36 @@ const index = () => {
 				<Input
 					placeholder='Email'
 					type='text'
-					value={formState.email.value}
+					value={email.value}
 					onChange={changeHandler}
 					id='email'
-					isValid={formState.email.isValid}
-					helperText='Please enter your email address'
-					isTouched={formState.email.isTouched}
+					isValid={email.isValid}
+					helperText={
+						email.isTouched && !email.isValid
+							? 'Please enter your email address'
+							: ''
+					}
+					isTouched={email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
-					containerClasses='mb-0.5 last:mb-0'
+					containerClasses='mb-0.5'
 				/>
 				<Input
 					placeholder='Password'
 					type='password'
-					value={formState.password.value}
+					value={password.value}
 					onChange={changeHandler}
 					id='password'
-					isValid={formState.password.isValid}
-					helperText='Please enter your password'
-					isTouched={formState.password.isTouched}
+					isValid={password.isValid}
+					helperText={
+						password.isTouched && !password.isValid
+							? 'Please enter your password'
+							: ''
+					}
+					isTouched={password.isTouched}
 					touchHandler={touchHandler}
 					label='Password'
-					containerClasses='mb-0.5 last:mb-0'
+					containerClasses='mb-4'
 				/>
 				<Button
 					label='Log in'
@@ -113,7 +122,7 @@ const index = () => {
 					fullWidth
 					color='green'
 					variant='contained'
-					disabled={!formState.email.isValid || !formState.password.isValid}
+					disabled={!email.isValid || !password.isValid}
 					onClick={buttonClickHandler}
 					loading={loading}
 					buttonClasses='p-2 shadow-sm'

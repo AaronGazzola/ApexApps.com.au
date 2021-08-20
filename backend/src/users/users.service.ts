@@ -1,18 +1,22 @@
 import * as crypto from 'crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import sendEmail from '../shared/sendEmail';
 
 import { User } from './interfaces/user.interface';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class UsersService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     private jwtService: JwtService,
+    @Inject(REQUEST) private readonly req: Request,
   ) {}
 
   async updateUser(updateUserDto: UpdateUserDto, _id: string) {
@@ -47,8 +51,23 @@ export class UsersService {
       // add hash to user
       user.verifyEmailToken = hash;
 
-      // --- TO DO --- //
+      // get base URL from request protocol and host domain
+      const baseUrl = `${this.req.protocol}://${
+        process.env.NODE_ENV === 'production'
+          ? this.req.get('host')
+          : 'localhost:3000'
+      }`;
+      const actionLink = `${baseUrl}/verifyemail/${token}`;
+
       // send change email token to user via email
+      await sendEmail({
+        type: 'UPDATE_EMAIL',
+        actionLink,
+        user,
+        baseUrl,
+        reason: `You have recieved this email because a request was made to update the email address associated with your account at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+        buttonText: 'Update Email',
+      });
     }
 
     // update password
@@ -67,7 +86,7 @@ export class UsersService {
     const payload = { username: user.email, sub: user._id };
 
     return {
-      user,
+      user: returnUser,
       success: true,
       token: this.jwtService.sign(payload),
     };

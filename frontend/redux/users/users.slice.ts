@@ -143,6 +143,7 @@ const usersSlice = createSlice({
 		clearUsers(state) {
 			state.error = '';
 			state.success = '';
+			state.alert = null;
 		}
 	},
 	extraReducers: builder => {
@@ -211,6 +212,14 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
+			if (action.payload.user?.newEmail) {
+				state.alert = {
+					title: 'Success',
+					message: 'Please check your inbox to verify your new email'
+				};
+			} else {
+				state.success = 'Profile updated!';
+			}
 		});
 		builder.addCase(updateUser.rejected, (state, action) => {
 			state.error = action.payload as string;
