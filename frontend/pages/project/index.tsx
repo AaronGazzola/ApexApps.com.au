@@ -8,7 +8,7 @@ import { logout, getUsers } from '../../redux/users/users.slice';
 import moment from 'moment';
 import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/EditProfileModal';
-import AddClientModal from '../../components/AddClientModal';
+import ClientModal from '../../components/ClientModal';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -46,6 +46,8 @@ const index = () => {
 		costTo
 	} = formState;
 
+	const client = users?.find(user => user.clientName === clientName);
+
 	const changeHandler = (e: BaseSyntheticEvent) => {
 		let value = e.target.value;
 		switch (e.target.id) {
@@ -71,12 +73,16 @@ const index = () => {
 		setModalType(modalType);
 	};
 
-	const renderModalContent = (param: string) => {
-		switch (param) {
+	const renderModalContent = (modalType: string) => {
+		switch (modalType) {
 			case 'editProfile':
 				return <EditProfileModal />;
 			case 'addClient':
-				return <AddClientModal />;
+				return <ClientModal />;
+			case 'editClientName':
+				return (
+					<ClientModal clientName={clientName} id={client ? client._id : ''} />
+				);
 			default:
 				return <></>;
 		}
@@ -84,11 +90,20 @@ const index = () => {
 
 	useEffect(() => {
 		if (usersSuccess || usersAlert || usersError) setModalIsOpen(false);
-	}, [usersSuccess, usersAlert]);
+	}, [usersSuccess, usersAlert, usersError]);
 
 	useEffect(() => {
-		if (user?.isAdmin) dispatch(getUsers());
+		if (user?.isAdmin && usersSuccess) dispatch(getUsers());
 	}, [user?.isAdmin, usersSuccess]);
+
+	useEffect(() => {
+		if (user?.isAdmin && users?.length && (!clientName || usersSuccess)) {
+			setFormState({
+				...formState,
+				clientName: users[0].clientName
+			});
+		}
+	}, [user, users]);
 
 	return (
 		<>
@@ -162,13 +177,16 @@ const index = () => {
 									labelTop
 								/>
 								<div className='mt-2 flex justify-between w-full'>
-									<Button
-										label='Edit client name'
-										color='yellow'
-										variant='simple'
-										size='small'
-										buttonClasses='border py-0.5 px-1.5'
-									/>
+									{users?.length && (
+										<Button
+											label='Edit client name'
+											color='yellow'
+											variant='simple'
+											size='small'
+											buttonClasses='border py-0.5 px-1.5'
+											onClick={() => openModalhandler('editClientName')}
+										/>
+									)}
 									<Button
 										label='Add client'
 										color='green'

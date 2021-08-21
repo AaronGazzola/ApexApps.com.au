@@ -7,7 +7,7 @@ import Footer from './Footer';
 import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { getUser } from '../redux/users/users.slice';
+import { getUser, getUsers } from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
 
 interface LayoutProps {
@@ -26,7 +26,7 @@ const Layout = (props: LayoutProps) => {
 		minDrawerWidth,
 		maxDrawerWidth
 	} = useAppSelector(state => state.utils);
-	const { isAuth } = useAppSelector(state => state.users);
+	const { isAuth, user } = useAppSelector(state => state.users);
 	const [onMount, setOnMount] = useState(true);
 
 	// check for user and login on page load
@@ -36,6 +36,8 @@ const Layout = (props: LayoutProps) => {
 			dispatch(getUser());
 			setOnMount(false);
 		} else if (isAuth) {
+			// if admin, get users
+			if (user?.isAdmin) dispatch(getUsers());
 			// if logged in, redirect from header links to /project
 			if (router.pathname.startsWith('/signup')) router.push('/project');
 			switch (router.pathname) {

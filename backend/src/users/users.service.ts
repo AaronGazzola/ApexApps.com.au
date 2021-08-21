@@ -1,3 +1,4 @@
+import { UpdateClientDto } from './dto/update-client.dto';
 import * as crypto from 'crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Inject, Injectable, Scope } from '@nestjs/common';
@@ -24,6 +25,18 @@ export class UsersService {
     if (!user?.isAdmin)
       throw Error('User must be admin to access this content');
     await this.userModel.create({ clientName: name });
+    return { success: true };
+  }
+
+  async updateClient(updateClientDto: UpdateClientDto, userId: string) {
+    const { clientName, id: clientId } = updateClientDto;
+    const user = await this.userModel.findById(userId);
+    if (!user?.isAdmin)
+      throw Error('User must be admin to access this content');
+    const client = await this.userModel.findById(clientId);
+    client.clientName = clientName;
+    await client.save();
+
     return { success: true };
   }
 

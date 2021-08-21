@@ -145,6 +145,37 @@ export const addUser = createAsyncThunk(
 	}
 );
 
+export const updateClient = createAsyncThunk(
+	'users/updateClient',
+	async (
+		{ name, id }: { name: string; id: string },
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: UserResponse = await axios.put(
+				'http://localhost:5000/users/client',
+				{ clientName: name, id },
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 export const getUsers = createAsyncThunk(
 	'users/getUsers',
 	async (_, { rejectWithValue, getState }) => {
@@ -178,7 +209,7 @@ const initialUser: User = {
 	email: '',
 	isVerified: false,
 	isAdmin: false,
-	_id: 0
+	_id: '0'
 };
 
 const initialState: UserState = {
@@ -300,6 +331,17 @@ const usersSlice = createSlice({
 			state.users = action.payload.users;
 		});
 		builder.addCase(getUsers.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(updateClient.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(updateClient.fulfilled, (state, action) => {
+			state.loading = false;
+			state.success = 'Client updated';
+		});
+		builder.addCase(updateClient.rejected, (state, action) => {
 			state.error = action.payload as string;
 			state.loading = false;
 		});

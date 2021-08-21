@@ -5,7 +5,7 @@ export interface User {
 	newEmail?: string;
 	isVerified: boolean;
 	isAdmin: boolean;
-	_id: number;
+	_id: string;
 }
 
 export type UserState = {

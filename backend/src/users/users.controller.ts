@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateClientDto } from './dto/update-client.dto';
 
 @Controller('users')
 export class UsersController {
@@ -29,6 +30,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Post('/')
   async addUser(@Body(ValidationPipe) addUserDto: AddUserDto, @Request() req) {
+    console.log(req.user._id);
     return await this.usersService.addUser(addUserDto.name, req.user._id);
   }
 
@@ -36,5 +38,14 @@ export class UsersController {
   @Get('/')
   async getUsers(@Request() req) {
     return await this.usersService.getUsers(req.user._id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/client')
+  async updateClient(
+    @Body(ValidationPipe) updateClientDto: UpdateClientDto,
+    @Request() req,
+  ) {
+    return await this.usersService.updateClient(updateClientDto, req.user._id);
   }
 }
