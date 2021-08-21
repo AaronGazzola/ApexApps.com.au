@@ -4,8 +4,11 @@ import Button from '../../../components/Button';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { login, signup } from '../../../redux/users/users.slice';
 import SVG from '../../../components/SVG';
+import { useRouter } from 'next/router';
 
 const index = () => {
+	const router = useRouter();
+	const { id } = router.query;
 	const dispatch = useAppDispatch();
 	const { loading } = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
@@ -81,7 +84,8 @@ const index = () => {
 				signup({
 					userName: formState.name.value,
 					email: formState.email.value,
-					password: formState.password.value
+					password: formState.password.value,
+					id: typeof id === 'string' ? id : ''
 				})
 			);
 		}
@@ -98,7 +102,11 @@ const index = () => {
 					onChange={changeHandler}
 					id='name'
 					isValid={formState.name.isValid}
-					helperText='Please enter a name under 30 characters'
+					helperText={
+						!name.isValid && name.isTouched
+							? 'Please enter a name under 30 characters'
+							: ''
+					}
 					isTouched={formState.name.isTouched}
 					touchHandler={touchHandler}
 					label='Name'
@@ -111,7 +119,11 @@ const index = () => {
 					onChange={changeHandler}
 					id='email'
 					isValid={formState.email.isValid}
-					helperText='Please enter a valid email address'
+					helperText={
+						!email.isValid && email.isTouched
+							? 'Please enter a valid email address'
+							: ''
+					}
 					isTouched={formState.email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
@@ -124,7 +136,11 @@ const index = () => {
 					onChange={changeHandler}
 					id='password'
 					isValid={formState.password.isValid}
-					helperText='Password must be 6 or more characters'
+					helperText={
+						!password.isValid && password.isTouched
+							? 'Password must be 6 or more characters'
+							: ''
+					}
 					isTouched={formState.password.isTouched}
 					touchHandler={touchHandler}
 					label='Password'
@@ -136,7 +152,7 @@ const index = () => {
 							onClick={() => setPasswordIsHidden(prev => !prev)}
 						/>
 					}
-					containerClasses='mb-0.5 last:mb-0'
+					containerClasses='mb-4'
 				/>
 				<Button
 					label='Sign up'

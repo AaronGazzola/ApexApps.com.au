@@ -60,13 +60,9 @@ const Input = (props: InputProps) => {
 			)}
 			{type === 'select' ? (
 				<>
-					<SVG
-						name='chevronLeft'
-						classes='fill-current text-gray-light absolute right-3 top-1/2 transform -rotate-90 w-4 h-4'
-					/>
 					<select
 						onChange={onChange}
-						className={`select w-full border-2 rounded p-2 text-gray-dark font-medium focus:outline-none focus:border-blue-darkest cursor-pointer
+						className={`z-10 select w-full border-2 rounded p-2 text-gray-dark font-medium focus:outline-none focus:border-blue-darkest cursor-pointer
 					${inputClasses}
 					`}
 						name={label}
@@ -85,6 +81,10 @@ const Input = (props: InputProps) => {
 					>
 						{!isValid && isTouched ? helperText : label}
 					</label>
+					<SVG
+						name='chevronLeft'
+						classes='fill-current text-gray-light absolute right-3 top-1/2 transform -rotate-90 w-4 h-4'
+					/>
 				</>
 			) : (
 				<>

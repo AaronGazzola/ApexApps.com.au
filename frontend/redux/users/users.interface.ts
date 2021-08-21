@@ -30,6 +30,7 @@ export interface SignupData {
 	email: string;
 	password: string;
 	userName: string;
+	id: string;
 }
 
 export interface UserResponse {

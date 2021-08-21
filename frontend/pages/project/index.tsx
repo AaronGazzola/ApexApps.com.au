@@ -21,7 +21,10 @@ const index = () => {
 		error: usersError
 	} = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
-		clientName: '',
+		client: {
+			name: '',
+			id: ''
+		},
 		projectName: '',
 		projectDescription: '',
 		startFrom: '16-Aug-21',
@@ -35,7 +38,7 @@ const index = () => {
 	const [modalType, setModalType] = useState('');
 
 	const {
-		clientName,
+		client,
 		projectName,
 		projectDescription,
 		startFrom,
@@ -46,8 +49,6 @@ const index = () => {
 		costTo
 	} = formState;
 
-	const client = users?.find(user => user.clientName === clientName);
-
 	const changeHandler = (e: BaseSyntheticEvent) => {
 		let value = e.target.value;
 		switch (e.target.id) {
@@ -56,6 +57,11 @@ const index = () => {
 			case 'endFrom':
 			case 'endTo':
 				value = moment(e.target.value).format('D-MMM-YY');
+			case 'client':
+				const foundUser = users?.find(
+					user => user.clientName === e.target.value
+				);
+				value = { clientName: foundUser?.clientName, id: foundUser?._id };
 			default:
 				break;
 		}
@@ -80,9 +86,7 @@ const index = () => {
 			case 'addClient':
 				return <ClientModal />;
 			case 'editClientName':
-				return (
-					<ClientModal clientName={clientName} id={client ? client._id : ''} />
-				);
+				return <ClientModal clientName={client.name} id={client.id} />;
 			default:
 				return <></>;
 		}
@@ -97,10 +101,13 @@ const index = () => {
 	}, [user?.isAdmin, usersSuccess]);
 
 	useEffect(() => {
-		if (user?.isAdmin && users?.length && (!clientName || usersSuccess)) {
+		if (user?.isAdmin && users?.length && (!client.name || usersSuccess)) {
 			setFormState({
 				...formState,
-				clientName: users[0].clientName
+				client: {
+					name: users[0].clientName,
+					id: users[0]._id
+				}
 			});
 		}
 	}, [user, users]);
@@ -165,11 +172,11 @@ const index = () => {
 						{user.isAdmin && (
 							<>
 								<Input
-									value={clientName}
+									value={client.name}
 									onChange={changeHandler}
 									label='Client'
 									type='select'
-									id='clientName'
+									id='client'
 									fullWidth
 									options={users?.map(user => user.clientName)}
 									containerClasses='mt-4 '
@@ -365,10 +372,16 @@ const index = () => {
 			</div>
 			{user && user.isAdmin && (
 				<>
-					<div className='box w-72 sm:w-80'>
-						<h2 className='title-sm'>Client Signup Link</h2>
-						<p className='mt-2 text-gray-dark'>ApexApps.dev/signup/123456789</p>
-					</div>
+					{client.id && (
+						<div className='box w-72 sm:w-80'>
+							<h2 className='title-sm'>Client Signup Link</h2>
+							<p className='mt-2 text-gray-dark font-medium text-center'>
+								ApexApps.dev/signup/
+								<br />
+								{client.id}
+							</p>
+						</div>
+					)}
 					<Button
 						label='Upload contract PDF'
 						color='green'
