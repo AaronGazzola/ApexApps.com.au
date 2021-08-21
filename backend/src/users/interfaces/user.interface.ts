@@ -8,6 +8,7 @@ export interface User extends Document {
   email: string;
   newEmail: string;
   isVerified: boolean;
+  isAdmin: boolean;
   verifyUserToken: string;
   verifyEmailToken: string;
   _id: string;

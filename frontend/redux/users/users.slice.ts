@@ -117,8 +117,64 @@ export const updateUser = createAsyncThunk(
 	}
 );
 
+export const addUser = createAsyncThunk(
+	'users/addUser',
+	async (name: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/',
+				{ name },
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const getUsers = createAsyncThunk(
+	'users/getUsers',
+	async (_, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: UserResponse = await axios.get(
+				'http://localhost:5000/users/',
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialUser: User = {
 	userName: '',
+	clientName: '',
 	email: '',
 	isVerified: false,
 	isAdmin: false,
@@ -222,6 +278,28 @@ const usersSlice = createSlice({
 			}
 		});
 		builder.addCase(updateUser.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(addUser.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(addUser.fulfilled, (state, action) => {
+			state.loading = false;
+			state.success = 'Client added';
+		});
+		builder.addCase(addUser.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(getUsers.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(getUsers.fulfilled, (state, action) => {
+			state.loading = false;
+			state.users = action.payload.users;
+		});
+		builder.addCase(getUsers.rejected, (state, action) => {
 			state.error = action.payload as string;
 			state.loading = false;
 		});

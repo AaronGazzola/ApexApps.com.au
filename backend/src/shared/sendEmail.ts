@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import useHtmlTemplate from './useHtmlTemplate.js';
+import useHtmlTemplate from './useHtmlTemplate';
 import { google } from 'googleapis';
 
 const sendEmail = async (options) => {

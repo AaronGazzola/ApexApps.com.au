@@ -19,6 +19,25 @@ export class UsersService {
     @Inject(REQUEST) private readonly req: Request,
   ) {}
 
+  async addUser(name: string, _id: string) {
+    const user = await this.userModel.findById(_id);
+    if (!user?.isAdmin)
+      throw Error('User must be admin to access this content');
+    await this.userModel.create({ clientName: name });
+    return { success: true };
+  }
+
+  async getUsers(_id: string) {
+    const user = await this.userModel.findById(_id);
+    if (!user?.isAdmin)
+      throw Error('User must be admin to access this content');
+    const users = await this.userModel.find({ isAdmin: false });
+    return {
+      success: true,
+      users,
+    };
+  }
+
   async updateUser(updateUserDto: UpdateUserDto, _id: string) {
     const {
       userName,

@@ -1,6 +1,7 @@
 export interface User {
-	userName: string;
-	email: string;
+	userName?: string;
+	clientName: string;
+	email?: string;
 	newEmail?: string;
 	isVerified: boolean;
 	isAdmin: boolean;
@@ -12,6 +13,7 @@ export type UserState = {
 	isAuth: boolean;
 	token?: string;
 	user?: User;
+	users?: User[];
 	error?: string;
 	success?: string;
 	alert?: null | {
@@ -35,6 +37,7 @@ export interface UserResponse {
 		success: boolean;
 		token?: string;
 		user?: User;
+		users?: User[];
 	};
 }
 

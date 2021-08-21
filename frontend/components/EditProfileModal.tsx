@@ -84,7 +84,7 @@ const EditProfileModal = () => {
 		});
 	};
 
-	const submitUpdateProfileHandler = (e: SyntheticEvent) => {
+	const submitHandler = (e: SyntheticEvent) => {
 		e.preventDefault();
 		let formData: UpdateData = {
 			userName: name.value,
@@ -101,7 +101,7 @@ const EditProfileModal = () => {
 	};
 	return (
 		<form
-			onSubmit={submitUpdateProfileHandler}
+			onSubmit={submitHandler}
 			className='w-full flex flex-col items-center'
 		>
 			<h2 className='title-sm text-center'>Edit Profile</h2>

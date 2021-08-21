@@ -1,17 +1,14 @@
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
-  userName: {
-    type: String,
-    unique: true,
-  },
+  userName: String,
   clientName: {
     type: String,
     unique: true,
   },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    required: false,
     minlength: 6,
     select: false,
   },
@@ -19,8 +16,6 @@ export const UserSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
   email: {
     type: String,
-    required: [true, 'Please add an email'],
-    unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       'Please add a valid email',

@@ -4,18 +4,21 @@ import Input from '../../components/Input';
 import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { logout } from '../../redux/users/users.slice';
+import { logout, getUsers } from '../../redux/users/users.slice';
 import moment from 'moment';
 import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/EditProfileModal';
+import AddClientModal from '../../components/AddClientModal';
 
 const index = () => {
 	const dispatch = useAppDispatch();
 	const {
 		loading: usersLoading,
 		user,
+		users,
 		success: usersSuccess,
-		alert: usersAlert
+		alert: usersAlert,
+		error: usersError
 	} = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
 		clientName: '',
@@ -63,7 +66,7 @@ const index = () => {
 	const logoutHandler = (e: SyntheticEvent) => {
 		dispatch(logout());
 	};
-	const openModalhandler = (e: SyntheticEvent, modalType: string) => {
+	const openModalhandler = (modalType: string) => {
 		setModalIsOpen(true);
 		setModalType(modalType);
 	};
@@ -72,14 +75,20 @@ const index = () => {
 		switch (param) {
 			case 'editProfile':
 				return <EditProfileModal />;
+			case 'addClient':
+				return <AddClientModal />;
 			default:
 				return <></>;
 		}
 	};
 
 	useEffect(() => {
-		if (usersSuccess || usersAlert) setModalIsOpen(false);
+		if (usersSuccess || usersAlert || usersError) setModalIsOpen(false);
 	}, [usersSuccess, usersAlert]);
+
+	useEffect(() => {
+		if (user?.isAdmin) dispatch(getUsers());
+	}, [user?.isAdmin, usersSuccess]);
 
 	return (
 		<>
@@ -128,7 +137,7 @@ const index = () => {
 								color='yellow'
 								variant='simple'
 								size='small'
-								onClick={e => openModalhandler(e, 'editProfile')}
+								onClick={() => openModalhandler('editProfile')}
 								buttonClasses='ml-2 px-1 py-0.5'
 								startIcon={<div className='w-2'></div>}
 								endIcon={
@@ -143,11 +152,11 @@ const index = () => {
 								<Input
 									value={clientName}
 									onChange={changeHandler}
-									label='Name of client'
+									label='Client'
 									type='select'
 									id='clientName'
 									fullWidth
-									options={['User 1', 'User 2']}
+									options={users?.map(user => user.clientName)}
 									containerClasses='mt-4 '
 									inputClasses=''
 									labelTop
@@ -166,6 +175,7 @@ const index = () => {
 										variant='simple'
 										size='small'
 										buttonClasses='border py-0.5 px-1.5'
+										onClick={() => openModalhandler('addClient')}
 									/>
 								</div>
 							</>
