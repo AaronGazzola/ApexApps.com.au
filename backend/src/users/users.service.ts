@@ -11,6 +11,7 @@ import sendEmail from '../shared/sendEmail';
 import { User } from './interfaces/user.interface';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
+import * as moment from 'moment';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
@@ -240,6 +241,41 @@ export class UsersService {
       success: true,
       user,
       token: this.jwtService.sign(payload),
+    };
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) throw Error('Could not send password reset');
+    // generate token and hash
+    const token = crypto.randomBytes(20).toString('hex');
+    const hash = crypto.createHash('sha256').update(token).digest('hex');
+    // add hash to user
+    user.resetPasswordToken = hash;
+    user.resetPasswordExpire = moment().add(1, 'd').toDate();
+    // get base URL from request protocol and host domain
+    const baseUrl = `${this.req.protocol}://${
+      process.env.NODE_ENV === 'production'
+        ? this.req.get('host')
+        : 'localhost:3000'
+    }`;
+    const actionLink = `${baseUrl}/reset-password/${token}`;
+
+    // send change email token to user via email
+    await sendEmail({
+      type: 'RESET_PASSWORD',
+      actionLink,
+      user,
+      baseUrl,
+      reason: `You have recieved this email because your email address was used to create an account AuthGuard <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+      buttonText: 'Reset password',
+    });
+
+    await user.save();
+
+    return {
+      success: true,
+      email,
     };
   }
 }

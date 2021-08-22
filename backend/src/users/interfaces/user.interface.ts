@@ -5,7 +5,7 @@ export interface User extends Document {
   clientName: string;
   password: string;
   resetPasswordToken: string;
-  resetPasswordExpire: string;
+  resetPasswordExpire: Date;
   email: string;
   newEmail: string;
   isVerified: boolean;

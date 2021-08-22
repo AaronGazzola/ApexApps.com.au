@@ -208,6 +208,10 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
           `Please click the button below to verify your email address`,
         )}
         ${button}
+        ${paragraph(
+          `If you did not request to reset your password, please ignore this email.`,
+          'after',
+        )}
         ${footer}`,
       ];
     case 'RESET_PASSWORD':
@@ -218,6 +222,10 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         ${heading(`Hi ${user.userName},`)}
         ${paragraph(`Please click the button below to reset your password`)}
         ${button}
+        ${paragraph(
+          `If you did not request to reset your password, please ignore this email.`,
+          'after',
+        )}
         ${footer}`,
       ];
     case 'UPDATE_EMAIL':
@@ -230,6 +238,10 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
           `Please click the button below to update your email address`,
         )}
         ${button}
+        ${paragraph(
+          `If you did not request to update your email address, please ignore this email.`,
+          'after',
+        )}
         ${footer}`,
       ];
     default:

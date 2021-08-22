@@ -285,6 +285,27 @@ export const verifyEmail = createAsyncThunk(
 	}
 );
 
+export const forgotPassword = createAsyncThunk(
+	'users/forgotPassword',
+	async (email: string, { rejectWithValue }) => {
+		try {
+			const { data }: { data: { email: string; success: boolean } } =
+				await axios.post(
+					'http://localhost:5000/users/forgot-password',
+					{ email },
+					config
+				);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialUser: User = {
 	userName: '',
 	clientName: '',
@@ -504,6 +525,22 @@ const usersSlice = createSlice({
 			}
 		});
 		builder.addCase(verifyEmail.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(forgotPassword.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(forgotPassword.fulfilled, (state, action) => {
+			state.loading = false;
+			state.alert = {
+				title: 'Success',
+				message:
+					'Please check your email inbox for a link to reset your password',
+				titleColor: 'green'
+			};
+		});
+		builder.addCase(forgotPassword.rejected, (state, action) => {
 			state.error = action.payload as string;
 			state.loading = false;
 		});

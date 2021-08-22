@@ -23,7 +23,8 @@ const index = () => {
 	const [formState, setFormState] = useState({
 		client: {
 			name: '',
-			id: ''
+			id: '',
+			isVerified: false
 		},
 		projectName: '',
 		projectDescription: '',
@@ -61,7 +62,11 @@ const index = () => {
 				const foundUser = users?.find(
 					user => user.clientName === e.target.value
 				);
-				value = { clientName: foundUser?.clientName, id: foundUser?._id };
+				value = {
+					name: foundUser?.clientName,
+					id: foundUser?._id,
+					isVerified: foundUser?.isVerified
+				};
 			default:
 				break;
 		}
@@ -106,7 +111,8 @@ const index = () => {
 				...formState,
 				client: {
 					name: users[0].clientName,
-					id: users[0]._id
+					id: users[0]._id,
+					isVerified: users[0].isVerified
 				}
 			});
 		}
@@ -238,6 +244,16 @@ const index = () => {
 					</>
 				)}
 			</div>
+			{user?.isAdmin && client.id && !client.isVerified && (
+				<div className='box w-72 sm:w-80'>
+					<h2 className='title-sm'>Client Signup Link</h2>
+					<p className='mt-2 text-gray-dark font-medium text-center'>
+						ApexApps.dev/signup/
+						<br />
+						{client.id}
+					</p>
+				</div>
+			)}
 			<div className='box w-72 sm:w-3/4 lg:w-1/2 max-w-lg'>
 				{usersLoading || !user ? (
 					<>
@@ -370,26 +386,14 @@ const index = () => {
 					</>
 				)}
 			</div>
-			{user && user.isAdmin && (
-				<>
-					{client.id && (
-						<div className='box w-72 sm:w-80'>
-							<h2 className='title-sm'>Client Signup Link</h2>
-							<p className='mt-2 text-gray-dark font-medium text-center'>
-								ApexApps.dev/signup/
-								<br />
-								{client.id}
-							</p>
-						</div>
-					)}
-					<Button
-						label='Upload contract PDF'
-						color='green'
-						variant='simple'
-						size='small'
-						buttonClasses='border py-0.5 px-1.5'
-					/>
-				</>
+			{user?.isAdmin && (
+				<Button
+					label='Upload contract PDF'
+					color='green'
+					variant='simple'
+					size='small'
+					buttonClasses='border py-0.5 px-1.5'
+				/>
 			)}
 		</>
 	);

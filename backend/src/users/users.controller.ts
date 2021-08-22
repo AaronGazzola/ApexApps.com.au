@@ -70,4 +70,9 @@ export class UsersController {
   async verifyEmail(@Body() { token }: { token: string }) {
     return await this.usersService.verifyEmail(token);
   }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() { email }: { email: string }) {
+    return await this.usersService.forgotPassword(email);
+  }
 }
