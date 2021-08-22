@@ -123,7 +123,12 @@ const useHtmlTemplate = ({
                             <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
                               <tr class="row__row">
                                 <td class="column col-sm-12" width="600" style="width: 100%" align="left" valign="top">`;
-  const footer = `</td>
+  const footer = `
+  <p class="content-text text p" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0 15px; color: #474545; font-size: 18px; margin: 0 0 5px;"> Feel free to reply to this email to get in touch with me. </p>
+                                <p class="content-text signature1 text p" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0 15px; color: #474545; font-size: 18px; margin: 0 0 5px; margin-left: 20px;">
+                                <br/> Kind Regards, </p>
+                                <p class="content-text signature2 text p" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0 15px; color: #474545; font-size: 18px; margin: 0 0 5px; font-style: italic; margin-left: 40px;">Aaron Gazzola</p>
+  </td>
   </tr>
 </table>
 </div>
@@ -178,11 +183,11 @@ ${text}
 ${br === 'after' || br === 'both' ? '<br />' : ''}
 </p>`;
 
-  const button = `<div class="button button">
+  const button = `  <div class="button button">
   <table role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td>
-        <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 20px auto;">
+        <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 20px auto 30px;">
           <tr>
             <td align="center" class="button__cell" style="border-radius: 3px; padding: 6px 12px; background-color: #41992B;" bgcolor="#41992B"><a href="${actionLink}" class="button__link" style="text-decoration: none; background-color: #41992B; color: #FFFFFF; font-weight: 700; display: inline-block;"><span class="button__text" style="text-decoration: none; color: #FFFFFF;">${buttonText}</span></a></td>
           </tr>
@@ -193,12 +198,12 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
 </div>`;
 
   switch (type) {
-    case 'VERIFY':
+    case 'VERIFY_USER':
       return [
         user.email,
         `Please verify your email address`,
         `${header}
-        ${heading(`Hi ${user.name},`)}
+        ${heading(`Hi ${user.userName},`)}
         ${paragraph(
           `Please click the button below to verify your email address`,
         )}
@@ -210,13 +215,9 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         user.email,
         `Reset password request`,
         `${header}
-        ${heading(`Hi ${user.name},`)}
+        ${heading(`Hi ${user.userName},`)}
         ${paragraph(`Please click the button below to reset your password`)}
         ${button}
-        ${paragraph(
-          `If you did not request to reset your password, please ignore this email.`,
-          'before',
-        )}
         ${footer}`,
       ];
     case 'UPDATE_EMAIL':
@@ -224,15 +225,11 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         user.email,
         `Update email request`,
         `${header}
-        ${heading(`Hi ${user.name},`)}
+        ${heading(`Hi ${user.userName},`)}
         ${paragraph(
           `Please click the button below to update your email address`,
         )}
         ${button}
-        ${paragraph(
-          `If you did not request to update your email address, please ignore this email.`,
-          'before',
-        )}
         ${footer}`,
       ];
     default:

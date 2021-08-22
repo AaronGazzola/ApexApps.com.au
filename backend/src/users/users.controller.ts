@@ -13,6 +13,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { SendVerifyUserDto } from './dto/send-verify-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,7 +31,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Post('/')
   async addUser(@Body(ValidationPipe) addUserDto: AddUserDto, @Request() req) {
-    console.log(req.user._id);
     return await this.usersService.addUser(addUserDto.name, req.user._id);
   }
 
@@ -47,5 +47,27 @@ export class UsersController {
     @Request() req,
   ) {
     return await this.usersService.updateClient(updateClientDto, req.user._id);
+  }
+
+  @Post('send-verify-user')
+  async sendUserVerify(
+    @Body(ValidationPipe) sendVerifyUserDto: SendVerifyUserDto,
+  ) {
+    return await this.usersService.sendVerifyUser(sendVerifyUserDto.email);
+  }
+
+  @Post('find-by-id')
+  async findUserById(@Body() { id }: { id: string }) {
+    return await this.usersService.findUserById(id);
+  }
+
+  @Post('verify-user')
+  async verifyUser(@Body() { token }: { token: string }) {
+    return await this.usersService.verifyUser(token);
+  }
+
+  @Post('verify-email')
+  async verifyEmail(@Body() { token }: { token: string }) {
+    return await this.usersService.verifyEmail(token);
   }
 }

@@ -29,7 +29,7 @@ const UserFeedback = () => {
 	// clear users after timeout
 	useEffect(() => {
 		let timer: ReturnType<typeof setTimeout>;
-		if (users.success) {
+		if (users.success && !users.error && !users.alert) {
 			timer = setTimeout(() => dispatch(clearUsers()), 3000);
 		}
 		return () => {
@@ -42,7 +42,15 @@ const UserFeedback = () => {
 				isOpen={!!users.alert || !!users.error}
 				onClose={() => dispatch(clearUsers())}
 			>
-				<h2 className={`title-sm ${users.error ? 'text-red' : ''}`}>
+				<h2
+					className={`title-sm ${
+						users.error
+							? 'text-red'
+							: users.alert?.titleColor
+							? users.alert?.titleColor
+							: ''
+					}`}
+				>
 					{users.error
 						? 'Error'
 						: users.alert?.title
@@ -56,7 +64,19 @@ const UserFeedback = () => {
 						? users.alert?.message
 						: ''}
 				</p>
-				<div className='flex w-full justify-end'>
+				<div className='flex w-full justify-between'>
+					{users.alert?.link ? (
+						<Button
+							path={users.alert?.link}
+							type='link'
+							label={users.alert?.buttonLabel}
+							color={users.alert?.buttonColor ? users.alert?.buttonColor : ''}
+							variant='simple'
+							buttonClasses='px-4'
+						/>
+					) : (
+						<div className='w-10'></div>
+					)}
 					<Button
 						onClick={() => dispatch(clearUsers())}
 						type='button'

@@ -203,6 +203,88 @@ export const getUsers = createAsyncThunk(
 	}
 );
 
+export const sendVerifyUser = createAsyncThunk(
+	'users/sendVerifyUser',
+	async (email: string, { rejectWithValue }) => {
+		try {
+			const { data }: { data: { email: string; success: boolean } } =
+				await axios.post(
+					'http://localhost:5000/users/send-verify-user',
+					{ email },
+					config
+				);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const findUserById = createAsyncThunk(
+	'users/findUserById',
+	async (id: string, { rejectWithValue }) => {
+		try {
+			const { data }: { data: { success: boolean; foundUser?: User } } =
+				await axios.post(
+					'http://localhost:5000/users/find-by-id',
+					{ id },
+					config
+				);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const verifyUser = createAsyncThunk(
+	'users/verifyUser',
+	async (token: string, { rejectWithValue }) => {
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/verify-user',
+				{ token },
+				config
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const verifyEmail = createAsyncThunk(
+	'users/verifyEmail',
+	async (token: string, { rejectWithValue }) => {
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/verify-email',
+				{ token },
+				config
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialUser: User = {
 	userName: '',
 	clientName: '',
@@ -263,10 +345,13 @@ const usersSlice = createSlice({
 			state.loading = true;
 		});
 		builder.addCase(signup.fulfilled, (state, action) => {
-			state.user = action.payload.user;
-			state.isAuth = !!action.payload.token;
-			state.token = action.payload.token;
 			state.loading = false;
+			state.user = action.payload.user;
+			state.isAuth = false;
+			state.alert = {
+				title: 'Success',
+				message: 'Please check your email inbox to verify your account'
+			};
 		});
 		builder.addCase(signup.rejected, (state, action) => {
 			state.error = action.payload as string;
@@ -274,6 +359,17 @@ const usersSlice = createSlice({
 			state.isAuth = false;
 			state.token = '';
 			state.user = undefined;
+		});
+		builder.addCase(sendVerifyUser.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(sendVerifyUser.fulfilled, (state, action) => {
+			state.loading = false;
+			state.success = `Email sent to ${action.payload.email}`;
+		});
+		builder.addCase(sendVerifyUser.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
 		});
 		builder.addCase(getUser.pending, (state, action) => {
 			state.loading = true;
@@ -302,7 +398,8 @@ const usersSlice = createSlice({
 			if (action.payload.user?.newEmail) {
 				state.alert = {
 					title: 'Success',
-					message: 'Please check your inbox to verify your new email'
+					message: 'Please check your inbox to verify your new email',
+					titleColor: 'green'
 				};
 			} else {
 				state.success = 'Profile updated!';
@@ -342,6 +439,71 @@ const usersSlice = createSlice({
 			state.success = 'Client updated';
 		});
 		builder.addCase(updateClient.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(findUserById.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(findUserById.fulfilled, (state, action) => {
+			state.loading = false;
+			if (!action.payload.success || action.payload.foundUser?.isVerified)
+				state.alert = {
+					title: 'Invalid link',
+					message: 'Sign up link is invalid',
+					link: '/contact/request-access',
+					buttonLabel: 'Request Access',
+					titleColor: 'red',
+					buttonColor: 'green'
+				};
+		});
+		builder.addCase(findUserById.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(verifyUser.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(verifyUser.fulfilled, (state, action) => {
+			state.loading = false;
+			if (action.payload.success) {
+				state.user = action.payload.user;
+				state.isAuth = !!action.payload.token;
+				state.token = action.payload.token;
+				state.success = 'Account verified';
+			} else {
+				state.alert = {
+					title: 'Invalid link',
+					message:
+						'Cannot verify your email, please try again or email aaron@apexapps.dev for help',
+					titleColor: 'red'
+				};
+			}
+		});
+		builder.addCase(verifyUser.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(verifyEmail.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(verifyEmail.fulfilled, (state, action) => {
+			state.loading = false;
+			if (action.payload.success) {
+				state.user = action.payload.user;
+				state.isAuth = !!action.payload.token;
+				state.token = action.payload.token;
+				state.success = 'Email updated';
+			} else {
+				state.alert = {
+					title: 'Invalid link',
+					message:
+						'Cannot verify your email, please try again or email aaron@apexapps.dev for help',
+					titleColor: 'red'
+				};
+			}
+		});
+		builder.addCase(verifyEmail.rejected, (state, action) => {
 			state.error = action.payload as string;
 			state.loading = false;
 		});

@@ -7,7 +7,7 @@ import Footer from './Footer';
 import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { getUser, getUsers } from '../redux/users/users.slice';
+import { getUser, getUsers, logout } from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
 
 interface LayoutProps {
@@ -35,6 +35,9 @@ const Layout = (props: LayoutProps) => {
 			// if first page load, check for user
 			dispatch(getUser());
 			setOnMount(false);
+		} else if (isAuth && !user?.isVerified) {
+			// if user is logged in but not verified, logout
+			dispatch(logout());
 		} else if (isAuth) {
 			// if admin, get users
 			if (user?.isAdmin) dispatch(getUsers());

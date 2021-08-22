@@ -89,7 +89,7 @@ export class UsersService {
           ? this.req.get('host')
           : 'localhost:3000'
       }`;
-      const actionLink = `${baseUrl}/verifyemail/${token}`;
+      const actionLink = `${baseUrl}/verify-email/${token}`;
 
       // send change email token to user via email
       await sendEmail({
@@ -120,6 +120,125 @@ export class UsersService {
     return {
       user: returnUser,
       success: true,
+      token: this.jwtService.sign(payload),
+    };
+  }
+
+  async sendVerifyUser(email: string) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) throw Error('Could not complete sign up');
+    // generate token and hash
+    const token = crypto.randomBytes(20).toString('hex');
+    const hash = crypto.createHash('sha256').update(token).digest('hex');
+    // add hash to user
+    user.verifyUserToken = hash;
+    // get base URL from request protocol and host domain
+    const baseUrl = `${this.req.protocol}://${
+      process.env.NODE_ENV === 'production'
+        ? this.req.get('host')
+        : 'localhost:3000'
+    }`;
+    const actionLink = `${baseUrl}/verify-user/${token}`;
+
+    // send change email token to user via email
+    await sendEmail({
+      type: 'VERIFY_USER',
+      actionLink,
+      user,
+      baseUrl,
+      reason: `You have recieved this email because your email address was used to create an account AuthGuard <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+      buttonText: 'Verify Email',
+    });
+
+    await user.save();
+
+    return {
+      success: true,
+      email,
+    };
+  }
+  async findUserById(id: string) {
+    let user;
+    try {
+      user = await this.userModel.findOne({ _id: id });
+    } catch (err) {
+      return {
+        success: false,
+      };
+    }
+    if (!user) {
+      return {
+        success: false,
+      };
+    } else {
+      return {
+        success: true,
+        foundUser: user,
+      };
+    }
+  }
+
+  async verifyUser(token: string) {
+    // get hashed token
+    const verifyUserToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex');
+    // find user with token
+    let user;
+    try {
+      user = await this.userModel.findOne({ verifyUserToken });
+    } catch (err) {
+      return {
+        success: false,
+      };
+    }
+
+    if (!user) return { success: false };
+
+    // verify user
+    user.isVerified = true;
+    user.verifyUserToken = undefined;
+    await user.save();
+
+    const payload = { username: user.email, sub: user._id };
+
+    return {
+      success: true,
+      user,
+      token: this.jwtService.sign(payload),
+    };
+  }
+
+  async verifyEmail(token: string) {
+    // get hashed token
+    const verifyEmailToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex');
+    // find user with token
+    let user;
+    try {
+      user = await this.userModel.findOne({ verifyEmailToken });
+    } catch (err) {
+      return {
+        success: false,
+      };
+    }
+
+    if (!user) return { success: false };
+
+    // verify user
+    user.email = user.newEmail;
+    user.newEmail = undefined;
+    user.verifyEmailToken = undefined;
+    await user.save();
+
+    const payload = { username: user.email, sub: user._id };
+
+    return {
+      success: true,
+      user,
       token: this.jwtService.sign(payload),
     };
   }

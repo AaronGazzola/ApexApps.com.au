@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { login, signup } from '../../../redux/users/users.slice';
+import {
+	findUserById,
+	login,
+	sendVerifyUser,
+	signup
+} from '../../../redux/users/users.slice';
 import SVG from '../../../components/SVG';
 import { useRouter } from 'next/router';
 
 const index = () => {
 	const router = useRouter();
 	const { id } = router.query;
+	const userId = typeof id === 'string' ? id : '';
 	const dispatch = useAppDispatch();
-	const { loading } = useAppSelector(state => state.users);
+	const {
+		loading,
+		alert: usersAlert,
+		user,
+		isAuth
+	} = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
 		name: {
 			value: '',
@@ -85,11 +96,27 @@ const index = () => {
 					userName: formState.name.value,
 					email: formState.email.value,
 					password: formState.password.value,
-					id: typeof id === 'string' ? id : ''
+					id: userId
 				})
 			);
 		}
 	};
+
+	useEffect(() => {
+		// if signup is successful, send verification email
+		if (usersAlert?.title === 'Success' && !isAuth && user?.email)
+			dispatch(sendVerifyUser(user?.email));
+		// If id in url is invalid, redirect to /login
+		if (usersAlert?.title === 'Invalid link') router.push('/login');
+	}, [usersAlert]);
+
+	// Get user using id in url
+	useEffect(() => {
+		if (userId) {
+			console.log(userId);
+			dispatch(findUserById(userId));
+		}
+	}, [userId]);
 
 	return (
 		<>

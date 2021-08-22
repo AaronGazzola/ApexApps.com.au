@@ -24,6 +24,7 @@ export class AuthService {
 
     user.email = email;
     user.userName = userName;
+    user.password = hashedPassword;
 
     const payload = { username: email, sub: id };
 

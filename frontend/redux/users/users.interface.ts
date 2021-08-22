@@ -19,6 +19,10 @@ export type UserState = {
 	alert?: null | {
 		title?: string;
 		message: string;
+		link?: string;
+		buttonLabel?: string;
+		titleColor?: string;
+		buttonColor?: string;
 	};
 };
 

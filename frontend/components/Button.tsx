@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 interface ButtonProps {
-	label: string;
+	label?: string;
 	color: string;
 	variant: 'simple' | 'contained';
 	type?: 'submit' | 'button' | 'reset' | 'link';
