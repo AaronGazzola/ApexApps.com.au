@@ -14,7 +14,11 @@ export type UserState = {
 	token?: string;
 	user?: User;
 	users?: User[];
-	error?: string;
+	error?: null | {
+		title?: string;
+		message: string;
+		retry?: string;
+	};
 	success?: string;
 	alert?: null | {
 		title?: string;

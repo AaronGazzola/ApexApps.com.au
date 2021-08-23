@@ -354,7 +354,7 @@ const usersSlice = createSlice({
 			localStorage.removeItem('userData');
 		},
 		clearUsers(state) {
-			state.error = '';
+			state.error = null;
 			state.success = '';
 			state.alert = null;
 		}
@@ -379,7 +379,7 @@ const usersSlice = createSlice({
 			);
 		});
 		builder.addCase(login.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 			state.isAuth = false;
 			state.token = '';
@@ -398,7 +398,7 @@ const usersSlice = createSlice({
 			};
 		});
 		builder.addCase(signup.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 			state.isAuth = false;
 			state.token = '';
@@ -412,7 +412,7 @@ const usersSlice = createSlice({
 			state.success = `Email sent to ${action.payload.email}`;
 		});
 		builder.addCase(sendVerifyUser.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(getUser.pending, (state, action) => {
@@ -425,7 +425,10 @@ const usersSlice = createSlice({
 			state.loading = false;
 		});
 		builder.addCase(getUser.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = {
+				message: action.payload as string,
+				retry: 'getUser'
+			};
 			state.loading = false;
 			state.isAuth = false;
 			state.token = '';
@@ -450,7 +453,7 @@ const usersSlice = createSlice({
 			}
 		});
 		builder.addCase(updateUser.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(addUser.pending, (state, action) => {
@@ -461,7 +464,7 @@ const usersSlice = createSlice({
 			state.success = 'Client added';
 		});
 		builder.addCase(addUser.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(getUsers.pending, (state, action) => {
@@ -472,7 +475,7 @@ const usersSlice = createSlice({
 			state.users = action.payload.users;
 		});
 		builder.addCase(getUsers.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(updateClient.pending, (state, action) => {
@@ -483,7 +486,7 @@ const usersSlice = createSlice({
 			state.success = 'Client updated';
 		});
 		builder.addCase(updateClient.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(findUserById.pending, (state, action) => {
@@ -493,7 +496,7 @@ const usersSlice = createSlice({
 			state.loading = false;
 		});
 		builder.addCase(findUserById.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(verifyUser.pending, (state, action) => {
@@ -501,22 +504,13 @@ const usersSlice = createSlice({
 		});
 		builder.addCase(verifyUser.fulfilled, (state, action) => {
 			state.loading = false;
-			if (action.payload.success) {
-				state.user = action.payload.user;
-				state.isAuth = !!action.payload.token;
-				state.token = action.payload.token;
-				state.success = 'Account verified';
-			} else {
-				state.alert = {
-					title: 'Invalid link',
-					message:
-						'Cannot verify your email, please try again or email aaron@apexapps.dev for help',
-					titleColor: 'red'
-				};
-			}
+			state.user = action.payload.user;
+			state.isAuth = !!action.payload.token;
+			state.token = action.payload.token;
+			state.success = 'Account verified';
 		});
 		builder.addCase(verifyUser.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(verifyEmail.pending, (state, action) => {
@@ -530,7 +524,7 @@ const usersSlice = createSlice({
 			state.success = 'Email updated';
 		});
 		builder.addCase(verifyEmail.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(forgotPassword.pending, (state, action) => {
@@ -546,30 +540,23 @@ const usersSlice = createSlice({
 			};
 		});
 		builder.addCase(forgotPassword.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 		builder.addCase(resetPassword.pending, (state, action) => {
 			state.loading = true;
 		});
+
 		builder.addCase(resetPassword.fulfilled, (state, action) => {
 			state.loading = false;
-			if (action.payload.success) {
-				state.user = action.payload.user;
-				state.isAuth = !!action.payload.token;
-				state.token = action.payload.token;
-				state.success = 'Password reset';
-			} else {
-				state.alert = {
-					title: 'Invalid link',
-					message:
-						'Cannot reset your password, please try again or email aaron@apexapps.dev for help',
-					titleColor: 'red'
-				};
-			}
+
+			state.user = action.payload.user;
+			state.isAuth = !!action.payload.token;
+			state.token = action.payload.token;
+			state.success = 'Password reset';
 		});
 		builder.addCase(resetPassword.rejected, (state, action) => {
-			state.error = action.payload as string;
+			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
 	}

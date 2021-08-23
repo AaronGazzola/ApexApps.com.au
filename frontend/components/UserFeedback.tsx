@@ -1,6 +1,6 @@
 import Snackbar from './Snackbar';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { clearUsers } from '../redux/users/users.slice';
+import { clearUsers, getUser, getUsers } from '../redux/users/users.slice';
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import Button from './Button';
@@ -36,6 +36,7 @@ const UserFeedback = () => {
 			clearTimeout(timer);
 		};
 	}, [users.success]);
+
 	return (
 		<>
 			<Modal
@@ -51,7 +52,9 @@ const UserFeedback = () => {
 							: ''
 					}`}
 				>
-					{users.error
+					{users.error?.title
+						? users.error?.title
+						: users.error
 						? 'Error'
 						: users.alert?.title
 						? users.alert?.title
@@ -59,7 +62,7 @@ const UserFeedback = () => {
 				</h2>
 				<p className={`font-medium text-gray-dark my-3`}>
 					{users.error
-						? users.error
+						? users.error.message
 						: users.alert?.message
 						? users.alert?.message
 						: ''}
@@ -73,6 +76,25 @@ const UserFeedback = () => {
 							color={users.alert?.buttonColor ? users.alert?.buttonColor : ''}
 							variant='simple'
 							buttonClasses='px-4'
+						/>
+					) : users.error?.retry ? (
+						<Button
+							type='button'
+							label='Retry'
+							color='green'
+							variant='simple'
+							buttonClasses='px-4'
+							onClick={
+								users.error?.retry === 'getUsers'
+									? () => {
+											dispatch(getUsers());
+											dispatch(clearUsers());
+									  }
+									: () => {
+											dispatch(getUser());
+											dispatch(clearUsers());
+									  }
+							}
 						/>
 					) : (
 						<div className='w-10'></div>
