@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 
 import { SignupUserDto } from './dto/signup-user.dto';
 import { User } from '../users/interfaces/user.interface';
+import ErrorResponse from 'src/shared/errorResponse';
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
       if (error.code === 11000) {
         throw new ConflictException('User already exists');
       }
-      throw error;
+      return new ErrorResponse('Could not sign up, please try again', 401);
     }
   }
 

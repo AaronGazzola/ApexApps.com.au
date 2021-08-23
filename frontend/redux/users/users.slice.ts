@@ -491,15 +491,6 @@ const usersSlice = createSlice({
 		});
 		builder.addCase(findUserById.fulfilled, (state, action) => {
 			state.loading = false;
-			if (!action.payload.success || action.payload.foundUser?.isVerified)
-				state.alert = {
-					title: 'Invalid link',
-					message: 'Sign up link is invalid',
-					link: '/contact/request-access',
-					buttonLabel: 'Request Access',
-					titleColor: 'red',
-					buttonColor: 'green'
-				};
 		});
 		builder.addCase(findUserById.rejected, (state, action) => {
 			state.error = action.payload as string;
@@ -533,19 +524,10 @@ const usersSlice = createSlice({
 		});
 		builder.addCase(verifyEmail.fulfilled, (state, action) => {
 			state.loading = false;
-			if (action.payload.success) {
-				state.user = action.payload.user;
-				state.isAuth = !!action.payload.token;
-				state.token = action.payload.token;
-				state.success = 'Email updated';
-			} else {
-				state.alert = {
-					title: 'Invalid link',
-					message:
-						'Cannot verify your email, please try again or email aaron@apexapps.dev for help',
-					titleColor: 'red'
-				};
-			}
+			state.user = action.payload.user;
+			state.isAuth = !!action.payload.token;
+			state.token = action.payload.token;
+			state.success = 'Email updated';
 		});
 		builder.addCase(verifyEmail.rejected, (state, action) => {
 			state.error = action.payload as string;

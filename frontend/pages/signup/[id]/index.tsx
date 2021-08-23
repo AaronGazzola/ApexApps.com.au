@@ -19,6 +19,7 @@ const index = () => {
 	const {
 		loading,
 		alert: usersAlert,
+		error: usersError,
 		user,
 		isAuth
 	} = useAppSelector(state => state.users);
@@ -73,15 +74,15 @@ const index = () => {
 	};
 
 	const buttonClickHandler = (e: React.MouseEvent) => {
-		if (!formState.email.isValid || !formState.password.isValid) {
+		if (!email.isValid || !password.isValid) {
 			setFormState({
 				...formState,
 				email: {
-					...formState.email,
+					...email,
 					isTouched: true
 				},
 				password: {
-					...formState.password,
+					...password,
 					isTouched: true
 				}
 			});
@@ -90,12 +91,12 @@ const index = () => {
 
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		if (formState.email.isValid && formState.password.isValid) {
+		if (email.isValid && password.isValid) {
 			dispatch(
 				signup({
-					userName: formState.name.value,
-					email: formState.email.value,
-					password: formState.password.value,
+					userName: name.value,
+					email: email.value,
+					password: password.value,
 					id: userId
 				})
 			);
@@ -105,15 +106,14 @@ const index = () => {
 	useEffect(() => {
 		// if signup is successful, send verification email
 		if (usersAlert?.title === 'Success' && !isAuth && user?.email)
-			dispatch(sendVerifyUser(user?.email));
+			dispatch(sendVerifyUser(email.value));
 		// If id in url is invalid, redirect to /login
-		if (usersAlert?.title === 'Invalid link') router.push('/login');
-	}, [usersAlert]);
+		if (usersError) router.push('/login');
+	}, [usersAlert, usersError]);
 
 	// Get user using id in url
 	useEffect(() => {
 		if (userId) {
-			console.log(userId);
 			dispatch(findUserById(userId));
 		}
 	}, [userId]);
@@ -125,16 +125,16 @@ const index = () => {
 				<Input
 					placeholder='Name'
 					type='text'
-					value={formState.name.value}
+					value={name.value}
 					onChange={changeHandler}
 					id='name'
-					isValid={formState.name.isValid}
+					isValid={name.isValid}
 					helperText={
 						!name.isValid && name.isTouched
 							? 'Please enter a name under 30 characters'
 							: ''
 					}
-					isTouched={formState.name.isTouched}
+					isTouched={name.isTouched}
 					touchHandler={touchHandler}
 					label='Name'
 					containerClasses='mb-0.5 last:mb-0'
@@ -142,16 +142,16 @@ const index = () => {
 				<Input
 					placeholder='Email'
 					type='text'
-					value={formState.email.value}
+					value={email.value}
 					onChange={changeHandler}
 					id='email'
-					isValid={formState.email.isValid}
+					isValid={email.isValid}
 					helperText={
 						!email.isValid && email.isTouched
 							? 'Please enter a valid email address'
 							: ''
 					}
-					isTouched={formState.email.isTouched}
+					isTouched={email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
 					containerClasses='mb-0.5 last:mb-0'
@@ -159,16 +159,16 @@ const index = () => {
 				<Input
 					placeholder='Password'
 					type={passwordIsHidden ? 'password' : 'text'}
-					value={formState.password.value}
+					value={password.value}
 					onChange={changeHandler}
 					id='password'
-					isValid={formState.password.isValid}
+					isValid={password.isValid}
 					helperText={
 						!password.isValid && password.isTouched
 							? 'Password must be 6 or more characters'
 							: ''
 					}
-					isTouched={formState.password.isTouched}
+					isTouched={password.isTouched}
 					touchHandler={touchHandler}
 					label='Password'
 					passwordIsHidden={passwordIsHidden}

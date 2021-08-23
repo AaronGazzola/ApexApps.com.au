@@ -22,7 +22,7 @@ const Modal = (props: ModalProps) => {
 		return (
 			<>
 				<div
-					className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 box flex flex-col sm:max-w-xl z-50 h-min w-min ${classes}`}
+					className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 box flex flex-col sm:max-w-xl z-50 h-min w-min overflow-y-auto ${classes}`}
 					style={{
 						maxHeight: 'calc((var(--vh) * 100) - 40px)',
 						minWidth: breakpoint === 'xs' ? 288 : 320

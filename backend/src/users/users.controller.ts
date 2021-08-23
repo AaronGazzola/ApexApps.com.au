@@ -26,19 +26,19 @@ export class UsersController {
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
     @Request() req,
   ) {
-    return await this.usersService.updateUser(updateUserDto, req.user._id);
+    return await this.usersService.updateUser(updateUserDto, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('/')
   async addUser(@Body(ValidationPipe) addUserDto: AddUserDto, @Request() req) {
-    return await this.usersService.addUser(addUserDto.name, req.user._id);
+    return await this.usersService.addUser(addUserDto.name, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/')
   async getUsers(@Request() req) {
-    return await this.usersService.getUsers(req.user._id);
+    return await this.usersService.getUsers(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,7 +47,7 @@ export class UsersController {
     @Body(ValidationPipe) updateClientDto: UpdateClientDto,
     @Request() req,
   ) {
-    return await this.usersService.updateClient(updateClientDto, req.user._id);
+    return await this.usersService.updateClient(updateClientDto, req.user);
   }
 
   @Post('send-verify-user')

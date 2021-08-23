@@ -12,6 +12,7 @@ import { User } from './interfaces/user.interface';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import * as moment from 'moment';
+import ErrorResponse from 'src/shared/errorResponse';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
@@ -21,68 +22,79 @@ export class UsersService {
     @Inject(REQUEST) private readonly req: Request,
   ) {}
 
-  async addUser(name: string, _id: string) {
-    const user = await this.userModel.findById(_id);
-    if (!user?.isAdmin)
-      throw Error('User must be admin to access this content');
+  async addUser(name: string, user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
     await this.userModel.create({ clientName: name });
+
     return { success: true };
   }
 
-  async updateClient(updateClientDto: UpdateClientDto, userId: string) {
+  async updateClient(updateClientDto: UpdateClientDto, user: User) {
     const { clientName, id: clientId } = updateClientDto;
-    const user = await this.userModel.findById(userId);
-    if (!user?.isAdmin)
-      throw Error('User must be admin to access this content');
+
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
     const client = await this.userModel.findById(clientId);
+
     client.clientName = clientName;
+
     await client.save();
 
     return { success: true };
   }
 
-  async getUsers(_id: string) {
-    const user = await this.userModel.findById(_id);
-    if (!user?.isAdmin)
-      throw Error('User must be admin to access this content');
+  async getUsers(user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
     const users = await this.userModel.find({ isAdmin: false });
+
     return {
       success: true,
       users,
     };
   }
 
-  async updateUser(updateUserDto: UpdateUserDto, _id: string) {
+  async updateUser(updateUserDto: UpdateUserDto, user: User) {
     const {
       userName,
       email: updateEmail,
       currentPassword,
       newPassword,
     } = updateUserDto;
-    const email = updateEmail.toLowerCase();
-    const user = await this.userModel.findById(_id).select('+password');
-    if (!user) {
-      throw new Error('No user found');
-    }
-    // update name
-    user.userName = userName;
 
-    // update email
-    if (user.email !== email) {
+    const email = updateEmail.toLowerCase();
+
+    const currentUser = await this.userModel
+      .findById(user._id)
+      .select('+password');
+
+    if (!currentUser) {
+      throw new ErrorResponse('Could not update user', 500);
+    }
+
+    // update name
+    currentUser.userName = userName;
+
+    // if email is changed, update email
+    if (currentUser.email !== email) {
       // check for user with new email
       const foundUser = await this.userModel.findOne({
         email,
       });
       if (foundUser) {
-        throw new Error('A user with that email already exists');
+        throw new ErrorResponse('A user with that email already exists', 403);
       }
       // add new email to model
-      user.newEmail = email;
+      currentUser.newEmail = email;
       // generate token and hash
       const token = crypto.randomBytes(20).toString('hex');
       const hash = crypto.createHash('sha256').update(token).digest('hex');
       // add hash to user
-      user.verifyEmailToken = hash;
+      currentUser.verifyEmailToken = hash;
 
       // get base URL from request protocol and host domain
       const baseUrl = `${this.req.protocol}://${
@@ -103,20 +115,22 @@ export class UsersService {
       });
     }
 
-    // update password
+    // if password is submitted, update password
     if (currentPassword && newPassword) {
       // check if current password is valid
-      const valid = await bcrypt.compare(currentPassword, user.password);
-      if (!valid) throw new Error('Password incorrect');
+      const valid = await bcrypt.compare(currentPassword, currentUser.password);
+
+      if (!valid) throw new ErrorResponse('Password incorrect', 401);
+
       // update password
-      const password = await bcrypt.hash(newPassword, 10);
-      user.password = password;
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      currentUser.password = hashedPassword;
     }
 
     // save user
-    const returnUser = await user.save();
+    const returnUser = await currentUser.save();
 
-    const payload = { username: user.email, sub: user._id };
+    const payload = { username: returnUser.email, sub: returnUser._id };
 
     return {
       user: returnUser,
@@ -127,7 +141,7 @@ export class UsersService {
 
   async sendVerifyUser(email: string) {
     const user = await this.userModel.findOne({ email });
-    if (!user) throw Error('Could not complete sign up');
+    if (!user) throw new ErrorResponse('Could not complete sign up', 500);
     // generate token and hash
     const token = crypto.randomBytes(20).toString('hex');
     const hash = crypto.createHash('sha256').update(token).digest('hex');
@@ -158,19 +172,16 @@ export class UsersService {
       email,
     };
   }
+
   async findUserById(id: string) {
     let user;
     try {
       user = await this.userModel.findOne({ _id: id });
     } catch (err) {
-      return {
-        success: false,
-      };
+      throw new ErrorResponse('Invalid user id', 401);
     }
     if (!user) {
-      return {
-        success: false,
-      };
+      throw new ErrorResponse('Invalid user id', 401);
     } else {
       return {
         success: true,
@@ -190,12 +201,17 @@ export class UsersService {
     try {
       user = await this.userModel.findOne({ verifyUserToken });
     } catch (err) {
-      return {
-        success: false,
-      };
+      throw new ErrorResponse(
+        'Invalid email token, please request access to sign up',
+        401,
+      );
     }
 
-    if (!user) return { success: false };
+    if (!user)
+      throw new ErrorResponse(
+        'Invalid email token, please request access to sign up',
+        401,
+      );
 
     // verify user
     user.isVerified = true;
@@ -222,12 +238,10 @@ export class UsersService {
     try {
       user = await this.userModel.findOne({ verifyEmailToken });
     } catch (err) {
-      return {
-        success: false,
-      };
+      throw new ErrorResponse('Invalid token', 401);
     }
 
-    if (!user) return { success: false };
+    if (!user) throw new ErrorResponse('Invalid token', 401);
 
     // verify user
     user.email = user.newEmail;
@@ -246,7 +260,9 @@ export class UsersService {
 
   async forgotPassword(email: string) {
     const user = await this.userModel.findOne({ email });
-    if (!user) throw Error('Could not send password reset');
+    if (!user)
+      throw new ErrorResponse('Could not find a user with that email', 404);
+
     // generate token and hash
     const token = crypto.randomBytes(20).toString('hex');
     const hash = crypto.createHash('sha256').update(token).digest('hex');
@@ -294,7 +310,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw Error('Invalid token');
+      throw new ErrorResponse('Invalid password reset token', 401);
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     // Set new password
