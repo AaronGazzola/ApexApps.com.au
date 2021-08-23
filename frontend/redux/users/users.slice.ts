@@ -306,6 +306,29 @@ export const forgotPassword = createAsyncThunk(
 	}
 );
 
+export const resetPassword = createAsyncThunk(
+	'users/resetPassword',
+	async (
+		{ token, password }: { token: string; password: string },
+		{ rejectWithValue }
+	) => {
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/reset-password',
+				{ token, password },
+				config
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialUser: User = {
 	userName: '',
 	clientName: '',
@@ -541,6 +564,29 @@ const usersSlice = createSlice({
 			};
 		});
 		builder.addCase(forgotPassword.rejected, (state, action) => {
+			state.error = action.payload as string;
+			state.loading = false;
+		});
+		builder.addCase(resetPassword.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(resetPassword.fulfilled, (state, action) => {
+			state.loading = false;
+			if (action.payload.success) {
+				state.user = action.payload.user;
+				state.isAuth = !!action.payload.token;
+				state.token = action.payload.token;
+				state.success = 'Password reset';
+			} else {
+				state.alert = {
+					title: 'Invalid link',
+					message:
+						'Cannot reset your password, please try again or email aaron@apexapps.dev for help',
+					titleColor: 'red'
+				};
+			}
+		});
+		builder.addCase(resetPassword.rejected, (state, action) => {
 			state.error = action.payload as string;
 			state.loading = false;
 		});

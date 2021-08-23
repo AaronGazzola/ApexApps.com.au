@@ -55,7 +55,7 @@ const EditProfileModal = () => {
 				? target.value.length && target.value.length < 30
 				: target.id === 'email'
 				? /^\S+@\S+\.\S+$/.test(target.value)
-				: target.value.length >= 6;
+				: target.value.length >= 6 && target.value.length <= 20;
 		const isChanged =
 			target.id === 'name'
 				? target.value !== user?.userName

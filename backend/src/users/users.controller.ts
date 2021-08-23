@@ -14,6 +14,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { SendVerifyUserDto } from './dto/send-verify-user.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -74,5 +75,13 @@ export class UsersController {
   @Post('forgot-password')
   async forgotPassword(@Body() { email }: { email: string }) {
     return await this.usersService.forgotPassword(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body(ValidationPipe) resetPasswordDto: ResetPasswordDto,
+  ) {
+    const { token, password } = resetPasswordDto;
+    return await this.usersService.resetPassword(token, password);
   }
 }

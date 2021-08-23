@@ -27,7 +27,7 @@ const index = () => {
 		const isValid =
 			target.id === 'email'
 				? /^\S+@\S+\.\S+$/.test(target.value)
-				: target.value.length >= 6;
+				: target.value.length >= 6 && target.value.length <= 20;
 		setFormState({
 			...formState,
 			[target.id]: {

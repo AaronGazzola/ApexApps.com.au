@@ -278,4 +278,37 @@ export class UsersService {
       email,
     };
   }
+
+  async resetPassword(token: string, password: string) {
+    // Get hashed token
+    const resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex');
+
+    const user = await this.userModel.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: {
+        $gt: moment().toDate(),
+      },
+    });
+
+    if (!user) {
+      throw Error('Invalid token');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // Set new password
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    user.isVerified = true;
+    await user.save();
+
+    const payload = { username: user.email, sub: user._id };
+    return {
+      success: true,
+      user,
+      token: this.jwtService.sign(payload),
+    };
+  }
 }

@@ -82,7 +82,7 @@ const index = () => {
 					containerClasses='mb-4'
 				/>
 				<Button
-					label='Send Email'
+					label='Send Reset Email'
 					type='submit'
 					size='large'
 					fullWidth
