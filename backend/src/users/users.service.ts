@@ -327,4 +327,29 @@ export class UsersService {
       token: this.jwtService.sign(payload),
     };
   }
+
+  async setClient(clientName: string, user: User) {
+    let clientUser;
+    if (user.isAdmin) {
+      clientUser = await this.userModel
+        .findOne({ clientName })
+        .populate('projects');
+    } else {
+      clientUser = user;
+    }
+    user.client = {
+      clientName: clientUser.clientName,
+      projects: clientUser.projects,
+      email: clientUser.email,
+      isVerified: clientUser.isVerified,
+      _id: clientUser._id,
+    };
+
+    const returnUser = await user.save();
+
+    return {
+      success: true,
+      user: returnUser,
+    };
+  }
 }

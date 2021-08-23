@@ -1,4 +1,6 @@
 import { Document } from 'mongoose';
+import { Project } from '../../projects/interfaces/project.interface';
+import { Client } from './client.interface';
 
 export interface User extends Document {
   userName: string;
@@ -13,4 +15,7 @@ export interface User extends Document {
   verifyUserToken: string;
   verifyEmailToken: string;
   _id: string;
+  projects: Project[];
+  project?: Project;
+  client?: Client;
 }

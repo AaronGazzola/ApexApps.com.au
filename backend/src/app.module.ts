@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { UsersModule } from './users/users.module';
     CommandModule,
     SeedsModule,
     AuthModule,
-    UsersModule],
+    UsersModule,
+    ProjectsModule],
   controllers: [AppController, UsersController],
   providers: [AppService, UsersService],
 })

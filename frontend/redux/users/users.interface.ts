@@ -1,3 +1,5 @@
+import { Project } from '../projects/projects.interface';
+
 export interface User {
 	userName?: string;
 	clientName: string;
@@ -5,6 +7,17 @@ export interface User {
 	newEmail?: string;
 	isVerified: boolean;
 	isAdmin: boolean;
+	_id: string;
+	client?: Client;
+	project?: Project;
+	projects?: Project[];
+}
+
+export interface Client {
+	clientName: string;
+	email: string;
+	isVerified: boolean;
+	projects: Project[];
 	_id: string;
 }
 
@@ -14,6 +27,7 @@ export type UserState = {
 	token?: string;
 	user?: User;
 	users?: User[];
+	client?: User;
 	error?: null | {
 		title?: string;
 		message: string;

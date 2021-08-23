@@ -84,4 +84,13 @@ export class UsersController {
     const { token, password } = resetPasswordDto;
     return await this.usersService.resetPassword(token, password);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('set-client')
+  async setClient(
+    @Body() { clientName }: { clientName: string },
+    @Request() req,
+  ) {
+    return await this.usersService.setClient(clientName, req.user);
+  }
 }

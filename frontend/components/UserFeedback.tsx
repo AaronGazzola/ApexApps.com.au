@@ -1,13 +1,14 @@
 import Snackbar from './Snackbar';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { clearUsers, getUser, getUsers } from '../redux/users/users.slice';
-import { useEffect, useState } from 'react';
+import { clearProjects } from '../redux/projects/projects.slice';
+import { useEffect } from 'react';
 import Modal from './Modal';
 import Button from './Button';
 
 const UserFeedback = () => {
 	const dispatch = useAppDispatch();
-	const { users, utils } = useAppSelector(state => state);
+	const { users, projects } = useAppSelector(state => state);
 	const clickHandler = (e: React.SyntheticEvent) => {
 		dispatch(clearUsers());
 	};
@@ -37,47 +38,46 @@ const UserFeedback = () => {
 		};
 	}, [users.success]);
 
+	const error = users.error || projects.error;
+	const success = users.success || projects.success;
+	const alert = users.alert || projects.alert;
+
 	return (
 		<>
 			<Modal
-				isOpen={!!users.alert || !!users.error}
-				onClose={() => dispatch(clearUsers())}
+				isOpen={!!error || !!alert}
+				onClose={() => {
+					dispatch(clearUsers());
+					dispatch(clearProjects());
+				}}
 			>
 				<h2
 					className={`title-sm ${
-						users.error
-							? 'text-red'
-							: users.alert?.titleColor
-							? users.alert?.titleColor
-							: ''
+						error ? 'text-red' : alert?.titleColor ? alert?.titleColor : ''
 					}`}
 				>
-					{users.error?.title
-						? users.error?.title
-						: users.error
+					{error?.title
+						? error?.title
+						: error
 						? 'Error'
-						: users.alert?.title
-						? users.alert?.title
+						: alert?.title
+						? alert?.title
 						: 'Alert'}
 				</h2>
 				<p className={`font-medium text-gray-dark my-3`}>
-					{users.error
-						? users.error.message
-						: users.alert?.message
-						? users.alert?.message
-						: ''}
+					{error ? error.message : alert?.message ? alert?.message : ''}
 				</p>
 				<div className='flex w-full justify-between'>
-					{users.alert?.link ? (
+					{alert?.link ? (
 						<Button
-							path={users.alert?.link}
+							path={alert?.link}
 							type='link'
-							label={users.alert?.buttonLabel}
-							color={users.alert?.buttonColor ? users.alert?.buttonColor : ''}
+							label={alert?.buttonLabel}
+							color={alert?.buttonColor ? alert?.buttonColor : ''}
 							variant='simple'
 							buttonClasses='px-4'
 						/>
-					) : users.error?.retry ? (
+					) : error?.retry ? (
 						<Button
 							type='button'
 							label='Retry'
@@ -85,7 +85,7 @@ const UserFeedback = () => {
 							variant='simple'
 							buttonClasses='px-4'
 							onClick={
-								users.error?.retry === 'getUsers'
+								error?.retry === 'getUsers'
 									? () => {
 											dispatch(getUsers());
 											dispatch(clearUsers());
@@ -111,9 +111,9 @@ const UserFeedback = () => {
 			</Modal>
 			<Snackbar
 				type='success'
-				message={users.success}
+				message={success}
 				onClick={clickHandler}
-				show={!!users.success}
+				show={!!success}
 			/>
 		</>
 	);

@@ -329,6 +329,34 @@ export const resetPassword = createAsyncThunk(
 	}
 );
 
+export const setClient = createAsyncThunk(
+	'users/setClient',
+	async (clientName: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/set-client',
+				{ clientName },
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialUser: User = {
 	userName: '',
 	clientName: '',
@@ -556,6 +584,18 @@ const usersSlice = createSlice({
 			state.success = 'Password reset';
 		});
 		builder.addCase(resetPassword.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(setClient.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(setClient.fulfilled, (state, action) => {
+			state.loading = false;
+			state.user = action.payload.user;
+		});
+		builder.addCase(setClient.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

@@ -4,11 +4,13 @@ import Input from '../../components/Input';
 import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { logout, getUsers } from '../../redux/users/users.slice';
+import { logout, getUsers, setClient } from '../../redux/users/users.slice';
 import moment from 'moment';
 import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/EditProfileModal';
 import ClientModal from '../../components/ClientModal';
+import ProjectModal from '../../components/ProjectModal';
+import { getProjects } from '../../redux/projects/projects.slice';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -16,16 +18,18 @@ const index = () => {
 		loading: usersLoading,
 		user,
 		users,
+		isAuth,
 		success: usersSuccess,
 		alert: usersAlert,
 		error: usersError
 	} = useAppSelector(state => state.users);
+	const {
+		projects,
+		success: projectsSuccess,
+		alert: projectsAlert,
+		error: projectsError
+	} = useAppSelector(state => state.projects);
 	const [formState, setFormState] = useState({
-		client: {
-			name: '',
-			id: '',
-			isVerified: false
-		},
 		projectName: '',
 		projectDescription: '',
 		startFrom: '16-Aug-21',
@@ -39,7 +43,6 @@ const index = () => {
 	const [modalType, setModalType] = useState('');
 
 	const {
-		client,
 		projectName,
 		projectDescription,
 		startFrom,
@@ -58,15 +61,6 @@ const index = () => {
 			case 'endFrom':
 			case 'endTo':
 				value = moment(e.target.value).format('D-MMM-YY');
-			case 'client':
-				const foundUser = users?.find(
-					user => user.clientName === e.target.value
-				);
-				value = {
-					name: foundUser?.clientName,
-					id: foundUser?._id,
-					isVerified: foundUser?.isVerified
-				};
 			default:
 				break;
 		}
@@ -74,6 +68,10 @@ const index = () => {
 			...formState,
 			[e.target.id]: value
 		});
+	};
+
+	const setClientHandler = (e: BaseSyntheticEvent) => {
+		dispatch(setClient(e.target.value));
 	};
 
 	const logoutHandler = (e: SyntheticEvent) => {
@@ -91,32 +89,49 @@ const index = () => {
 			case 'addClient':
 				return <ClientModal />;
 			case 'editClientName':
-				return <ClientModal clientName={client.name} id={client.id} />;
+				return (
+					<ClientModal
+						clientName={user?.client?.clientName}
+						id={user?.client?._id}
+					/>
+				);
+			case 'addProject':
+				return <ProjectModal clientId={user?.client?._id} />;
+			// case 'editProjectTitle':
+			// 	return (
+			// 		<ProjectModal
+			// 			title={user?.client?.clientName}
+			// 			id={user?.client?._id}
+			// 		/>
+			// 	);
 			default:
 				return <></>;
 		}
 	};
 
 	useEffect(() => {
-		if (usersSuccess || usersAlert || usersError) setModalIsOpen(false);
-	}, [usersSuccess, usersAlert, usersError]);
+		if (
+			usersSuccess ||
+			usersAlert ||
+			usersError ||
+			projectsSuccess ||
+			projectsError ||
+			projectsAlert
+		)
+			setModalIsOpen(false);
+	}, [
+		usersSuccess,
+		usersAlert,
+		usersError,
+		projectsSuccess,
+		projectsError,
+		projectsAlert
+	]);
 
 	useEffect(() => {
 		if (user?.isAdmin && usersSuccess) dispatch(getUsers());
-	}, [user?.isAdmin, usersSuccess]);
-
-	useEffect(() => {
-		if (user?.isAdmin && users?.length && (!client.name || usersSuccess)) {
-			setFormState({
-				...formState,
-				client: {
-					name: users[0].clientName,
-					id: users[0]._id,
-					isVerified: users[0].isVerified
-				}
-			});
-		}
-	}, [user, users]);
+		if (user && isAuth) dispatch(getProjects(user._id));
+	}, [user?.isAdmin, usersSuccess, projectsSuccess]);
 
 	return (
 		<>
@@ -178,8 +193,8 @@ const index = () => {
 						{user.isAdmin && (
 							<>
 								<Input
-									value={client.name}
-									onChange={changeHandler}
+									value={user?.client?.clientName}
+									onChange={setClientHandler}
 									label='Client'
 									type='select'
 									id='client'
@@ -214,11 +229,11 @@ const index = () => {
 						<Input
 							value={projectName}
 							onChange={changeHandler}
-							label='Name of project'
+							label='Project'
 							type='select'
-							id='projectName'
+							id='project'
 							fullWidth
-							options={['Project 1', 'Project 2']}
+							options={projects?.map(project => project.title)}
 							containerClasses='mt-4'
 							inputClasses=''
 							labelTop
@@ -238,19 +253,20 @@ const index = () => {
 									variant='simple'
 									size='small'
 									buttonClasses='border py-0.5 px-1.5'
+									onClick={() => openModalhandler('addProject')}
 								/>
 							)}
 						</div>
 					</>
 				)}
 			</div>
-			{user?.isAdmin && client.id && !client.isVerified && (
+			{user?.isAdmin && user?.client && !user.client?.isVerified && (
 				<div className='box w-72 sm:w-80'>
 					<h2 className='title-sm'>Client Signup Link</h2>
 					<p className='mt-2 text-gray-dark font-medium text-center'>
 						ApexApps.dev/signup/
 						<br />
-						{client.id}
+						{user?.client?._id}
 					</p>
 				</div>
 			)}
