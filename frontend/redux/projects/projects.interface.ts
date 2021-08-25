@@ -1,5 +1,6 @@
 export interface Project {
 	title: string;
+	_id: string;
 	description?: string;
 	contract?: string;
 	estimate?: {

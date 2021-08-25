@@ -11,16 +11,45 @@ const config = {
 
 export const getProjects = createAsyncThunk(
 	'projects/getProjects',
-	async (clientId: string, { rejectWithValue, getState }) => {
+	async (_, { rejectWithValue, getState }) => {
 		const {
 			users: { token }
 		} = getState() as RootState;
 
 		try {
 			const { data }: ProjectsResponse = await axios.get(
-				`http://localhost:5000/projects/client/${clientId}`,
+				`http://localhost:5000/projects/client/`,
 				{
 					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const setProject = createAsyncThunk(
+	'projects/setProject',
+	async (title: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: ProjectsResponse = await axios.post(
+				`http://localhost:5000/projects/set-active`,
+				{ title },
+				{
+					headers: {
+						...config.headers,
 						'Authorization': `Bearer ${token}`
 					}
 				}
@@ -68,10 +97,14 @@ export const addProject = createAsyncThunk(
 	}
 );
 
-export const updateProjectTitle = createAsyncThunk(
-	'projects/updateProjectTitle',
+export const editProjectDetails = createAsyncThunk(
+	'projects/editProjectDetails',
 	async (
-		{ title, projectId }: { title: string; projectId: string },
+		{
+			title,
+			projectId,
+			description
+		}: { title: string; projectId: string; description: string },
 		{ rejectWithValue, getState }
 	) => {
 		const {
@@ -81,7 +114,7 @@ export const updateProjectTitle = createAsyncThunk(
 		try {
 			const { data }: ProjectsResponse = await axios.post(
 				`http://localhost:5000/projects/`,
-				{ title, projectId },
+				{ title, projectId, description },
 				{
 					headers: {
 						...config.headers,
@@ -138,15 +171,26 @@ const projectsSlice = createSlice({
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
-		builder.addCase(updateProjectTitle.pending, (state, action) => {
+		builder.addCase(setProject.pending, (state, action) => {
 			state.loading = true;
 		});
-		builder.addCase(updateProjectTitle.fulfilled, (state, action) => {
+		builder.addCase(setProject.fulfilled, (state, action) => {
+			state.loading = false;
+			state.project = action.payload.project;
+		});
+		builder.addCase(setProject.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(editProjectDetails.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(editProjectDetails.fulfilled, (state, action) => {
 			state.loading = false;
 			state.projects = action.payload.projects;
 			state.success = 'Project updated';
 		});
-		builder.addCase(updateProjectTitle.rejected, (state, action) => {
+		builder.addCase(editProjectDetails.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

@@ -33,15 +33,27 @@ export class ProjectsService {
   }
 
   async getProjects(user: User) {
-    const id = this.req.params.id;
-    if (!user.isAdmin && id !== user._id)
+    if (!user.isAdmin)
       throw new ErrorResponse('Not authorized to view this content', 401);
 
-    const client = await this.userModel.findById(id).populate('projects');
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('projects');
 
     return {
       success: true,
       projects: client.projects,
+    };
+  }
+  async setProject(projectId: string, user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('Not authorized to view this content', 401);
+
+    const project = await this.projectModel.findById(projectId);
+
+    return {
+      success: true,
+      project,
     };
   }
 }

@@ -9,15 +9,21 @@ import Button from './Button';
 const UserFeedback = () => {
 	const dispatch = useAppDispatch();
 	const { users, projects } = useAppSelector(state => state);
+	const error = users.error || projects.error;
+	const success = users.success || projects.success;
+	const alert = users.alert || projects.alert;
+
 	const clickHandler = (e: React.SyntheticEvent) => {
 		dispatch(clearUsers());
+		dispatch(clearProjects());
 	};
 
 	// if success, clear slice on window click
 	useEffect(() => {
 		function handleClickOutside(event: TouchEvent | MouseEvent) {
-			if (users.success) {
+			if (success) {
 				dispatch(clearUsers());
+				dispatch(clearProjects());
 			}
 		}
 		document.addEventListener('mousedown', handleClickOutside);
@@ -25,22 +31,21 @@ const UserFeedback = () => {
 			// Unbind the event listener on clean up
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [users.success]);
+	}, [success]);
 
 	// clear users after timeout
 	useEffect(() => {
 		let timer: ReturnType<typeof setTimeout>;
-		if (users.success && !users.error && !users.alert) {
-			timer = setTimeout(() => dispatch(clearUsers()), 3000);
+		if (error || success || alert) {
+			timer = setTimeout(() => {
+				dispatch(clearProjects());
+				dispatch(clearUsers());
+			}, 3000);
 		}
 		return () => {
 			clearTimeout(timer);
 		};
-	}, [users.success]);
-
-	const error = users.error || projects.error;
-	const success = users.success || projects.success;
-	const alert = users.alert || projects.alert;
+	}, [success]);
 
 	return (
 		<>

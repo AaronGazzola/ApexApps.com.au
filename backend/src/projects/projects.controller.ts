@@ -25,8 +25,14 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/client/:id')
+  @Get('/client/')
   async getProjects(@Request() req) {
     return await this.projectsService.getProjects(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/set-active')
+  async setProject(@Body() { id }: { id: string }, @Request() req) {
+    return await this.projectsService.setProject(id, req.user);
   }
 }

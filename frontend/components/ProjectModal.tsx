@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
 	addProject,
-	updateProjectTitle
+	editProjectDetails
 } from '../redux/projects/projects.slice';
 import Button from './Button';
 import Input from './Input';
@@ -11,30 +11,48 @@ interface ProjectModalProps {
 	title?: string;
 	clientId?: string;
 	projectId?: string;
+	description?: string;
+	type: 'add' | 'edit';
 }
 
 const ProjectModal = (props: ProjectModalProps) => {
-	const { title: projectTitle = '', clientId = '', projectId = '' } = props;
+	const {
+		title: projectTitle = '',
+		description: projectDescription = '',
+		clientId = '',
+		projectId = '',
+		type
+	} = props;
 	const dispatch = useAppDispatch();
-	const { loading } = useAppSelector(state => state.users);
+	const { loading } = useAppSelector(state => state.projects);
 	const [state, setState] = useState({
 		title: {
 			value: projectTitle,
 			isValid: !!projectTitle,
 			isTouched: false,
 			isChanged: !projectTitle
+		},
+		description: {
+			value: projectDescription,
+			isValid: !!projectDescription,
+			isTouched: false,
+			isChanged: !projectDescription
 		}
 	} as { [index: string]: any });
-	const { title } = state;
+	const { title, description } = state;
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
+		const isValid =
+			type === 'add'
+				? target.value.length && target.value.length < 30
+				: target.value.length && target.value.length < 500;
 		setState({
 			...state,
 			[target.id]: {
 				...state[target.id],
 				value: target.value,
-				isValid: target.value.length && target.value.length < 30,
+				isValid,
 				isChanged: projectTitle ? target.value !== projectTitle : true
 			}
 		});
@@ -53,10 +71,16 @@ const ProjectModal = (props: ProjectModalProps) => {
 
 	const submitHandler = (e: SyntheticEvent) => {
 		e.preventDefault();
-		if (title.isValid && !projectTitle) {
+		if (title.isValid && type == 'add') {
 			dispatch(addProject({ title: title.value, clientId }));
-		} else if (title.isValid && projectTitle) {
-			dispatch(updateProjectTitle({ title: title.value, projectId }));
+		} else if (title.isValid && description.isValid && 'edit') {
+			dispatch(
+				editProjectDetails({
+					title: title.value,
+					projectId,
+					description: description.value
+				})
+			);
 		}
 	};
 	return (
@@ -65,15 +89,15 @@ const ProjectModal = (props: ProjectModalProps) => {
 			className='w-full flex flex-col items-center'
 		>
 			<h2 className='title-sm text-center'>
-				{projectTitle ? 'Edit' : 'Add'} Client
+				{type === 'edit' ? 'Edit' : 'Add'} Project
 			</h2>
 			<Input
 				type='text'
-				validation={!projectTitle || projectTitle !== title.value}
+				validation={type === 'add' || projectTitle !== title.value}
 				isValid={title.isValid}
-				placeholder='title'
+				placeholder='Project Title'
 				value={title.value}
-				label='title'
+				label='Project Title'
 				onChange={changeHandler}
 				id='title'
 				isTouched={title.isTouched}
@@ -85,15 +109,40 @@ const ProjectModal = (props: ProjectModalProps) => {
 						: ''
 				}
 			/>
+			{type === 'edit' && (
+				<Input
+					type='text'
+					validation={
+						!projectDescription || projectDescription !== description.value
+					}
+					isValid={description.isValid}
+					placeholder='Project Description'
+					value={description.value}
+					label='Project description'
+					onChange={changeHandler}
+					id='description'
+					isTouched={description.isTouched}
+					touchHandler={touchHandler}
+					fullWidth
+					helperText={
+						!description.isValid && description.isTouched
+							? 'Please enter a description below 500 characters'
+							: ''
+					}
+				/>
+			)}
 			<Button
 				variant='contained'
 				type='submit'
 				color='green'
-				label={`${projectTitle ? 'Update' : 'Add'} Project`}
+				label={`${projectTitle ? 'edit' : 'Add'} Project`}
 				fullWidth
 				disabled={
-					projectTitle
-						? !title.isValid || title.value === projectTitle
+					type === 'edit'
+						? !title.isValid ||
+						  title.value === projectTitle ||
+						  !description.isValid ||
+						  description.value === projectDescription
 						: !title.isValid
 				}
 				buttonClasses='p-2 mt-4'

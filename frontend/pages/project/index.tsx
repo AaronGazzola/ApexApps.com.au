@@ -10,7 +10,7 @@ import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/EditProfileModal';
 import ClientModal from '../../components/ClientModal';
 import ProjectModal from '../../components/ProjectModal';
-import { getProjects } from '../../redux/projects/projects.slice';
+import { getProjects, setProject } from '../../redux/projects/projects.slice';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -96,14 +96,7 @@ const index = () => {
 					/>
 				);
 			case 'addProject':
-				return <ProjectModal clientId={user?.client?._id} />;
-			// case 'editProjectTitle':
-			// 	return (
-			// 		<ProjectModal
-			// 			title={user?.client?.clientName}
-			// 			id={user?.client?._id}
-			// 		/>
-			// 	);
+				return <ProjectModal type='add' clientId={user?.client?._id} />;
 			default:
 				return <></>;
 		}
@@ -128,10 +121,26 @@ const index = () => {
 		projectsAlert
 	]);
 
+	// if no client on mount, set client to user
 	useEffect(() => {
-		if (user?.isAdmin && usersSuccess) dispatch(getUsers());
-		if (user && isAuth) dispatch(getProjects(user._id));
-	}, [user?.isAdmin, usersSuccess, projectsSuccess]);
+		if (isAuth && user && !user?.client && !user.isAdmin)
+			dispatch(setClient(user.clientName));
+	}, []);
+
+	// when users or projects change, get users and projects
+	useEffect(() => {
+		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
+	}, [usersSuccess, projectsSuccess]);
+
+	// when client changes, get projects
+	useEffect(() => {
+		if (user?.client) dispatch(getProjects());
+	}, [user?.client]);
+
+	// when projects change, set active project
+	useEffect(() => {
+		if (projects && projects.length) setProject(projects[0]._id);
+	}, [projects]);
 
 	return (
 		<>
@@ -151,9 +160,6 @@ const index = () => {
 							<div className='skeleton w-24 h-5 ml-2'></div>
 						</div>
 						<div className='skeleton w-full h-8 mt-3'></div>
-						<div className='w-full flex justify-between mt-1'>
-							<div className='skeleton w-24 h-5'></div>
-						</div>
 					</>
 				) : (
 					<>
@@ -238,14 +244,7 @@ const index = () => {
 							inputClasses=''
 							labelTop
 						/>
-						<div className='mt-2 flex justify-between w-full'>
-							<Button
-								label='Edit project name'
-								color='yellow'
-								variant='simple'
-								size='small'
-								buttonClasses='border py-0.5 px-1.5'
-							/>
+						<div className='mt-2 flex justify-end w-full'>
 							{user.isAdmin && (
 								<Button
 									label='Add project'
