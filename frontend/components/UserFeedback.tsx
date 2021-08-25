@@ -105,7 +105,10 @@ const UserFeedback = () => {
 						<div className='w-10'></div>
 					)}
 					<Button
-						onClick={() => dispatch(clearUsers())}
+						onClick={() => {
+							dispatch(clearUsers());
+							dispatch(clearProjects());
+						}}
 						type='button'
 						label='OK'
 						color='blue-darkest'

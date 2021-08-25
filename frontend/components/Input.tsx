@@ -22,6 +22,7 @@ interface InputProps {
 	containerClasses?: string;
 	labelTop?: boolean;
 	validation?: boolean;
+	autoFocus?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -43,7 +44,8 @@ const Input = (props: InputProps) => {
 		inputClasses = '',
 		containerClasses = '',
 		labelTop = true,
-		validation = true
+		validation = true,
+		autoFocus = false
 	} = props;
 
 	return (
@@ -101,6 +103,7 @@ const Input = (props: InputProps) => {
 					</p>
 
 					<input
+						autoFocus={autoFocus}
 						className={`form-input${
 							labelTop ? '-label-top' : '-label-bottom'
 						} w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark 

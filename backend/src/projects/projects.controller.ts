@@ -7,6 +7,7 @@ import {
   Request,
   ValidationPipe,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AddProjectDto } from './dto/add-project.dto';
@@ -25,7 +26,7 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/client/')
+  @Get('/')
   async getProjects(@Request() req) {
     return await this.projectsService.getProjects(req.user);
   }
@@ -34,5 +35,11 @@ export class ProjectsController {
   @Post('/set-active')
   async setProject(@Body() { id }: { id: string }, @Request() req) {
     return await this.projectsService.setProject(id, req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/')
+  async deleteProject(@Request() req) {
+    return await this.projectsService.deleteProject(req.user);
   }
 }

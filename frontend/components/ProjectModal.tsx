@@ -1,9 +1,6 @@
 import React, { SyntheticEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import {
-	addProject,
-	editProjectDetails
-} from '../redux/projects/projects.slice';
+import { addProject, editProject } from '../redux/projects/projects.slice';
 import Button from './Button';
 import Input from './Input';
 
@@ -75,7 +72,7 @@ const ProjectModal = (props: ProjectModalProps) => {
 			dispatch(addProject({ title: title.value, clientId }));
 		} else if (title.isValid && description.isValid && 'edit') {
 			dispatch(
-				editProjectDetails({
+				editProject({
 					title: title.value,
 					projectId,
 					description: description.value
@@ -108,6 +105,7 @@ const ProjectModal = (props: ProjectModalProps) => {
 						? 'Please enter a title below 30 characters'
 						: ''
 				}
+				autoFocus
 			/>
 			{type === 'edit' && (
 				<Input

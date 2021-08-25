@@ -21,21 +21,32 @@ export class ProjectsService {
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);
 
-    const project = await this.projectModel.create({ title });
-
     const client = await this.userModel.findById(clientId).populate('projects');
+
+    const projectTitleExists = client.projects.find(
+      (project) => project.title === title,
+    );
+
+    if (!!projectTitleExists)
+      throw new ErrorResponse(
+        'A projec with this title already exists, please enter a unique title',
+        400,
+      );
+
+    const project = await this.projectModel.create({ title });
 
     client.projects.push(project);
 
     await client.save();
 
-    return { success: true, projects: client.projects };
+    user.project = project;
+
+    await user.save();
+
+    return { success: true, projects: client.projects, project };
   }
 
   async getProjects(user: User) {
-    if (!user.isAdmin)
-      throw new ErrorResponse('Not authorized to view this content', 401);
-
     const client = await this.userModel
       .findById(user.client._id)
       .populate('projects');
@@ -46,13 +57,42 @@ export class ProjectsService {
     };
   }
   async setProject(projectId: string, user: User) {
-    if (!user.isAdmin)
-      throw new ErrorResponse('Not authorized to view this content', 401);
-
     const project = await this.projectModel.findById(projectId);
+
+    user.project = project;
+
+    await user.save();
 
     return {
       success: true,
+      project,
+    };
+  }
+
+  async deleteProject(user: User) {
+    // find client on current user
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('projects');
+
+    // filter current project out of client's projects array
+    const projects = client.projects.filter(
+      (item) => item._id.toString() !== user.project._id.toString(),
+    );
+
+    client.projects = projects;
+
+    await client.save();
+
+    const project = projects.length ? projects[0] : null;
+
+    user.project = project;
+
+    await user.save();
+
+    return {
+      success: true,
+      projects,
       project,
     };
   }

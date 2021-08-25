@@ -7,10 +7,15 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout, getUsers, setClient } from '../../redux/users/users.slice';
 import moment from 'moment';
 import Modal from '../../components/Modal';
-import EditProfileModal from '../../components/EditProfileModal';
+import EditProfileModal from '../../components/ProfileModal';
 import ClientModal from '../../components/ClientModal';
 import ProjectModal from '../../components/ProjectModal';
-import { getProjects, setProject } from '../../redux/projects/projects.slice';
+import ConfirmModal from '../../components/ConfirmModal';
+import {
+	deleteProject,
+	getProjects,
+	setProject
+} from '../../redux/projects/projects.slice';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -24,13 +29,13 @@ const index = () => {
 		error: usersError
 	} = useAppSelector(state => state.users);
 	const {
+		project,
 		projects,
 		success: projectsSuccess,
 		alert: projectsAlert,
 		error: projectsError
 	} = useAppSelector(state => state.projects);
 	const [formState, setFormState] = useState({
-		projectName: '',
 		projectDescription: '',
 		startFrom: '16-Aug-21',
 		startTo: '26-Aug-21',
@@ -43,7 +48,6 @@ const index = () => {
 	const [modalType, setModalType] = useState('');
 
 	const {
-		projectName,
 		projectDescription,
 		startFrom,
 		startTo,
@@ -74,6 +78,13 @@ const index = () => {
 		dispatch(setClient(e.target.value));
 	};
 
+	const setProjectHandler = (e: BaseSyntheticEvent) => {
+		const foundProject = projects?.find(
+			project => project.title === e.target.value
+		);
+		if (foundProject) dispatch(setProject(foundProject._id));
+	};
+
 	const logoutHandler = (e: SyntheticEvent) => {
 		dispatch(logout());
 	};
@@ -97,6 +108,15 @@ const index = () => {
 				);
 			case 'addProject':
 				return <ProjectModal type='add' clientId={user?.client?._id} />;
+			case 'deleteProject':
+				return (
+					<ConfirmModal
+						confirmFunction={() => dispatch(deleteProject())}
+						cancelFunction={() => setModalIsOpen(false)}
+						type='delete'
+						content={project?.title}
+					/>
+				);
 			default:
 				return <></>;
 		}
@@ -121,16 +141,16 @@ const index = () => {
 		projectsAlert
 	]);
 
-	// if no client on mount, set client to user
+	// if no client, set client to user
 	useEffect(() => {
 		if (isAuth && user && !user?.client && !user.isAdmin)
 			dispatch(setClient(user.clientName));
-	}, []);
+	}, [user?.client]);
 
-	// when users or projects change, get users and projects
+	// when users are updated, get users
 	useEffect(() => {
 		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
-	}, [usersSuccess, projectsSuccess]);
+	}, [usersSuccess]);
 
 	// when client changes, get projects
 	useEffect(() => {
@@ -139,7 +159,7 @@ const index = () => {
 
 	// when projects change, set active project
 	useEffect(() => {
-		if (projects && projects.length) setProject(projects[0]._id);
+		if (projects?.length && !project) dispatch(setProject(projects?.[0]._id));
 	}, [projects]);
 
 	return (
@@ -233,8 +253,8 @@ const index = () => {
 							</>
 						)}
 						<Input
-							value={projectName}
-							onChange={changeHandler}
+							value={project?.title}
+							onChange={setProjectHandler}
 							label='Project'
 							type='select'
 							id='project'
@@ -244,8 +264,16 @@ const index = () => {
 							inputClasses=''
 							labelTop
 						/>
-						<div className='mt-2 flex justify-end w-full'>
-							{user.isAdmin && (
+						{user.isAdmin && (
+							<div className='mt-2 flex justify-between w-full'>
+								<Button
+									label='Delete project'
+									color='red'
+									variant='simple'
+									size='small'
+									buttonClasses='border py-0.5 px-1.5'
+									onClick={() => openModalhandler('deleteProject')}
+								/>
 								<Button
 									label='Add project'
 									color='green'
@@ -254,8 +282,8 @@ const index = () => {
 									buttonClasses='border py-0.5 px-1.5'
 									onClick={() => openModalhandler('addProject')}
 								/>
-							)}
-						</div>
+							</div>
+						)}
 					</>
 				)}
 			</div>
@@ -280,7 +308,7 @@ const index = () => {
 					</>
 				) : (
 					<>
-						<h2 className='title-sm'>Project Title</h2>
+						<h2 className='title-sm'>{project?.title}</h2>
 						<Input
 							type='textarea'
 							labelTop

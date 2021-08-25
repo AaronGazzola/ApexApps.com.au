@@ -6,7 +6,7 @@ import Button from './Button';
 import Input from './Input';
 import SVG from './SVG';
 
-const EditProfileModal = () => {
+const ProfileModal = () => {
 	const dispatch = useAppDispatch();
 	const { user, isAuth, loading } = useAppSelector(state => state.users);
 	const [state, setState] = useState({
@@ -244,4 +244,4 @@ const EditProfileModal = () => {
 	);
 };
 
-export default EditProfileModal;
+export default ProfileModal;

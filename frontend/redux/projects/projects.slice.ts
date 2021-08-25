@@ -18,7 +18,7 @@ export const getProjects = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.get(
-				`http://localhost:5000/projects/client/`,
+				`http://localhost:5000/projects/`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -38,7 +38,7 @@ export const getProjects = createAsyncThunk(
 
 export const setProject = createAsyncThunk(
 	'projects/setProject',
-	async (title: string, { rejectWithValue, getState }) => {
+	async (id: string, { rejectWithValue, getState }) => {
 		const {
 			users: { token }
 		} = getState() as RootState;
@@ -46,7 +46,7 @@ export const setProject = createAsyncThunk(
 		try {
 			const { data }: ProjectsResponse = await axios.post(
 				`http://localhost:5000/projects/set-active`,
-				{ title },
+				{ id },
 				{
 					headers: {
 						...config.headers,
@@ -97,8 +97,8 @@ export const addProject = createAsyncThunk(
 	}
 );
 
-export const editProjectDetails = createAsyncThunk(
-	'projects/editProjectDetails',
+export const editProject = createAsyncThunk(
+	'projects/editProject',
 	async (
 		{
 			title,
@@ -112,9 +112,37 @@ export const editProjectDetails = createAsyncThunk(
 		} = getState() as RootState;
 
 		try {
-			const { data }: ProjectsResponse = await axios.post(
+			const { data }: ProjectsResponse = await axios.put(
 				`http://localhost:5000/projects/`,
 				{ title, projectId, description },
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const deleteProject = createAsyncThunk(
+	'projects/deleteProject',
+	async (_, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: ProjectsResponse = await axios.delete(
+				`http://localhost:5000/projects/`,
 				{
 					headers: {
 						...config.headers,
@@ -166,6 +194,7 @@ const projectsSlice = createSlice({
 			state.loading = false;
 			state.projects = action.payload.projects;
 			state.success = 'Project added';
+			state.project = action.payload.project;
 		});
 		builder.addCase(addProject.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -182,15 +211,28 @@ const projectsSlice = createSlice({
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
-		builder.addCase(editProjectDetails.pending, (state, action) => {
+		builder.addCase(editProject.pending, (state, action) => {
 			state.loading = true;
 		});
-		builder.addCase(editProjectDetails.fulfilled, (state, action) => {
+		builder.addCase(editProject.fulfilled, (state, action) => {
 			state.loading = false;
 			state.projects = action.payload.projects;
 			state.success = 'Project updated';
 		});
-		builder.addCase(editProjectDetails.rejected, (state, action) => {
+		builder.addCase(editProject.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(deleteProject.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(deleteProject.fulfilled, (state, action) => {
+			state.loading = false;
+			state.projects = action.payload.projects;
+			state.success = 'Project deleted';
+			if (action.payload.projects) state.project = action.payload.projects[0];
+		});
+		builder.addCase(deleteProject.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
