@@ -6,14 +6,18 @@ interface InputProps {
 	placeholder?: string;
 	value: string | undefined;
 	onChange?:
-		| React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement>
+		| React.ChangeEventHandler<
+				HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+		  >
 		| FormEventHandler;
 	label: string;
 	id: string;
 	isValid?: boolean;
 	isTouched?: boolean;
 	helperText?: string;
-	touchHandler?: React.FocusEventHandler<HTMLInputElement>;
+	touchHandler?: React.FocusEventHandler<
+		HTMLInputElement | HTMLTextAreaElement
+	>;
 	passwordIsHidden?: boolean;
 	endIcon?: React.ReactNode;
 	fullWidth?: boolean;
@@ -23,6 +27,8 @@ interface InputProps {
 	labelTop?: boolean;
 	validation?: boolean;
 	autoFocus?: boolean;
+	rows?: number;
+	maxLength?: number;
 }
 
 const Input = (props: InputProps) => {
@@ -45,7 +51,9 @@ const Input = (props: InputProps) => {
 		containerClasses = '',
 		labelTop = true,
 		validation = true,
-		autoFocus = false
+		autoFocus = false,
+		maxLength = 10000,
+		rows = 3
 	} = props;
 
 	return (
@@ -102,11 +110,34 @@ const Input = (props: InputProps) => {
 						{helperText}
 					</p>
 
-					<input
-						autoFocus={autoFocus}
-						className={`form-input${
-							labelTop ? '-label-top' : '-label-bottom'
-						} w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark 
+					{type === 'textarea' ? (
+						<textarea
+							autoFocus={autoFocus}
+							className={`form-input${
+								labelTop ? '-label-top' : '-label-bottom'
+							} w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark 
+						${
+							!isValid && isTouched && validation
+								? 'border-red placeholder-red'
+								: isValid && validation
+								? 'border-green'
+								: 'border-gray-light focus:border-blue-darkest placeholder-gray-400'
+						}
+						${inputClasses}`}
+							placeholder={placeholder}
+							value={value}
+							onChange={onChange}
+							id={id}
+							onBlur={touchHandler}
+							rows={rows}
+							maxLength={maxLength}
+						/>
+					) : (
+						<input
+							autoFocus={autoFocus}
+							className={`form-input${
+								labelTop ? '-label-top' : '-label-bottom'
+							} w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark 
 						${
 							!isValid && isTouched && validation
 								? 'border-red placeholder-red'
@@ -120,13 +151,14 @@ const Input = (props: InputProps) => {
 								? 'tracking-widest'
 								: ''
 						}`}
-						type={type}
-						placeholder={placeholder}
-						value={value}
-						onChange={onChange}
-						id={id}
-						onBlur={touchHandler}
-					/>
+							type={type}
+							placeholder={placeholder}
+							value={value}
+							onChange={onChange}
+							id={id}
+							onBlur={touchHandler}
+						/>
+					)}
 					<label
 						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold ${
 							!isValid && isTouched && validation

@@ -1,3 +1,4 @@
+import { EditProjectDto } from './dto/edit-project.dto';
 import { AddProjectDto } from './dto/add-project.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -98,6 +99,43 @@ export class ProjectsService {
     return {
       success: true,
       projects,
+      project,
+    };
+  }
+
+  async editProject(user: User, editProjectDto: EditProjectDto) {
+    const { title, description } = editProjectDto;
+
+    // check if user is admin or user is client
+    if (!user.isAdmin && user._id !== user.client._id)
+      throw new ErrorResponse('Not authorised to access this content', 401);
+
+    const project = await this.projectModel.findById(user.project._id);
+
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('projects');
+
+    // check if project is on client
+    const projectFoundOnClient = client.projects.find(
+      (item) => item._id.toString() === project._id.toString(),
+    );
+
+    if (!projectFoundOnClient)
+      throw new ErrorResponse('Not authorised to access this content', 401);
+
+    project.title = title;
+    project.description = description;
+
+    await project.save();
+
+    const returnClient = await this.userModel
+      .findById(user.client._id)
+      .populate('projects');
+
+    return {
+      success: true,
+      projects: returnClient.projects,
       project,
     };
   }

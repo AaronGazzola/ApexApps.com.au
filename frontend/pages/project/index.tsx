@@ -107,6 +107,14 @@ const index = () => {
 				return <ClientModal clientName={client?.clientName} />;
 			case 'addProject':
 				return <ProjectModal type='add' />;
+			case 'editProject':
+				return (
+					<ProjectModal
+						type='edit'
+						title={project?.title}
+						description={project?.description}
+					/>
+				);
 			case 'deleteProject':
 				return (
 					<ConfirmModal
@@ -310,23 +318,23 @@ const index = () => {
 				) : (
 					<>
 						<h2 className='title-sm'>{project?.title}</h2>
-						<Input
-							type='textarea'
-							labelTop
-							value={projectDescription}
-							id='projectDescription'
-							placeholder='Project description'
-							onChange={changeHandler}
-							label='Project description'
-							validation={false}
-						/>
+						<p
+							className={`my-2 text-gray-dark ${
+								!project?.description ? 'italic' : ''
+							}`}
+						>
+							{project?.description
+								? project?.description
+								: 'Click "Edit project" to add a project description'}
+						</p>
 						<div className='flex justify-end w-full mt-2'>
 							<Button
-								label='Update description'
-								color='green'
+								label='Edit project'
+								color='yellow'
 								variant='simple'
 								size='small'
 								buttonClasses='border py-0.5 px-1.5'
+								onClick={() => openModalhandler('editProject')}
 							/>
 						</div>
 					</>

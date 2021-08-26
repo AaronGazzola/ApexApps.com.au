@@ -97,11 +97,7 @@ export const addProject = createAsyncThunk(
 export const editProject = createAsyncThunk(
 	'projects/editProject',
 	async (
-		{
-			title,
-			projectId,
-			description
-		}: { title: string; projectId: string; description: string },
+		{ title, description }: { title: string; description: string },
 		{ rejectWithValue, getState }
 	) => {
 		const {
@@ -111,7 +107,7 @@ export const editProject = createAsyncThunk(
 		try {
 			const { data }: ProjectsResponse = await axios.put(
 				`http://localhost:5000/projects/`,
-				{ title, projectId, description },
+				{ title, description },
 				{
 					headers: {
 						...config.headers,
@@ -215,6 +211,7 @@ const projectsSlice = createSlice({
 			state.loading = false;
 			state.projects = action.payload.projects;
 			state.success = 'Project updated';
+			state.project = action.payload.project;
 		});
 		builder.addCase(editProject.rejected, (state, action) => {
 			state.error = { message: action.payload as string };

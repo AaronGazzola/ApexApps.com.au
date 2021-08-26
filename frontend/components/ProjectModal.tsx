@@ -6,7 +6,6 @@ import Input from './Input';
 
 interface ProjectModalProps {
 	title?: string;
-	projectId?: string;
 	description?: string;
 	type: 'add' | 'edit';
 }
@@ -15,7 +14,6 @@ const ProjectModal = (props: ProjectModalProps) => {
 	const {
 		title: projectTitle = '',
 		description: projectDescription = '',
-		projectId = '',
 		type
 	} = props;
 	const dispatch = useAppDispatch();
@@ -53,6 +51,14 @@ const ProjectModal = (props: ProjectModalProps) => {
 		});
 	};
 
+	const formIsValid =
+		type === 'edit'
+			? // if either field is changed and both fields are valid
+			  (title.isChanged || description.isChanged) &&
+			  title.isValid &&
+			  description.isValid
+			: title.isValid;
+
 	const touchHandler = (e: React.FocusEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
 		setState({
@@ -72,7 +78,6 @@ const ProjectModal = (props: ProjectModalProps) => {
 			dispatch(
 				editProject({
 					title: title.value,
-					projectId,
 					description: description.value
 				})
 			);
@@ -107,7 +112,7 @@ const ProjectModal = (props: ProjectModalProps) => {
 			/>
 			{type === 'edit' && (
 				<Input
-					type='text'
+					type='textarea'
 					validation={
 						!projectDescription || projectDescription !== description.value
 					}
@@ -125,22 +130,17 @@ const ProjectModal = (props: ProjectModalProps) => {
 							? 'Please enter a description below 500 characters'
 							: ''
 					}
+					rows={5}
+					maxLength={500}
 				/>
 			)}
 			<Button
 				variant='contained'
 				type='submit'
 				color='green'
-				label={`${projectTitle ? 'edit' : 'Add'} Project`}
+				label={`${type === 'edit' ? 'Update' : 'Add'} Project`}
 				fullWidth
-				disabled={
-					type === 'edit'
-						? !title.isValid ||
-						  title.value === projectTitle ||
-						  !description.isValid ||
-						  description.value === projectDescription
-						: !title.isValid
-				}
+				disabled={!formIsValid}
 				buttonClasses='p-2 mt-4'
 				loading={loading}
 			/>

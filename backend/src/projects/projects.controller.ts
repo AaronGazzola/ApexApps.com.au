@@ -8,9 +8,11 @@ import {
   ValidationPipe,
   Get,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AddProjectDto } from './dto/add-project.dto';
+import { EditProjectDto } from './dto/edit-project.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -41,5 +43,14 @@ export class ProjectsController {
   @Delete('/')
   async deleteProject(@Request() req) {
     return await this.projectsService.deleteProject(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/')
+  async editProject(
+    @Request() req,
+    @Body(ValidationPipe) editProjectDto: EditProjectDto,
+  ) {
+    return await this.projectsService.editProject(req.user, editProjectDto);
   }
 }
