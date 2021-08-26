@@ -1,3 +1,4 @@
+import { EditEstimateDto } from './dto/edit-estimate.dto';
 import { EditProjectDto } from './dto/edit-project.dto';
 import { AddProjectDto } from './dto/add-project.dto';
 import { Inject, Injectable } from '@nestjs/common';
@@ -137,6 +138,35 @@ export class ProjectsService {
       success: true,
       projects: returnClient.projects,
       project,
+    };
+  }
+
+  async editEstimate(user: User, editEstimateDto: EditEstimateDto) {
+    const { startFrom, startTo, endFrom, endTo, costFrom, costTo } =
+      editEstimateDto;
+
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const project = await this.projectModel.findById(user.project._id);
+
+    project.estimate.startFrom = startFrom;
+    project.estimate.startTo = startTo;
+    project.estimate.endFrom = endFrom;
+    project.estimate.endTo = endTo;
+    project.estimate.costFrom = costFrom;
+    project.estimate.costTo = costTo;
+
+    await project.save();
+
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('projects');
+
+    return {
+      success: true,
+      project,
+      projects: client.projects,
     };
   }
 }

@@ -7,9 +7,10 @@ export interface Project extends Document {
   estimate?: {
     startFrom: Date;
     startTo: Date;
-    EndFrom: Date;
-    EndTo: Date;
+    endFrom: Date;
+    endTo: Date;
     costFrom: number;
     costTo: number;
+    currency: string;
   };
 }

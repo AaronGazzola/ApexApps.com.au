@@ -6,10 +6,11 @@ export interface Project {
 	estimate?: {
 		startFrom: Date;
 		startTo: Date;
-		EndFrom: Date;
-		EndTo: Date;
+		endFrom: Date;
+		endTo: Date;
 		costFrom: number;
 		costTo: number;
+		currency: 'USD' | 'AUD';
 	};
 }
 

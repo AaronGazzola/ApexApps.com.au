@@ -2,7 +2,7 @@ import React, { FormEventHandler } from 'react';
 import SVG from './SVG';
 
 interface InputProps {
-	type: 'text' | 'textarea' | 'password' | 'select' | 'date';
+	type: 'text' | 'textarea' | 'password' | 'select' | 'date' | 'number';
 	placeholder?: string;
 	value: string | undefined;
 	onChange?:

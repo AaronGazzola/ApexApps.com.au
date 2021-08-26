@@ -7,9 +7,10 @@ export const ProjectSchema = new mongoose.Schema({
   estimate: {
     startFrom: Date,
     startTo: Date,
-    EndFrom: Date,
-    EndTo: Date,
+    endFrom: Date,
+    endTo: Date,
     costFrom: Number,
     costTo: Number,
+    currency: String,
   },
 });

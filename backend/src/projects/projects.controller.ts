@@ -13,6 +13,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AddProjectDto } from './dto/add-project.dto';
 import { EditProjectDto } from './dto/edit-project.dto';
+import { EditEstimateDto } from './dto/edit-estimate.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -52,5 +53,14 @@ export class ProjectsController {
     @Body(ValidationPipe) editProjectDto: EditProjectDto,
   ) {
     return await this.projectsService.editProject(req.user, editProjectDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/estimate')
+  async editEstimate(
+    @Request() req,
+    @Body(ValidationPipe) editEstimateDto: EditEstimateDto,
+  ) {
+    return await this.projectsService.editEstimate(req.user, editEstimateDto);
   }
 }

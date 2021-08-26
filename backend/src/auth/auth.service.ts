@@ -98,7 +98,7 @@ export class AuthService {
         token: this.jwtService.sign(payload),
       };
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(error.message, 500);
     }
   }
 

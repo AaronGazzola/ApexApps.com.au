@@ -154,6 +154,59 @@ export const deleteProject = createAsyncThunk(
 	}
 );
 
+export const editEstimate = createAsyncThunk(
+	'projects/editEstimate',
+	async (
+		{
+			startFrom,
+			startTo,
+			endFrom,
+			endTo,
+			costFrom,
+			costTo
+		}: {
+			startFrom: String;
+			startTo: String;
+			endFrom: String;
+			endTo: String;
+			costFrom: Number;
+			costTo: Number;
+		},
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: ProjectsResponse = await axios.put(
+				`http://localhost:5000/projects/estimate`,
+				{
+					startFrom,
+					startTo,
+					endFrom,
+					endTo,
+					costFrom,
+					costTo
+				},
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialState: ProjectsState = {
 	loading: false
 };
@@ -227,6 +280,19 @@ const projectsSlice = createSlice({
 			if (action.payload.projects) state.project = action.payload.projects[0];
 		});
 		builder.addCase(deleteProject.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(editEstimate.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(editEstimate.fulfilled, (state, action) => {
+			state.loading = false;
+			state.projects = action.payload.projects;
+			state.project = action.payload.project;
+			state.success = 'Estimate updated';
+		});
+		builder.addCase(editEstimate.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

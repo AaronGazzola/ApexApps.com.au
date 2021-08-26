@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { BaseSyntheticEvent, SyntheticEvent, useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -5,12 +6,12 @@ import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout, getUsers, setClient } from '../../redux/users/users.slice';
-import moment from 'moment';
 import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/ProfileModal';
 import ClientModal from '../../components/ClientModal';
 import ProjectModal from '../../components/ProjectModal';
 import ConfirmModal from '../../components/ConfirmModal';
+import EstimateModal from '../../components/EstimateModal';
 import {
 	deleteProject,
 	getProjects,
@@ -39,44 +40,8 @@ const index = () => {
 	} = useAppSelector(state => state.projects);
 	const loading = usersLoading || projectsLoading;
 
-	const [formState, setFormState] = useState({
-		projectDescription: '',
-		startFrom: '16-Aug-21',
-		startTo: '26-Aug-21',
-		endFrom: '20-Dec-21',
-		endTo: '1-Jan-22',
-		costFrom: 10000,
-		costTo: 10000
-	});
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [modalType, setModalType] = useState('');
-
-	const {
-		projectDescription,
-		startFrom,
-		startTo,
-		endFrom,
-		endTo,
-		costFrom,
-		costTo
-	} = formState;
-
-	const changeHandler = (e: BaseSyntheticEvent) => {
-		let value = e.target.value;
-		switch (e.target.id) {
-			case 'startFrom':
-			case 'startTo':
-			case 'endFrom':
-			case 'endTo':
-				value = moment(e.target.value).format('D-MMM-YY');
-			default:
-				break;
-		}
-		setFormState({
-			...formState,
-			[e.target.id]: value
-		});
-	};
 
 	const setClientHandler = (e: BaseSyntheticEvent) => {
 		dispatch(setClient(e.target.value));
@@ -124,6 +89,8 @@ const index = () => {
 						content={project?.title}
 					/>
 				);
+			case 'editEstimate':
+				return <EstimateModal />;
 			default:
 				return <></>;
 		}
@@ -354,84 +321,69 @@ const index = () => {
 						<p className='font-semibold text-gray-dark text-sm mb-1'>
 							Start Between
 						</p>
-						<div className='relative flex w-full mb-4'>
-							{user.isAdmin && (
-								<>
-									<input
-										type='date'
-										className='absolute top-0 right-1/2  w-12 h-full mr-7 opacity-0'
-										id='startFrom'
-										onChange={changeHandler}
-									/>
-									<input
-										type='date'
-										className='absolute top-0 left-1/2  w-12 h-full opacity-0'
-										id='startTo'
-										onChange={changeHandler}
-									/>
-								</>
-							)}
+						<div
+							className='relative flex w-full mb-4'
+							style={{ minHeight: 20 }}
+						>
 							<p className='text-gray-dark w-1/2 pr-7 text-right'>
-								{startFrom}
-							</p>
-							<SVG
-								name='doubleArrow'
-								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-							/>
-							<p className='text-gray-dark w-1/2 pl-7'>{startTo}</p>
-						</div>
-						<p className='font-semibold text-gray-dark text-sm mb-1'>
-							End Between
-						</p>
-						<div className='relative flex w-full mb-4'>
-							{user.isAdmin && (
-								<>
-									<input
-										type='date'
-										className='absolute top-0 right-1/2  w-12 h-full mr-7 opacity-0'
-										id='endFrom'
-										onChange={changeHandler}
-									/>
-									<input
-										type='date'
-										className='absolute top-0 left-1/2  w-12 h-full opacity-0'
-										id='endTo'
-										onChange={changeHandler}
-									/>
-								</>
-							)}
-							<p className='text-gray-dark w-1/2 pr-7 text-right'>{endFrom}</p>
-							<SVG
-								name='doubleArrow'
-								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-							/>
-							<p className='text-gray-dark w-1/2 pl-7'>{endTo}</p>
-						</div>
-						<p className='font-semibold text-gray-dark text-sm mb-1'>
-							Total cost between
-						</p>
-						<div className='relative flex w-full mb-2'>
-							<p className='text-gray-dark w-1/2 pr-7 text-right'>
-								${costFrom.toLocaleString('en-US')}
-								<span className='text-xxxs font-semibold'>USD</span>
+								{moment(project?.estimate?.startFrom).format('D-MMM-YY')}
 							</p>
 							<SVG
 								name='doubleArrow'
 								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
 							/>
 							<p className='text-gray-dark w-1/2 pl-7'>
-								${costTo.toLocaleString('en-US')}
-								<span className='text-xxxs font-semibold'>USD</span>
+								{moment(project?.estimate?.startTo).format('D-MMM-YY')}
+							</p>
+						</div>
+						<p className='font-semibold text-gray-dark text-sm mb-1'>
+							End Between
+						</p>
+						<div
+							className='relative flex w-full mb-4'
+							style={{ minHeight: 20 }}
+						>
+							<p className='text-gray-dark w-1/2 pr-7 text-right'>
+								{moment(project?.estimate?.endFrom).format('D-MMM-YY')}
+							</p>
+							<SVG
+								name='doubleArrow'
+								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+							/>
+							<p className='text-gray-dark w-1/2 pl-7'>
+								{moment(project?.estimate?.endTo).format('D-MMM-YY')}
+							</p>
+						</div>
+						<p className='font-semibold text-gray-dark text-sm mb-1'>
+							Total cost between
+						</p>
+						<div className='relative flex w-full mb-2'>
+							<p className='text-gray-dark w-1/2 pr-7 text-right'>
+								${project?.estimate?.costFrom?.toLocaleString('en-US')}
+								<span className='text-xxxs font-semibold'>
+									{project?.estimate?.currency}
+								</span>
+							</p>
+							<SVG
+								name='doubleArrow'
+								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+							/>
+							<p className='text-gray-dark w-1/2 pl-7'>
+								${project?.estimate?.costTo?.toLocaleString('en-US')}
+								<span className='text-xxxs font-semibold'>
+									{project?.estimate?.currency}
+								</span>
 							</p>
 						</div>
 						{user.isAdmin && (
 							<div className='flex justify-end w-full mt-2'>
 								<Button
-									label='Update estimate'
-									color='green'
+									label='Edit estimate'
+									color='yellow'
 									variant='simple'
 									size='small'
-									buttonClasses='border py-0.5 px-1.5'
+									buttonClasses='mt-1 border py-0.5 px-1.5'
+									onClick={() => openModalhandler('editEstimate')}
 								/>
 							</div>
 						)}
