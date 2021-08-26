@@ -17,14 +17,14 @@ const navItems = [
 		icon: 'clipboard'
 	},
 	{
-		title: 'Timeline',
-		path: '/timeline',
-		icon: 'watch'
-	},
-	{
 		title: 'Milestones',
 		path: '/milestones',
 		icon: 'checklist'
+	},
+	{
+		title: 'Timeline',
+		path: '/timeline',
+		icon: 'watch'
 	},
 	{
 		title: 'Proposal',

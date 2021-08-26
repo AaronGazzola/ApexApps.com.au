@@ -26,24 +26,32 @@ export class UsersService {
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);
 
-    await this.userModel.create({ clientName: name });
+    const newUser = await this.userModel.create({ clientName: name });
 
-    return { success: true };
+    user.client = newUser;
+
+    await user.save();
+
+    return { success: true, client: newUser, user };
   }
 
   async updateClient(updateClientDto: UpdateClientDto, user: User) {
-    const { clientName, id: clientId } = updateClientDto;
+    const { clientName } = updateClientDto;
 
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);
 
-    const client = await this.userModel.findById(clientId);
+    const client = await this.userModel.findById(user.client._id);
 
     client.clientName = clientName;
 
     await client.save();
 
-    return { success: true };
+    user.client = client;
+
+    await user.save();
+
+    return { success: true, client, user };
   }
 
   async getUsers(user: User) {
@@ -178,10 +186,10 @@ export class UsersService {
     try {
       user = await this.userModel.findOne({ _id: id });
     } catch (err) {
-      throw new ErrorResponse('Invalid user id', 401);
+      throw new ErrorResponse('Invalid signup link', 401);
     }
     if (!user) {
-      throw new ErrorResponse('Invalid user id', 401);
+      throw new ErrorResponse('Invalid signup link', 401);
     } else {
       return {
         success: true,
@@ -329,27 +337,22 @@ export class UsersService {
   }
 
   async setClient(clientName: string, user: User) {
-    let clientUser;
+    let client;
     if (user.isAdmin) {
-      clientUser = await this.userModel
+      client = await this.userModel
         .findOne({ clientName })
         .populate('projects');
     } else {
-      clientUser = user;
+      client = user;
     }
-    user.client = {
-      clientName: clientUser.clientName,
-      projects: clientUser.projects,
-      email: clientUser.email,
-      isVerified: clientUser.isVerified,
-      _id: clientUser._id,
-    };
+    user.client = client;
 
     const returnUser = await user.save();
 
     return {
       success: true,
       user: returnUser,
+      client,
     };
   }
 }

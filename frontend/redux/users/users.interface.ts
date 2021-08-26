@@ -8,17 +8,9 @@ export interface User {
 	isVerified: boolean;
 	isAdmin: boolean;
 	_id: string;
-	client?: Client;
+	client?: User;
 	project?: Project;
 	projects?: Project[];
-}
-
-export interface Client {
-	clientName: string;
-	email: string;
-	isVerified: boolean;
-	projects: Project[];
-	_id: string;
 }
 
 export type UserState = {
@@ -61,6 +53,7 @@ export interface UserResponse {
 		token?: string;
 		user?: User;
 		users?: User[];
+		client?: User;
 	};
 }
 

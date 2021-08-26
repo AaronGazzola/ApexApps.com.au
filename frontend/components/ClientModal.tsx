@@ -52,7 +52,7 @@ const ClientModal = (props: ClientModalProps) => {
 		if (name.isValid && !clientName) {
 			dispatch(addUser(name.value));
 		} else if (name.isValid && clientName) {
-			dispatch(updateClient({ name: name.value, id }));
+			dispatch(updateClient(name.value));
 		}
 	};
 	return (

@@ -46,7 +46,7 @@ export class AuthService {
   }
 
   async seedUser(seedUserDto: SeedUserDto): Promise<void> {
-    const { userName, password, email, isAdmin } = seedUserDto;
+    const { userName, password, email, isAdmin, isVerified } = seedUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -55,6 +55,7 @@ export class AuthService {
       password: hashedPassword,
       email,
       isAdmin,
+      isVerified,
     });
 
     try {
@@ -68,7 +69,14 @@ export class AuthService {
   }
 
   async login(user: User) {
+    if (!user.isVerified)
+      throw new ErrorResponse(
+        'Pleae check your inbox to verify your email',
+        401,
+      );
+
     const payload = { username: user.email, sub: user._id };
+
     return {
       user,
       success: true,
@@ -78,13 +86,14 @@ export class AuthService {
 
   async getUser(_id: string) {
     try {
-      const user = await this.userModel.findById(_id);
+      const user = await this.userModel.findById(_id).populate('client');
       if (!user) {
         throw new Error('No user found');
       }
       const payload = { username: user.email, sub: user._id };
       return {
         user,
+        client: user.client,
         success: true,
         token: this.jwtService.sign(payload),
       };

@@ -6,7 +6,6 @@ import Input from './Input';
 
 interface ProjectModalProps {
 	title?: string;
-	clientId?: string;
 	projectId?: string;
 	description?: string;
 	type: 'add' | 'edit';
@@ -16,7 +15,6 @@ const ProjectModal = (props: ProjectModalProps) => {
 	const {
 		title: projectTitle = '',
 		description: projectDescription = '',
-		clientId = '',
 		projectId = '',
 		type
 	} = props;
@@ -69,7 +67,7 @@ const ProjectModal = (props: ProjectModalProps) => {
 	const submitHandler = (e: SyntheticEvent) => {
 		e.preventDefault();
 		if (title.isValid && type == 'add') {
-			dispatch(addProject({ title: title.value, clientId }));
+			dispatch(addProject(title.value));
 		} else if (title.isValid && description.isValid && 'edit') {
 			dispatch(
 				editProject({

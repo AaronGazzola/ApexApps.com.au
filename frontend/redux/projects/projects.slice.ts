@@ -67,10 +67,7 @@ export const setProject = createAsyncThunk(
 
 export const addProject = createAsyncThunk(
 	'projects/addProject',
-	async (
-		{ title, clientId }: { title: string; clientId: string },
-		{ rejectWithValue, getState }
-	) => {
+	async (title: string, { rejectWithValue, getState }) => {
 		const {
 			users: { token }
 		} = getState() as RootState;
@@ -78,7 +75,7 @@ export const addProject = createAsyncThunk(
 		try {
 			const { data }: ProjectsResponse = await axios.post(
 				`http://localhost:5000/projects/`,
-				{ title, clientId },
+				{ title },
 				{
 					headers: {
 						...config.headers,

@@ -20,6 +20,7 @@ import {
 const index = () => {
 	const dispatch = useAppDispatch();
 	const {
+		client,
 		loading: usersLoading,
 		user,
 		users,
@@ -29,12 +30,15 @@ const index = () => {
 		error: usersError
 	} = useAppSelector(state => state.users);
 	const {
+		loading: projectsLoading,
 		project,
 		projects,
 		success: projectsSuccess,
 		alert: projectsAlert,
 		error: projectsError
 	} = useAppSelector(state => state.projects);
+	const loading = usersLoading || projectsLoading;
+
 	const [formState, setFormState] = useState({
 		projectDescription: '',
 		startFrom: '16-Aug-21',
@@ -100,14 +104,9 @@ const index = () => {
 			case 'addClient':
 				return <ClientModal />;
 			case 'editClientName':
-				return (
-					<ClientModal
-						clientName={user?.client?.clientName}
-						id={user?.client?._id}
-					/>
-				);
+				return <ClientModal clientName={client?.clientName} />;
 			case 'addProject':
-				return <ProjectModal type='add' clientId={user?.client?._id} />;
+				return <ProjectModal type='add' />;
 			case 'deleteProject':
 				return (
 					<ConfirmModal
@@ -157,9 +156,11 @@ const index = () => {
 		if (user?.client) dispatch(getProjects());
 	}, [user?.client]);
 
-	// when projects change, set active project
+	// when projects change, if active project is not in projects, set project to first in array
 	useEffect(() => {
-		if (projects?.length && !project) dispatch(setProject(projects?.[0]._id));
+		const projectFound = projects?.find(item => item._id === project?._id);
+		if (projects?.length && !projectFound)
+			dispatch(setProject(projects?.[0]._id));
 	}, [projects]);
 
 	return (
@@ -170,7 +171,7 @@ const index = () => {
 			</Modal>
 			<h1 className='title'>Project</h1>
 			<div className='box w-72 sm:w-80'>
-				{usersLoading || !user ? (
+				{loading || !user ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
 						<hr className='w-52 h-0.5 bg-gray-300 mb-1' />
@@ -231,7 +232,7 @@ const index = () => {
 									labelTop
 								/>
 								<div className='mt-2 flex justify-between w-full'>
-									{users?.length && (
+									{user?.client && (
 										<Button
 											label='Edit client name'
 											color='yellow'
@@ -287,18 +288,18 @@ const index = () => {
 					</>
 				)}
 			</div>
-			{user?.isAdmin && user?.client && !user.client?.isVerified && (
+			{user?.isAdmin && client?.isVerified && (
 				<div className='box w-72 sm:w-80'>
 					<h2 className='title-sm'>Client Signup Link</h2>
 					<p className='mt-2 text-gray-dark font-medium text-center'>
 						ApexApps.dev/signup/
 						<br />
-						{user?.client?._id}
+						{client?._id}
 					</p>
 				</div>
 			)}
 			<div className='box w-72 sm:w-3/4 lg:w-1/2 max-w-lg'>
-				{usersLoading || !user ? (
+				{loading || !user ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
 						<div className='skeleton w-full h-8 m-1'></div>
@@ -332,7 +333,7 @@ const index = () => {
 				)}
 			</div>
 			<div className='box w-72 sm:w-80'>
-				{usersLoading || !user ? (
+				{loading || !user ? (
 					<>
 						<div className='skeleton w-36 h-7 mt-1 mb-3'></div>
 						<div className='skeleton w-52 h-7 m-1'></div>

@@ -1,6 +1,5 @@
 import * as mongoose from 'mongoose';
 import { ProjectSchema } from 'src/projects/schemas/project.schema';
-import { ClientSchema } from './client.schema';
 
 export const UserSchema = new mongoose.Schema({
   userName: String,
@@ -8,7 +7,7 @@ export const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  client: ClientSchema,
+  client: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   password: {
     type: String,
     required: false,

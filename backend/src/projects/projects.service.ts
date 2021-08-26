@@ -17,11 +17,14 @@ export class ProjectsService {
   ) {}
 
   async addProject(addProjectDto: AddProjectDto, user: User) {
-    const { title, clientId } = addProjectDto;
+    const { title } = addProjectDto;
+
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);
 
-    const client = await this.userModel.findById(clientId).populate('projects');
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('projects');
 
     const projectTitleExists = client.projects.find(
       (project) => project.title === title,
@@ -40,6 +43,7 @@ export class ProjectsService {
     await client.save();
 
     user.project = project;
+    user.client = client;
 
     await user.save();
 
@@ -87,6 +91,7 @@ export class ProjectsService {
     const project = projects.length ? projects[0] : null;
 
     user.project = project;
+    user.client = client;
 
     await user.save();
 
