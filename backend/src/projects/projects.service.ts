@@ -1,10 +1,12 @@
+import * as path from 'path';
+import * as fs from 'fs';
 import { EditEstimateDto } from './dto/edit-estimate.dto';
 import { EditProjectDto } from './dto/edit-project.dto';
 import { AddProjectDto } from './dto/add-project.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Model } from 'mongoose';
 import ErrorResponse from 'src/shared/errorResponse';
 import { User } from 'src/users/interfaces/user.interface';
@@ -168,5 +170,51 @@ export class ProjectsService {
       project,
       projects: client.projects,
     };
+  }
+
+  async uploadContract(user: User, file: any) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    if (!file || file.mimetype !== 'application/pdf')
+      throw new ErrorResponse('Please upload a PDF file', 401);
+
+    const project = await this.projectModel.findById(user.project._id);
+
+    const fileName = `contract-${project._id}.pdf`;
+
+    const filePath = `${process.env.UPLOAD_PATH}/${fileName}`;
+
+    // rename uploaded file
+    fs.rename(
+      `${process.env.UPLOAD_PATH}/${file.filename}`,
+      filePath,
+      (err) => {
+        if (err) throw new ErrorResponse('Problem with contract upload', 500);
+      },
+    );
+
+    project.contractUploaded = true;
+
+    await project.save();
+
+    return {
+      success: true,
+      project,
+    };
+  }
+
+  async downloadContract(res: Response) {
+    const { pid: projectId } = this.req.params;
+
+    const fileName = `contract-${projectId}.pdf`;
+
+    const filePath = path.join(
+      process.env.NODE_PATH,
+      process.env.UPLOAD_PATH,
+      fileName,
+    );
+
+    res.download(filePath);
   }
 }

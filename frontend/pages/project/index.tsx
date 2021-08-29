@@ -1,5 +1,11 @@
 import moment from 'moment';
-import { BaseSyntheticEvent, SyntheticEvent, useEffect, useState } from 'react';
+import {
+	BaseSyntheticEvent,
+	ChangeEvent,
+	SyntheticEvent,
+	useEffect,
+	useState
+} from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Meta from '../../components/Meta';
@@ -15,7 +21,8 @@ import EstimateModal from '../../components/EstimateModal';
 import {
 	deleteProject,
 	getProjects,
-	setProject
+	setProject,
+	uploadContract
 } from '../../redux/projects/projects.slice';
 
 const index = () => {
@@ -60,6 +67,11 @@ const index = () => {
 	const openModalhandler = (modalType: string) => {
 		setModalIsOpen(true);
 		setModalType(modalType);
+	};
+
+	const fileUploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files === null) return;
+		dispatch(uploadContract(e.target.files[0]));
 	};
 
 	const renderModalContent = (modalType: string) => {
@@ -391,13 +403,31 @@ const index = () => {
 				)}
 			</div>
 			{user?.isAdmin && (
-				<Button
-					label='Upload contract PDF'
-					color='green'
-					variant='simple'
-					size='small'
-					buttonClasses='border py-0.5 px-1.5'
-				/>
+				<>
+					<Button
+						type='file'
+						label='Upload contract PDF'
+						color='green'
+						variant='simple'
+						buttonClasses='border py-0.5 px-1.5'
+						onChange={fileUploadHandler}
+					/>
+				</>
+			)}
+			{project?.contractUploaded && (
+				<a
+					href={`http://localhost:5000/projects/contract/${project?._id}`}
+					rel='noreferrer noopener'
+					target='_blank'
+				>
+					<Button
+						label='Download contract'
+						color='green'
+						type='button'
+						variant='simple'
+						buttonClasses='border py-0.5 px-1.5'
+					/>
+				</a>
 			)}
 		</>
 	);

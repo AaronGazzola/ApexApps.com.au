@@ -154,6 +154,38 @@ export const deleteProject = createAsyncThunk(
 	}
 );
 
+export const uploadContract = createAsyncThunk(
+	'projects/uploadContract',
+	async (file: File, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		const formData: FormData = new FormData();
+		formData.append('contract', file);
+
+		try {
+			const { data }: ProjectsResponse = await axios.post(
+				`http://localhost:5000/projects/contract`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 export const editEstimate = createAsyncThunk(
 	'projects/editEstimate',
 	async (
@@ -293,6 +325,18 @@ const projectsSlice = createSlice({
 			state.success = 'Estimate updated';
 		});
 		builder.addCase(editEstimate.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(uploadContract.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(uploadContract.fulfilled, (state, action) => {
+			state.loading = false;
+			state.success = 'Contract uploaded';
+			state.project = action.payload.project;
+		});
+		builder.addCase(uploadContract.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

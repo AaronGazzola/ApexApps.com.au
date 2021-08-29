@@ -1,10 +1,11 @@
 import Link from 'next/link';
+import { ChangeEventHandler } from 'react';
 
 interface ButtonProps {
 	label?: string;
 	color: string;
 	variant: 'simple' | 'contained';
-	type?: 'submit' | 'button' | 'reset' | 'link';
+	type?: 'submit' | 'button' | 'reset' | 'link' | 'file';
 	fullWidth?: boolean;
 	disabled?: boolean;
 	onClick?: React.MouseEventHandler;
@@ -14,6 +15,7 @@ interface ButtonProps {
 	startIcon?: React.ReactNode;
 	path?: string;
 	buttonClasses?: string;
+	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const Button = (props: ButtonProps) => {
@@ -30,15 +32,16 @@ const Button = (props: ButtonProps) => {
 		endIcon = null,
 		startIcon = null,
 		path = '',
-		buttonClasses = ''
+		buttonClasses = '',
+		onChange
 	} = props;
 
 	const component = (
 		<button
-			className={`
-					rounded-md flex justify-${
-						endIcon || startIcon ? 'between' : 'center'
-					} items-center
+			className={`		
+			rounded-md flex justify-${
+				endIcon || startIcon ? 'between' : 'center'
+			} items-center
 					${buttonClasses}
 					${
 						size === 'small'
@@ -55,9 +58,9 @@ const Button = (props: ButtonProps) => {
 							? `bg-${color} text-white`
 							: disabled
 							? `cursor-default border-2 border-gray-light text-gray-light`
-							: `border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5 `
+							: `border-${color} text-${color} hover:bg-${color} hover:bg-opacity-5 group-hover:bg-${color} group-hover:bg-opacity-5 `
 					}`}
-			type={type !== 'link' ? type : undefined}
+			type={type !== 'link' && type !== 'file' ? type : undefined}
 			onClick={type === 'link' ? () => {} : onClick}
 		>
 			{startIcon && startIcon}
@@ -77,6 +80,18 @@ const Button = (props: ButtonProps) => {
 
 	if (type === 'link') {
 		return <Link href={path}>{component}</Link>;
+	} else if (type === 'file') {
+		return (
+			<div className='relative group cursor-pointer'>
+				{component}
+				<input
+					className='absolute top-0 left-0 w-full h-full opacity-0'
+					onChange={onChange}
+					value=''
+					type='file'
+				/>
+			</div>
+		);
 	} else {
 		return component;
 	}

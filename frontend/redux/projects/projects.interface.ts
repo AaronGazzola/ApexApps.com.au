@@ -2,7 +2,7 @@ export interface Project {
 	title: string;
 	_id: string;
 	description?: string;
-	contract?: string;
+	contractUploaded: boolean;
 	estimate?: {
 		startFrom: Date;
 		startTo: Date;

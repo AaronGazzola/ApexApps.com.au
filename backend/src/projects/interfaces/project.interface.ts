@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 export interface Project extends Document {
   title: string;
   description?: string;
-  contract?: string;
+  contractUploaded: boolean;
   estimate?: {
     startFrom: Date;
     startTo: Date;

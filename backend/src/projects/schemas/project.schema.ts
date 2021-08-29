@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 export const ProjectSchema = new mongoose.Schema({
   title: { required: true, type: String },
   description: String,
-  contract: String,
+  contractUploaded: { type: Boolean, default: false },
   estimate: {
     startFrom: Date,
     startTo: Date,

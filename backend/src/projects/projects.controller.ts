@@ -1,4 +1,6 @@
 import { ProjectsService } from './projects.service';
+import { extname } from 'path';
+import diskStorage from 'multer';
 import {
   Controller,
   UseGuards,
@@ -9,11 +11,15 @@ import {
   Get,
   Delete,
   Put,
+  UseInterceptors,
+  UploadedFile,
+  Response,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AddProjectDto } from './dto/add-project.dto';
 import { EditProjectDto } from './dto/edit-project.dto';
 import { EditEstimateDto } from './dto/edit-estimate.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('projects')
 export class ProjectsController {
@@ -62,5 +68,20 @@ export class ProjectsController {
     @Body(ValidationPipe) editEstimateDto: EditEstimateDto,
   ) {
     return await this.projectsService.editEstimate(req.user, editEstimateDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/contract')
+  @UseInterceptors(FileInterceptor('contract', { dest: './uploads' }))
+  async uploadContract(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req,
+  ) {
+    return await this.projectsService.uploadContract(req.user, file);
+  }
+
+  @Get('/contract/:pid')
+  async downloadContract(@Response() res) {
+    return await this.projectsService.downloadContract(res);
   }
 }
