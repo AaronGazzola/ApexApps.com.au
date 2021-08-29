@@ -403,16 +403,19 @@ const index = () => {
 				)}
 			</div>
 			{user?.isAdmin && (
-				<>
-					<Button
-						type='file'
-						label='Upload contract PDF'
-						color='green'
-						variant='simple'
-						buttonClasses='border py-0.5 px-1.5'
-						onChange={fileUploadHandler}
-					/>
-				</>
+				<Button
+					type='file'
+					label='Upload contract PDF'
+					color='green'
+					variant='simple'
+					buttonClasses='border py-0.5 px-1.5'
+					onChange={fileUploadHandler}
+					endIcon={
+						project?.contractUploaded ? (
+							<SVG name='checkMark' classes='fill-current text-green' />
+						) : null
+					}
+				/>
 			)}
 			{project?.contractUploaded && (
 				<a
