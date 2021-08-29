@@ -11,7 +11,7 @@ import Input from '../../components/Input';
 import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { logout, getUsers, setClient } from '../../redux/users/users.slice';
+import { logout, setClient } from '../../redux/users/users.slice';
 import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/ProfileModal';
 import ClientModal from '../../components/ClientModal';
@@ -20,7 +20,6 @@ import ConfirmModal from '../../components/ConfirmModal';
 import EstimateModal from '../../components/EstimateModal';
 import {
 	deleteProject,
-	getProjects,
 	setProject,
 	uploadContract
 } from '../../redux/projects/projects.slice';
@@ -32,7 +31,6 @@ const index = () => {
 		loading: usersLoading,
 		user,
 		users,
-		isAuth,
 		success: usersSuccess,
 		alert: usersAlert,
 		error: usersError
@@ -126,29 +124,6 @@ const index = () => {
 		projectsError,
 		projectsAlert
 	]);
-
-	// if no client, set client to user
-	useEffect(() => {
-		if (isAuth && user && !user?.client && !user.isAdmin)
-			dispatch(setClient(user.clientName));
-	}, [user?.client]);
-
-	// when users are updated, get users
-	useEffect(() => {
-		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
-	}, [usersSuccess]);
-
-	// when client changes, get projects
-	useEffect(() => {
-		if (user?.client) dispatch(getProjects());
-	}, [user?.client]);
-
-	// when projects change, if active project is not in projects, set project to first in array
-	useEffect(() => {
-		const projectFound = projects?.find(item => item._id === project?._id);
-		if (projects?.length && !projectFound)
-			dispatch(setProject(projects?.[0]._id));
-	}, [projects]);
 
 	return (
 		<>

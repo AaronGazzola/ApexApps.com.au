@@ -1,3 +1,4 @@
+import { Milestone } from './../milestones/milestones.interface';
 export interface Project {
 	title: string;
 	_id: string;
@@ -12,6 +13,7 @@ export interface Project {
 		costTo: number;
 		currency: 'USD' | 'AUD';
 	};
+	milestones?: Milestone[];
 }
 
 export interface ProjectsResponse {

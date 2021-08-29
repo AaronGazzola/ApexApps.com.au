@@ -5,25 +5,30 @@ import { clearProjects } from '../redux/projects/projects.slice';
 import { useEffect } from 'react';
 import Modal from './Modal';
 import Button from './Button';
+import { clearMilestones } from '../redux/milestones/milestones.slice';
 
 const UserFeedback = () => {
 	const dispatch = useAppDispatch();
-	const { users, projects } = useAppSelector(state => state);
-	const error = users.error || projects.error;
-	const success = users.success || projects.success;
+	const { users, projects, milestones } = useAppSelector(state => state);
+	const error = users.error || projects.error || milestones.error;
+	const success = users.success || projects.success || milestones.success;
 	const alert = users.alert || projects.alert;
 
-	const clickHandler = (e: React.SyntheticEvent) => {
+	const clearState = () => {
 		dispatch(clearUsers());
 		dispatch(clearProjects());
+		dispatch(clearMilestones());
+	};
+
+	const clickHandler = (e: React.SyntheticEvent) => {
+		clearState();
 	};
 
 	// if success, clear slice on window click
 	useEffect(() => {
 		function handleClickOutside(event: TouchEvent | MouseEvent) {
 			if (success) {
-				dispatch(clearUsers());
-				dispatch(clearProjects());
+				clearState();
 			}
 		}
 		document.addEventListener('mousedown', handleClickOutside);
@@ -38,8 +43,7 @@ const UserFeedback = () => {
 		let timer: ReturnType<typeof setTimeout>;
 		if (error || success || alert) {
 			timer = setTimeout(() => {
-				dispatch(clearProjects());
-				dispatch(clearUsers());
+				clearState();
 			}, 3000);
 		}
 		return () => {
@@ -52,8 +56,7 @@ const UserFeedback = () => {
 			<Modal
 				isOpen={!!error || !!alert}
 				onClose={() => {
-					dispatch(clearUsers());
-					dispatch(clearProjects());
+					clearState();
 				}}
 			>
 				<h2
@@ -106,8 +109,7 @@ const UserFeedback = () => {
 					)}
 					<Button
 						onClick={() => {
-							dispatch(clearUsers());
-							dispatch(clearProjects());
+							clearState();
 						}}
 						type='button'
 						label='OK'

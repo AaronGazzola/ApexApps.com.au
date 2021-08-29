@@ -1,6 +1,4 @@
 import { ProjectsService } from './projects.service';
-import { extname } from 'path';
-import diskStorage from 'multer';
 import {
   Controller,
   UseGuards,

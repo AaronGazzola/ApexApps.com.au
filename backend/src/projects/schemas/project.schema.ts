@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { MilestoneSchema } from 'src/milestones/schemas/milestone.schema';
 
 export const ProjectSchema = new mongoose.Schema({
   title: { required: true, type: String },
@@ -13,4 +14,5 @@ export const ProjectSchema = new mongoose.Schema({
     costTo: Number,
     currency: String,
   },
+  milestones: [MilestoneSchema],
 });

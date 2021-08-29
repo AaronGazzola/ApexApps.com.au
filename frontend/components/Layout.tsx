@@ -7,8 +7,14 @@ import Footer from './Footer';
 import { useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { getUser, getUsers, logout } from '../redux/users/users.slice';
+import {
+	getUser,
+	getUsers,
+	logout,
+	setClient
+} from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
+import { getProjects, setProject } from '../redux/projects/projects.slice';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -26,8 +32,14 @@ const Layout = (props: LayoutProps) => {
 		minDrawerWidth,
 		maxDrawerWidth
 	} = useAppSelector(state => state.utils);
-	const { isAuth, user } = useAppSelector(state => state.users);
+	const {
+		isAuth,
+		user,
+		success: usersSuccess
+	} = useAppSelector(state => state.users);
+	const { projects, project } = useAppSelector(state => state.projects);
 	const [onMount, setOnMount] = useState(true);
+	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 
 	// check for user and login on page load
 	useEffect(() => {
@@ -39,6 +51,9 @@ const Layout = (props: LayoutProps) => {
 			// if user is logged in but not verified, logout
 			dispatch(logout());
 		} else if (isAuth) {
+			// if no client and user is not admin, set client to user
+			if (user && !user?.client && !user.isAdmin)
+				dispatch(setClient(user.clientName));
 			// if admin, get users
 			if (user?.isAdmin) dispatch(getUsers());
 			// if logged in, redirect from header links to /project
@@ -68,7 +83,23 @@ const Layout = (props: LayoutProps) => {
 		}
 	}, [isAuth, dispatch]);
 
-	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
+	// when users are updated, get users
+	useEffect(() => {
+		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
+	}, [usersSuccess]);
+
+	// when client changes, get projects
+	useEffect(() => {
+		if (user?.client) dispatch(getProjects());
+	}, [user?.client]);
+
+	// when projects change, if active project is not in projects, set project to first in array
+	useEffect(() => {
+		const projectFound = projects?.find(item => item._id === project?._id);
+		if (projects?.length && !projectFound)
+			dispatch(setProject(projects?.[0]._id));
+	}, [projects]);
+
 	return (
 		<>
 			<Meta />
