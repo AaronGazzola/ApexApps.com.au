@@ -8,7 +8,7 @@ import SVG from './SVG';
 
 const ProfileModal = () => {
 	const dispatch = useAppDispatch();
-	const { user, isAuth, loading } = useAppSelector(state => state.users);
+	const { user, loading } = useAppSelector(state => state.users);
 	const [state, setState] = useState({
 		name: {
 			value: user?.userName || '',

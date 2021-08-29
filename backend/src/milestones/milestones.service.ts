@@ -1,3 +1,4 @@
+import { Feature } from './interfaces/feature.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -9,13 +10,17 @@ import { Milestone } from './interfaces/milestone.interface';
 export class MilestonesService {
   constructor(
     @InjectModel('Milestone') private milestoneModel: Model<Milestone>,
+    @InjectModel('Feature') private featureModel: Model<Feature>,
     @InjectModel('Project') private projectModel: Model<Project>,
   ) {}
 
   async getMilestones(user: User) {
     const project = await this.projectModel
       .findById(user.project._id)
-      .populate('milestones');
+      .populate({
+        path: 'milestones',
+        populate: { path: 'features' },
+      });
 
     return {
       success: true,
@@ -35,6 +40,30 @@ export class MilestonesService {
     project.milestones.splice(index, 0, milestone);
 
     await project.save();
+
+    return {
+      success: true,
+      milestones: project.milestones,
+    };
+  }
+
+  async addFeature(user: User, index: number, milestoneId: string) {
+    const milestone = await this.milestoneModel
+      .findById(milestoneId)
+      .populate('features');
+
+    const feature = await this.featureModel.create({});
+
+    milestone.features.splice(index, 0, feature);
+
+    await milestone.save();
+
+    const project = await this.projectModel
+      .findById(user.project._id)
+      .populate({
+        path: 'milestones',
+        populate: { path: 'features' },
+      });
 
     return {
       success: true,

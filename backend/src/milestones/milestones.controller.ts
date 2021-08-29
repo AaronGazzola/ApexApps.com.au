@@ -25,4 +25,16 @@ export class MilestonesController {
   async getProjects(@Request() req) {
     return await this.milestonesService.getMilestones(req.user);
   }
+  @UseGuards(JwtAuthGuard)
+  @Post('/feature')
+  async addFeature(
+    @Body() { index, milestoneId }: { index: number; milestoneId: string },
+    @Request() req,
+  ) {
+    return await this.milestonesService.addFeature(
+      req.user,
+      index,
+      milestoneId,
+    );
+  }
 }

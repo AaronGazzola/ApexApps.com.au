@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { Feature } from './feature.interface';
 
 export interface Milestone extends Document {
   title: string;
@@ -10,4 +11,5 @@ export interface Milestone extends Document {
   notes?: string;
   buttonLabel?: string;
   buttonLink?: string;
+  features?: Feature[];
 }

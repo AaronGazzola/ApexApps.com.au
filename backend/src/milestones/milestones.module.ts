@@ -1,3 +1,4 @@
+import { FeatureSchema } from './schemas/feature.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from 'src/users/schemas/user.schema';
@@ -12,6 +13,7 @@ import { ProjectSchema } from '../projects/schemas/project.schema';
       { name: 'Milestone', schema: MilestoneSchema },
       { name: 'User', schema: UserSchema },
       { name: 'Project', schema: ProjectSchema },
+      { name: 'Feature', schema: FeatureSchema },
     ]),
   ],
   controllers: [MilestonesController],

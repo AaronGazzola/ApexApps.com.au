@@ -1,10 +1,6 @@
 import { RootState } from './../store';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-	Milestone,
-	MilestonesResponse,
-	MilestonesState
-} from './milestones.interface';
+import { MilestonesResponse, MilestonesState } from './milestones.interface';
 import axios from 'axios';
 
 const config = {
@@ -68,6 +64,37 @@ export const addMilestone = createAsyncThunk(
 	}
 );
 
+export const addFeature = createAsyncThunk(
+	'projects/addFeature',
+	async (
+		{ index, milestoneId }: { index: number; milestoneId: string },
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.post(
+				`http://localhost:5000/milestones/feature`,
+				{ index, milestoneId },
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialState: MilestonesState = {
 	loading: false
 };
@@ -103,6 +130,18 @@ const milestonesSlice = createSlice({
 			state.success = 'Milestone added';
 		});
 		builder.addCase(addMilestone.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(addFeature.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(addFeature.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Feature added';
+		});
+		builder.addCase(addFeature.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

@@ -11,53 +11,81 @@ import {
 
 const index = () => {
 	const dispatch = useAppDispatch();
-	const { milestones } = useAppSelector(state => state.milestones);
+	const { milestones, loading } = useAppSelector(state => state.milestones);
+	const { isAuth, user } = useAppSelector(state => state.users);
 
 	const addMilestoneHandler = (index: number) => {
 		dispatch(addMilestone(index));
 	};
 
+	// if logged in, get milestones
 	useEffect(() => {
-		dispatch(getMilestones());
-	}, []);
+		if (isAuth && user?.project) dispatch(getMilestones());
+	}, [isAuth]);
+
 	return (
 		<>
 			<Meta title='Milestones | Apex Apps' />
 			<h1 className='title'>Milestones</h1>
-			<Button
-				type='button'
-				size='large'
-				variant='simple'
-				color='green'
-				onClick={e => addMilestoneHandler(0)}
-				endIcon={
-					<div className='w-8 h-8'>
-						<SVG
-							name='close'
-							classes='fill-current text-green transform rotate-45 w-full h-full'
+			{loading ? (
+				<div
+					className='w-10 h-10 border-t-2 border-l-2 border-blue-darkest animate-spin'
+					style={{ borderRadius: '50%' }}
+				></div>
+			) : (
+				<>
+					{user?.isAdmin && (
+						<Button
+							type='button'
+							size='large'
+							variant='simple'
+							color='green'
+							onClick={e => addMilestoneHandler(0)}
+							endIcon={
+								<div className='w-8 h-8'>
+									<SVG
+										name='add'
+										classes='fill-current text-green w-full h-full'
+									/>
+								</div>
+							}
 						/>
-					</div>
-				}
-			/>
-			{milestones?.map(milestone => (
-				<React.Fragment key={milestone._id}>
-					<Milestone />
-					<Button
-						type='button'
-						size='large'
-						variant='simple'
-						color='green'
-						endIcon={
-							<div className='w-8 h-8'>
-								<SVG
-									name='close'
-									classes='fill-current text-green transform rotate-45 w-full h-full'
+					)}
+					{milestones?.map((milestone, index) => (
+						<React.Fragment key={milestone._id}>
+							<Milestone
+								title={milestone.title}
+								startDate={milestone.startDate}
+								endDate={milestone.endDate}
+								price={milestone.price}
+								currency={milestone.currency}
+								notes={milestone.notes}
+								buttonLabel={milestone.buttonLabel}
+								buttonLink={milestone.buttonLink}
+								features={milestone.features}
+								milestoneId={milestone._id}
+							/>
+							{user?.isAdmin && (
+								<Button
+									type='button'
+									size='large'
+									variant='simple'
+									color='green'
+									onClick={() => addMilestoneHandler(index + 1)}
+									endIcon={
+										<div className='w-8 h-8'>
+											<SVG
+												name='add'
+												classes='fill-current text-green w-full h-full'
+											/>
+										</div>
+									}
 								/>
-							</div>
-						}
-					/>
-				</React.Fragment>
-			))}
+							)}
+						</React.Fragment>
+					))}
+				</>
+			)}
 		</>
 	);
 };

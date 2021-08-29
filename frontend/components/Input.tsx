@@ -4,7 +4,7 @@ import SVG from './SVG';
 interface InputProps {
 	type: 'text' | 'textarea' | 'password' | 'select' | 'date' | 'number';
 	placeholder?: string;
-	value: string | undefined;
+	value: string | number | undefined;
 	onChange?:
 		| React.ChangeEventHandler<
 				HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -147,7 +147,10 @@ const Input = (props: InputProps) => {
 						}
 						${inputClasses}
 						${
-							type === 'password' && passwordIsHidden && value?.length
+							type === 'password' &&
+							passwordIsHidden &&
+							typeof value === 'string' &&
+							value?.length
 								? 'tracking-widest'
 								: ''
 						}`}

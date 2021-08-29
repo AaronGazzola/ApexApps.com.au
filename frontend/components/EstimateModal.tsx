@@ -5,15 +5,6 @@ import Button from './Button';
 import Input from './Input';
 import { editEstimate } from '../redux/projects/projects.slice';
 
-interface Data {
-	startFrom: Date;
-	startTo: Date;
-	endFrom: Date;
-	endTo: Date;
-	costFrom: number;
-	costTo: number;
-}
-
 const EsimateModal = () => {
 	const dispatch = useAppDispatch();
 	const { project, loading } = useAppSelector(state => state.projects);
@@ -29,17 +20,13 @@ const EsimateModal = () => {
 	const { startFrom, startTo, endFrom, endTo, costFrom, costTo } = state;
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
-		if (e.currentTarget.id.startsWith('cost')) {
-			setState({
-				...state,
-				[e.currentTarget.id]: e.currentTarget.value
-			});
-		} else {
-			setState({
-				...state,
-				[e.currentTarget.id]: moment(e.currentTarget.value).toDate()
-			});
-		}
+		let value: string | Date = e.currentTarget.value;
+		if (!e.currentTarget.id.startsWith('cost'))
+			value = moment(e.currentTarget.value).toDate();
+		setState({
+			...state,
+			[e.currentTarget.id]: value
+		});
 	};
 
 	const submitHandler = (e: SyntheticEvent) => {
