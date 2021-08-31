@@ -27,14 +27,19 @@ const index = () => {
 		<>
 			<Meta title='Milestones | Apex Apps' />
 			<h1 className='title'>Milestones</h1>
-			{loading ? (
+			{!user?.isAdmin && loading ? (
 				<div
 					className='w-10 h-10 border-t-2 border-l-2 border-blue-darkest animate-spin'
 					style={{ borderRadius: '50%' }}
 				></div>
 			) : (
 				<>
-					{user?.isAdmin && (
+					{user?.isAdmin && loading ? (
+						<div
+							className='w-10 h-10 border-t-2 border-l-2 border-blue-darkest animate-spin'
+							style={{ borderRadius: '50%' }}
+						></div>
+					) : user?.isAdmin ? (
 						<Button
 							type='button'
 							size='large'
@@ -50,6 +55,8 @@ const index = () => {
 								</div>
 							}
 						/>
+					) : (
+						<></>
 					)}
 					{milestones?.map((milestone, index) => (
 						<React.Fragment key={milestone._id}>

@@ -3,12 +3,15 @@ import {
   Controller,
   Post,
   UseGuards,
+  Put,
   ValidationPipe,
   Request,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { MilestonesService } from './milestones.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Milestone } from './interfaces/milestone.interface';
 
 @Controller('milestones')
 export class MilestonesController {
@@ -36,5 +39,32 @@ export class MilestonesController {
       index,
       milestoneId,
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/step')
+  async addStep(
+    @Body() { index, featureId }: { index: number; featureId: string },
+    @Request() req,
+  ) {
+    return await this.milestonesService.addStep(req.user, index, featureId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/')
+  async editMilestone(@Body() milestone: Milestone, @Request() req) {
+    return await this.milestonesService.editMilestone(req.user, milestone);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:mid')
+  async deleteMilestone(@Request() req) {
+    return await this.milestonesService.deleteMilestone(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/feature/:fid')
+  async deleteFeature(@Request() req) {
+    return await this.milestonesService.deleteFeature(req.user);
   }
 }

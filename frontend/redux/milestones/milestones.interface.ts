@@ -8,14 +8,12 @@ export interface Milestone {
 	notes?: string;
 	buttonLabel?: string;
 	buttonLink?: string;
-	features?: [
-		{
-			_id: string;
-			title: string;
-			state: 'planned' | 'inProgress' | 'completed';
-			steps: string[];
-		}
-	];
+	features?: {
+		_id: string;
+		title: string;
+		state: 'Planned' | 'In progress' | 'Completed';
+		steps: string[];
+	}[];
 }
 
 export interface MilestonesResponse {
@@ -29,6 +27,8 @@ export interface MilestonesResponse {
 export interface MilestonesState {
 	milestone?: Milestone;
 	milestones?: Milestone[];
+	openFeature: string;
+	openMilestone: string;
 	loading: boolean;
 	error?: null | {
 		title?: string;

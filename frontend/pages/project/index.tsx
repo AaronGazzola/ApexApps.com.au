@@ -106,25 +106,6 @@ const index = () => {
 		}
 	};
 
-	useEffect(() => {
-		if (
-			usersSuccess ||
-			usersAlert ||
-			usersError ||
-			projectsSuccess ||
-			projectsError ||
-			projectsAlert
-		)
-			setModalIsOpen(false);
-	}, [
-		usersSuccess,
-		usersAlert,
-		usersError,
-		projectsSuccess,
-		projectsError,
-		projectsAlert
-	]);
-
 	return (
 		<>
 			<Meta title='Your Project | Apex Apps' />

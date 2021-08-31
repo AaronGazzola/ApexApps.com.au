@@ -13,10 +13,32 @@ const Modal = (props: ModalProps) => {
 	const { isOpen, onClose, classes = '' } = props;
 	const [fadeIn, setFadeIn] = useState(false);
 	const { breakpoint } = useAppSelector(state => state.utils);
+	const {
+		success: usersSuccess,
+		error: usersError,
+		alert: usersAlert
+	} = useAppSelector(state => state.users);
+	const {
+		success: projectsSuccess,
+		error: projectsError,
+		alert: projectsAlert
+	} = useAppSelector(state => state.projects);
+	const {
+		success: milestonesSuccess,
+		error: milestonesError,
+		alert: milestonesAlert
+	} = useAppSelector(state => state.milestones);
+	const success = milestonesSuccess || projectsSuccess || usersSuccess;
+	const error = milestonesError || projectsError || usersError;
+	const alert = milestonesAlert || projectsAlert || usersAlert;
 
 	useEffect(() => {
 		setFadeIn(isOpen);
 	}, [isOpen]);
+
+	useEffect(() => {
+		if (success || error || alert) onClose();
+	}, [success || error || alert]);
 
 	if (isOpen) {
 		return (

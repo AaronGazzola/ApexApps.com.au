@@ -1,6 +1,10 @@
 import { RootState } from './../store';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { MilestonesResponse, MilestonesState } from './milestones.interface';
+import {
+	Milestone,
+	MilestonesResponse,
+	MilestonesState
+} from './milestones.interface';
 import axios from 'axios';
 
 const config = {
@@ -95,8 +99,123 @@ export const addFeature = createAsyncThunk(
 	}
 );
 
+export const addStep = createAsyncThunk(
+	'projects/addStep',
+	async (
+		{ index, featureId }: { index: number; featureId: string },
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.post(
+				`http://localhost:5000/milestones/step`,
+				{ index, featureId },
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const editMilestone = createAsyncThunk(
+	'projects/editMilestone',
+	async (milestone: Milestone, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.put(
+				`http://localhost:5000/milestones/`,
+				milestone,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const deleteMilestone = createAsyncThunk(
+	'projects/deleteMilestone',
+	async (milestoneId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.delete(
+				`http://localhost:5000/milestones/${milestoneId}`,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const deleteFeature = createAsyncThunk(
+	'projects/deleteFeature',
+	async (featureId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.delete(
+				`http://localhost:5000/milestones/feature/${featureId}`,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialState: MilestonesState = {
-	loading: false
+	loading: false,
+	openFeature: '',
+	openMilestone: ''
 };
 
 const milestonesSlice = createSlice({
@@ -107,6 +226,12 @@ const milestonesSlice = createSlice({
 			state.error = null;
 			state.success = '';
 			state.alert = null;
+		},
+		setOpenFeature(state, action) {
+			state.openFeature = action.payload;
+		},
+		setOpenMilestone(state, action) {
+			state.openMilestone = action.payload;
 		}
 	},
 	extraReducers: builder => {
@@ -145,8 +270,57 @@ const milestonesSlice = createSlice({
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
+		builder.addCase(addStep.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(addStep.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Step added';
+		});
+		builder.addCase(addStep.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(editMilestone.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(editMilestone.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Milestone saved';
+		});
+		builder.addCase(editMilestone.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(deleteMilestone.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(deleteMilestone.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Milestone deleted';
+		});
+		builder.addCase(deleteMilestone.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(deleteFeature.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(deleteFeature.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Feature deleted';
+		});
+		builder.addCase(deleteFeature.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
 	}
 });
 
-export const { clearMilestones } = milestonesSlice.actions;
+export const { clearMilestones, setOpenFeature, setOpenMilestone } =
+	milestonesSlice.actions;
 export default milestonesSlice.reducer;
