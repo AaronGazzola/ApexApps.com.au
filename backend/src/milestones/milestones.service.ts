@@ -8,6 +8,7 @@ import { Milestone } from './interfaces/milestone.interface';
 import ErrorResponse from 'src/shared/errorResponse';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
+import { Step } from './interfaces/step.interface';
 
 @Injectable()
 export class MilestonesService {
@@ -15,6 +16,7 @@ export class MilestonesService {
     @InjectModel('Milestone') private milestoneModel: Model<Milestone>,
     @InjectModel('Feature') private featureModel: Model<Feature>,
     @InjectModel('Project') private projectModel: Model<Project>,
+    @InjectModel('Step') private stepModel: Model<Step>,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
 
@@ -23,7 +25,12 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: { path: 'features' },
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
       });
 
     return {
@@ -38,7 +45,15 @@ export class MilestonesService {
 
     const project = await this.projectModel
       .findById(user.project._id)
-      .populate('milestones');
+      .populate({
+        path: 'milestones',
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
+      });
 
     const milestone = await this.milestoneModel.create({
       title: `Milestone ${index + 1}`,
@@ -62,7 +77,9 @@ export class MilestonesService {
       .findById(milestoneId)
       .populate('features');
 
-    const feature = await this.featureModel.create({});
+    const feature = await this.featureModel.create({
+      title: `Feature ${index + 1}`,
+    });
 
     milestone.features.splice(index, 0, feature);
 
@@ -72,12 +89,18 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: { path: 'features' },
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
       });
 
     return {
       success: true,
       milestones: project.milestones,
+      feature,
     };
   }
 
@@ -87,7 +110,9 @@ export class MilestonesService {
 
     const feature = await this.featureModel.findById(featureId);
 
-    feature.steps.splice(index, 0, '');
+    const step = await this.stepModel.create({ content: `Step ${index + 1}` });
+
+    feature.steps.splice(index, 0, step);
 
     await feature.save();
 
@@ -95,49 +120,44 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: { path: 'features' },
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
       });
 
     return {
       success: true,
       milestones: project.milestones,
+      step,
     };
   }
 
-  async editMilestone(user: User, newMilestone: Milestone) {
+  async editMilestone(user: User, milestone: Milestone) {
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);
 
-    let milestone = await this.milestoneModel
-      .findById(newMilestone._id)
-      .populate('features');
-
-    milestone.title = newMilestone.title;
-    milestone.startDate = newMilestone.startDate;
-    milestone.endDate = newMilestone.endDate;
-    milestone.price = newMilestone.price;
-    milestone.currency = newMilestone.currency;
-    milestone.notes = newMilestone.notes;
-    milestone.buttonLabel = newMilestone.buttonLabel;
-    milestone.buttonLink = newMilestone.buttonLink;
+    await this.milestoneModel.findByIdAndUpdate(milestone._id, milestone);
 
     milestone.features.forEach(async (feature) => {
-      const newFeature = newMilestone.features.find(
-        (item) => item._id.toString() === feature._id.toString(),
-      );
-      feature.title = newFeature.title;
-      feature.state = newFeature.state;
-      feature.steps = newFeature.steps;
-      await feature.save();
+      await this.featureModel.findByIdAndUpdate(feature._id, feature);
+      feature.steps.forEach(async (step) => {
+        await this.stepModel.findByIdAndUpdate(step._id, step);
+      });
     });
-
-    await milestone.save();
 
     const project = await this.projectModel
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: { path: 'features' },
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
       });
 
     return {
@@ -158,7 +178,12 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: { path: 'features' },
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
       });
 
     return {
@@ -179,7 +204,38 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: { path: 'features' },
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
+      });
+
+    return {
+      success: true,
+      milestones: project.milestones,
+    };
+  }
+
+  async deleteStep(user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const { sid: stepId } = this.req.params;
+
+    await this.stepModel.findByIdAndDelete(stepId);
+
+    const project = await this.projectModel
+      .findById(user.project._id)
+      .populate({
+        path: 'milestones',
+        populate: {
+          path: 'features',
+          populate: {
+            path: 'steps',
+          },
+        },
       });
 
     return {

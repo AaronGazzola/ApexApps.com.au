@@ -7,10 +7,11 @@ interface ModalProps {
 	children: React.ReactNode;
 	classes?: string;
 	onClose: () => void;
+	userFeedback?: boolean;
 }
 
 const Modal = (props: ModalProps) => {
-	const { isOpen, onClose, classes = '' } = props;
+	const { isOpen, onClose, classes = '', userFeedback = false } = props;
 	const [fadeIn, setFadeIn] = useState(false);
 	const { breakpoint } = useAppSelector(state => state.utils);
 	const {
@@ -37,7 +38,7 @@ const Modal = (props: ModalProps) => {
 	}, [isOpen]);
 
 	useEffect(() => {
-		if (success || error || alert) onClose();
+		if ((success || error || alert) && !userFeedback) onClose();
 	}, [success || error || alert]);
 
 	if (isOpen) {

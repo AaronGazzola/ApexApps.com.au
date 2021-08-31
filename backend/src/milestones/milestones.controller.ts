@@ -67,4 +67,10 @@ export class MilestonesController {
   async deleteFeature(@Request() req) {
     return await this.milestonesService.deleteFeature(req.user);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/step/:sid')
+  async deleteStep(@Request() req) {
+    return await this.milestonesService.deleteStep(req.user);
+  }
 }

@@ -1,3 +1,15 @@
+export interface Step {
+	_id: string;
+	content: string;
+}
+
+export interface Feature {
+	_id: string;
+	title: string;
+	state: 'Planned' | 'In progress' | 'Completed';
+	steps: Step[];
+}
+
 export interface Milestone {
 	title: string;
 	_id: string;
@@ -8,12 +20,7 @@ export interface Milestone {
 	notes?: string;
 	buttonLabel?: string;
 	buttonLink?: string;
-	features?: {
-		_id: string;
-		title: string;
-		state: 'Planned' | 'In progress' | 'Completed';
-		steps: string[];
-	}[];
+	features?: Feature[];
 }
 
 export interface MilestonesResponse {
@@ -21,6 +28,8 @@ export interface MilestonesResponse {
 		success: boolean;
 		milestone?: Milestone;
 		milestones?: Milestone[];
+		step?: Step;
+		feature?: Feature;
 	};
 }
 
@@ -29,6 +38,8 @@ export interface MilestonesState {
 	milestones?: Milestone[];
 	openFeature: string;
 	openMilestone: string;
+	feature?: Feature;
+	step?: Step;
 	loading: boolean;
 	error?: null | {
 		title?: string;

@@ -54,6 +54,7 @@ const UserFeedback = () => {
 	return (
 		<>
 			<Modal
+				userFeedback
 				isOpen={!!error || !!alert}
 				onClose={() => {
 					clearState();

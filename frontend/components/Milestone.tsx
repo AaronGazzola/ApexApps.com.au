@@ -10,11 +10,13 @@ import {
 	addStep,
 	deleteFeature,
 	deleteMilestone,
+	deleteStep,
 	editMilestone,
 	setOpenFeature,
 	setOpenMilestone
 } from '../redux/milestones/milestones.slice';
 import ConfirmModal from './ConfirmModal';
+import { Feature } from '../redux/milestones/milestones.interface';
 
 interface MilestoneProps {
 	title: string;
@@ -26,12 +28,7 @@ interface MilestoneProps {
 	notes?: string;
 	buttonLabel?: string;
 	buttonLink?: string;
-	features?: {
-		_id: string;
-		title: string;
-		state: 'Planned' | 'In progress' | 'Completed';
-		steps: string[];
-	}[];
+	features?: Feature[];
 }
 
 const Milestone = (props: MilestoneProps) => {
@@ -48,7 +45,7 @@ const Milestone = (props: MilestoneProps) => {
 		milestoneId
 	} = props;
 	const { user } = useAppSelector(state => state.users);
-	const { openFeature, openMilestone, loading } = useAppSelector(
+	const { openFeature, openMilestone, loading, feature, step } = useAppSelector(
 		state => state.milestones
 	);
 	const dispatch = useAppDispatch();
@@ -72,7 +69,7 @@ const Milestone = (props: MilestoneProps) => {
 		feature.steps.forEach((step, index) => {
 			initialState = {
 				...initialState,
-				[`step${index}${feature._id}`]: step
+				[`step${step._id}`]: step.content
 			};
 		});
 	});
@@ -82,6 +79,7 @@ const Milestone = (props: MilestoneProps) => {
 			[index: string]: any;
 		}
 	);
+
 	const [modalState, setModalState] = useState({
 		isOpen: false,
 		type: '',
@@ -123,9 +121,10 @@ const Milestone = (props: MilestoneProps) => {
 				_id: feature._id,
 				title: `${state[`title${feature._id}`]}`,
 				state: featureState,
-				steps: feature.steps.map(
-					(step, index) => `${state[`step${index}${feature._id}`]}`
-				)
+				steps: feature.steps.map((step, index) => ({
+					_id: step._id,
+					content: `${state[`step${step._id}`]}`
+				}))
 			};
 		});
 		dispatch(
@@ -168,14 +167,44 @@ const Milestone = (props: MilestoneProps) => {
 						content={modalState.content}
 					/>
 				);
+			case 'deleteStep':
+				return (
+					<ConfirmModal
+						confirmFunction={() => dispatch(deleteStep(modalState.id))}
+						cancelFunction={() =>
+							setModalState({ ...modalState, isOpen: false })
+						}
+						type='delete'
+						content={modalState.content}
+					/>
+				);
 			default:
 				return <></>;
 		}
 	};
 
+	// when feature or step is added, add to state
+	useEffect(() => {
+		const foundFeature = Object.keys(state).find(
+			x => x === `title${feature?._id}`
+		);
+		if (!foundFeature)
+			setState({
+				...state,
+				[`title${feature?._id}`]: feature?.title,
+				[`featureState${feature?._id}`]: feature?.state
+			});
+		const foundStep = Object.keys(state).find(x => x === `step${step?._id}`);
+		if (!foundStep)
+			setState({
+				...state,
+				[`step${step?._id}`]: step?.content
+			});
+	}, [feature, step]);
+
 	if (user?.isAdmin) {
 		return (
-			<>
+			<React.Fragment key={milestoneId}>
 				<Modal
 					isOpen={modalState.isOpen}
 					onClose={() => setModalState({ ...modalState, isOpen: false })}
@@ -323,112 +352,90 @@ const Milestone = (props: MilestoneProps) => {
 						}
 						buttonClasses='mt-2'
 					/>
-					{features?.map((feature, index) => (
-						<React.Fragment key={feature._id}>
-							<div
-								className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4 flex flex-col items-center
+					{features?.map((feature, index) => {
+						console.log(feature);
+						if (!state[`title${feature._id}`]) {
+							return <React.Fragment key={index}></React.Fragment>;
+						} else {
+							return (
+								<React.Fragment key={feature._id}>
+									<div
+										className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4 flex flex-col items-center
             ${
 							openFeature === feature._id
 								? 'border-blue-darkest'
 								: 'border-gray-light'
 						}
             `}
-								style={{
-									transition: 'max-height .3s ease-out',
-									maxHeight: openFeature === feature._id ? 10000 : 32
-								}}
-							>
-								<SVG
-									name='close'
-									classes={`absolute left-0.5 top-0.5 fill-current text-red w-7 h-7 z-10 cursor-pointer`}
-									onClick={() =>
-										setModalState({
-											isOpen: true,
-											type: 'deleteFeature',
-											id: feature._id,
-											content: state[`title${feature._id}`]
-										})
-									}
-								/>
-								<SVG
-									name='chevronLeft'
-									classes={`absolute right-2 top-1 fill-current text-gray transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
-										openFeature === feature._id
-											? 'rotate-90 translate-y-1 text-blue-dark'
-											: '-rotate-90'
-									}`}
-								/>
-								<div
-									className='absolute top-0 left-0 w-full h-8 cursor-pointer'
-									onClick={() =>
-										dispatch(
-											setOpenFeature(
-												openFeature === feature._id ? '' : feature._id
-											)
-										)
-									}
-								></div>
-								<p
-									className={`font-semibold ${
-										openFeature === feature._id
-											? 'text-blue-dark'
-											: 'text-gray-dark'
-									} text-sm text-center mt-1 mb-2`}
-								>
-									Feature
-								</p>
-								<Input
-									type='text'
-									placeholder='Title'
-									value={state[`title${feature._id}`]}
-									onChange={changeHandler}
-									label='Title'
-									id={`title${feature._id}`}
-									validation={false}
-								/>
-								<Input
-									type='select'
-									placeholder='State'
-									value={state[`featureState${feature._id}`]}
-									onChange={changeHandler}
-									label='State'
-									id={`featureState${feature._id}`}
-									validation={false}
-									options={['Planned', 'In progress', 'Completed']}
-								/>
-								<Button
-									type='button'
-									size='large'
-									variant='simple'
-									color='green'
-									onClick={() => addStepHandler(feature._id, 0)}
-									endIcon={
-										<div className='w-6 h-6'>
-											<SVG
-												name='add'
-												classes='fill-current text-green w-full h-full'
-											/>
-										</div>
-									}
-									buttonClasses='mt-4'
-								/>
-								{feature.steps.map((step, index) => (
-									<React.Fragment key={index}>
+										style={{
+											transition: 'max-height .3s ease-out',
+											maxHeight: openFeature === feature._id ? 10000 : 32
+										}}
+									>
+										<SVG
+											name='close'
+											classes={`absolute left-0.5 top-0.5 fill-current text-red w-7 h-7 z-10 cursor-pointer`}
+											onClick={() =>
+												setModalState({
+													isOpen: true,
+													type: 'deleteFeature',
+													id: feature._id,
+													content: state[`title${feature._id}`]
+												})
+											}
+										/>
+										<SVG
+											name='chevronLeft'
+											classes={`absolute right-2 top-1 fill-current text-gray transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+												openFeature === feature._id
+													? 'rotate-90 translate-y-1 text-blue-dark'
+													: '-rotate-90'
+											}`}
+										/>
+										<div
+											className='absolute top-0 left-0 w-full h-8 cursor-pointer'
+											onClick={() =>
+												dispatch(
+													setOpenFeature(
+														openFeature === feature._id ? '' : feature._id
+													)
+												)
+											}
+										></div>
+										<p
+											className={`font-semibold ${
+												openFeature === feature._id
+													? 'text-blue-dark'
+													: 'text-gray-dark'
+											} text-sm text-center mt-1 mb-2`}
+										>
+											Feature
+										</p>
 										<Input
 											type='text'
-											placeholder={`Step ${index + 1}`}
-											value={state[`step${index}${feature._id}`]}
+											placeholder='Title'
+											value={state[`title${feature._id}`]}
 											onChange={changeHandler}
-											label={`Step ${index + 1}`}
-											id={`step${index}${feature._id}`}
+											label='Title'
+											id={`title${feature._id}`}
 											validation={false}
+										/>
+										<Input
+											type='select'
+											placeholder='State'
+											value={state[`featureState${feature._id}`]}
+											onChange={changeHandler}
+											label='State'
+											id={`featureState${feature._id}`}
+											validation={false}
+											options={['Planned', 'In progress', 'Completed']}
 										/>
 										<Button
 											type='button'
 											size='large'
 											variant='simple'
 											color='green'
-											onClick={() => addStepHandler(feature._id, index + 1)}
+											onClick={() => addStepHandler(feature._id, 0)}
 											endIcon={
 												<div className='w-6 h-6'>
 													<SVG
@@ -437,29 +444,81 @@ const Milestone = (props: MilestoneProps) => {
 													/>
 												</div>
 											}
-											buttonClasses='mt-2'
+											buttonClasses='mt-4'
 										/>
-									</React.Fragment>
-								))}
-							</div>
-							<Button
-								type='button'
-								size='large'
-								variant='simple'
-								color='green'
-								onClick={() => addFeatureHandler(index + 1)}
-								endIcon={
-									<div className='w-6 h-6'>
-										<SVG
-											name='add'
-											classes='fill-current text-green w-full h-full'
-										/>
+										{feature.steps.map((step, index) => {
+											if (!state[`step${step._id}`]) {
+												return <React.Fragment key={index}></React.Fragment>;
+											} else {
+												return (
+													<React.Fragment key={step._id}>
+														<div className='flex flex-nowrap items-center w-full'>
+															<Input
+																type='textarea'
+																placeholder={`Step ${index + 1}`}
+																value={state[`step${step._id}`]}
+																onChange={changeHandler}
+																label={`Step ${index + 1}`}
+																id={`step${step._id}`}
+																validation={false}
+																rows={1}
+															/>
+															<SVG
+																name='close'
+																classes={`fill-current text-red w-7 h-7 z-10 cursor-pointer mt-5 -mr-3`}
+																onClick={() =>
+																	setModalState({
+																		isOpen: true,
+																		type: 'deleteStep',
+																		id: step._id,
+																		content: state[`step${step._id}`]
+																	})
+																}
+															/>
+														</div>
+														<Button
+															type='button'
+															size='large'
+															variant='simple'
+															color='green'
+															onClick={() =>
+																addStepHandler(feature._id, index + 1)
+															}
+															endIcon={
+																<div className='w-6 h-6'>
+																	<SVG
+																		name='add'
+																		classes='fill-current text-green w-full h-full'
+																	/>
+																</div>
+															}
+															buttonClasses='mt-2'
+														/>
+													</React.Fragment>
+												);
+											}
+										})}
 									</div>
-								}
-								buttonClasses='mt-2'
-							/>
-						</React.Fragment>
-					))}
+									<Button
+										type='button'
+										size='large'
+										variant='simple'
+										color='green'
+										onClick={() => addFeatureHandler(index + 1)}
+										endIcon={
+											<div className='w-6 h-6'>
+												<SVG
+													name='add'
+													classes='fill-current text-green w-full h-full'
+												/>
+											</div>
+										}
+										buttonClasses='mt-2'
+									/>
+								</React.Fragment>
+							);
+						}
+					})}
 					<Button
 						label='Save changes'
 						type='submit'
@@ -469,13 +528,23 @@ const Milestone = (props: MilestoneProps) => {
 						variant='contained'
 						disabled={false}
 						loading={loading}
-						buttonClasses='p-2 shadow-sm'
+						buttonClasses='p-2 shadow-sm mt-2'
 					/>
 				</form>
-			</>
+			</React.Fragment>
 		);
 	} else {
-		return <div className='box w-72 sm:w-80'></div>;
+		return (
+			<React.Fragment key={milestoneId}>
+				<div className='flex justify-between'>
+					<div>
+						<div className='rounded-full bg-gray-dark w-4 h-4'></div>
+						<p className='font-semibold text-gray-dark'>Planned</p>
+					</div>
+				</div>
+				<div className='box w-72 sm:w-80'></div>
+			</React.Fragment>
+		);
 	}
 };
 

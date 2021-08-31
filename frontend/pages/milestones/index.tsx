@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Meta from '../../components/Meta';
 import Milestone from '../../components/Milestone';
 import Button from '../../components/Button';
@@ -36,7 +36,7 @@ const index = () => {
 				<>
 					{user?.isAdmin && loading ? (
 						<div
-							className='w-10 h-10 border-t-2 border-l-2 border-blue-darkest animate-spin'
+							className='w-8 h-8 border-t-2 border-l-2 border-blue-darkest animate-spin'
 							style={{ borderRadius: '50%' }}
 						></div>
 					) : user?.isAdmin ? (

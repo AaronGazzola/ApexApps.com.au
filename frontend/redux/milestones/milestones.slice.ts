@@ -212,6 +212,33 @@ export const deleteFeature = createAsyncThunk(
 	}
 );
 
+export const deleteStep = createAsyncThunk(
+	'projects/deleteStep',
+	async (stepId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.delete(
+				`http://localhost:5000/milestones/step/${stepId}`,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialState: MilestonesState = {
 	loading: false,
 	openFeature: '',
@@ -264,6 +291,7 @@ const milestonesSlice = createSlice({
 		builder.addCase(addFeature.fulfilled, (state, action) => {
 			state.loading = false;
 			state.milestones = action.payload.milestones;
+			state.feature = action.payload.feature;
 			state.success = 'Feature added';
 		});
 		builder.addCase(addFeature.rejected, (state, action) => {
@@ -276,6 +304,7 @@ const milestonesSlice = createSlice({
 		builder.addCase(addStep.fulfilled, (state, action) => {
 			state.loading = false;
 			state.milestones = action.payload.milestones;
+			state.step = action.payload.step;
 			state.success = 'Step added';
 		});
 		builder.addCase(addStep.rejected, (state, action) => {
@@ -315,6 +344,18 @@ const milestonesSlice = createSlice({
 			state.success = 'Feature deleted';
 		});
 		builder.addCase(deleteFeature.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(deleteStep.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(deleteStep.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Step deleted';
+		});
+		builder.addCase(deleteStep.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
