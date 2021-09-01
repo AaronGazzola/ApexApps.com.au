@@ -36,6 +36,7 @@ const Layout = (props: LayoutProps) => {
 	const {
 		isAuth,
 		user,
+		users,
 		success: usersSuccess,
 		client
 	} = useAppSelector(state => state.users);
@@ -43,7 +44,7 @@ const Layout = (props: LayoutProps) => {
 	const [onMount, setOnMount] = useState(true);
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 
-	const authRoutes = () => {
+	const onAuthRoute = () => {
 		if (router.pathname.startsWith('/signup')) return false;
 		switch (router.pathname) {
 			case '/':
@@ -65,54 +66,50 @@ const Layout = (props: LayoutProps) => {
 	useEffect(() => {
 		if (onMount) {
 			// if first page load, check for user
-			if (authRoutes()) dispatch(getUser());
+			if (onAuthRoute()) dispatch(getUser());
 			setOnMount(false);
 		} else if (isAuth && !user?.isVerified) {
 			// if user is logged in but not verified, logout
 			dispatch(logout());
 		} else if (isAuth) {
-			// if no client and user is not admin, set client to user
-			if (user && !user?.client && !user?.isAdmin) {
+			// if user is not admin and no client is on user, set client to user
+			if (user && !user?.isAdmin && !user.client) {
 				dispatch(setClient(user.clientName));
-			}
-			// if user is admin and client does not match user.client, set client to user.client
-			if (
-				user &&
-				user?.isAdmin &&
-				user?.client?._id !== client?._id &&
-				user?.client?.clientName
-			) {
-				dispatch(setClient(user?.client?.clientName));
 			}
 			// if admin, get users
 			if (user?.isAdmin) dispatch(getUsers());
 			// if logged in, redirect from header links to /project
-			if (!authRoutes()) router.push('/project');
+			if (!onAuthRoute()) router.push('/project');
 		} else if (!isAuth) {
 			// if not logged in redirect from drawer links to /login
-			if (authRoutes()) router.push('/login');
+			if (onAuthRoute()) router.push('/login');
+			dispatch(logout());
 		}
 	}, [isAuth]);
 
-	// if client !== user.client, set user.client
-
-	// when users are updated, get users
+	// when users are updated, get user and users
 	useEffect(() => {
 		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
+		if (usersSuccess) dispatch(getUser());
 	}, [usersSuccess]);
 
 	// when client changes, get projects
 	useEffect(() => {
-		if (user?.client) dispatch(getProjects());
-	}, [user?.client]);
+		if (client) dispatch(getProjects());
+	}, [client]);
 
-	// when projects change, if active project is not in projects, set project to first in array
+	// when projects change, if project is not found on projects, set project to first in array
 	useEffect(() => {
 		const projectFound = projects?.find(x => x._id === project?._id);
-		if (projects?.length && !projectFound)
-			dispatch(setProject(projects?.[0]._id));
-		if (user?.project) dispatch(getMilestones());
+		if (!projectFound && projects?.length) {
+			dispatch(setProject(projects[0]._id));
+		}
 	}, [projects]);
+
+	// when project changes, set milestones
+	useEffect(() => {
+		if (user?.project) dispatch(getMilestones());
+	}, [project]);
 
 	return (
 		<>

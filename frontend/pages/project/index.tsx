@@ -30,20 +30,20 @@ const index = () => {
 		client,
 		loading: usersLoading,
 		user,
-		users,
-		success: usersSuccess,
-		alert: usersAlert,
-		error: usersError
+		users
 	} = useAppSelector(state => state.users);
 	const {
 		loading: projectsLoading,
 		project,
-		projects,
-		success: projectsSuccess,
-		alert: projectsAlert,
-		error: projectsError
+		projects
 	} = useAppSelector(state => state.projects);
-	const loading = usersLoading || projectsLoading;
+	const loading =
+		usersLoading ||
+		projectsLoading ||
+		!user ||
+		!client ||
+		!project ||
+		!projects?.length;
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [modalType, setModalType] = useState('');
@@ -114,7 +114,7 @@ const index = () => {
 			</Modal>
 			<h1 className='title'>Project</h1>
 			<div className='box w-72 sm:w-80'>
-				{loading || !user ? (
+				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
 						<hr className='w-52 h-0.5 bg-gray-300 mb-1' />
@@ -160,7 +160,7 @@ const index = () => {
 								}
 							/>
 						</div>
-						{user.isAdmin && (
+						{user?.isAdmin && (
 							<>
 								<Input
 									value={user?.client?.clientName}
@@ -208,7 +208,7 @@ const index = () => {
 							inputClasses=''
 							labelTop
 						/>
-						{user.isAdmin && (
+						{user?.isAdmin && (
 							<div className='mt-2 flex justify-between w-full'>
 								<Button
 									label='Delete project'
@@ -242,7 +242,7 @@ const index = () => {
 				</div>
 			)}
 			<div className='box w-72 sm:w-3/4 lg:w-1/2 max-w-lg'>
-				{loading || !user ? (
+				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
 						<div className='skeleton w-full h-8 m-1'></div>
@@ -276,7 +276,7 @@ const index = () => {
 				)}
 			</div>
 			<div className='box w-72 sm:w-80'>
-				{loading || !user ? (
+				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 mt-1 mb-3'></div>
 						<div className='skeleton w-52 h-7 m-1'></div>
@@ -343,7 +343,7 @@ const index = () => {
 								</span>
 							</p>
 						</div>
-						{user.isAdmin && (
+						{user?.isAdmin && (
 							<div className='flex justify-end w-full mt-2'>
 								<Button
 									label='Edit estimate'
