@@ -88,7 +88,7 @@ export class AuthService {
     try {
       const user = await this.userModel.findById(_id).populate('client');
       if (!user) {
-        throw new Error('No user found');
+        throw new ErrorResponse('No user found', 404);
       }
       const payload = { username: user.email, sub: user._id };
       return {

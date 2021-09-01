@@ -69,25 +69,22 @@ export const getUser = createAsyncThunk(
 		if (rawLocalUserData) localToken = JSON.parse(rawLocalUserData).token;
 
 		const token = !!localToken ? localToken : stateToken;
-
-		if (token) {
-			try {
-				const { data }: UserResponse = await axios.get(
-					'http://localhost:5000/auth/me',
-					{
-						headers: {
-							'Authorization': `Bearer ${token}`
-						}
+		try {
+			const { data }: UserResponse = await axios.get(
+				'http://localhost:5000/auth/me',
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
 					}
-				);
-				return data;
-			} catch (error) {
-				return rejectWithValue(
-					error.response && error.response.data.message
-						? error.response.data.message
-						: error.message
-				);
-			}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
 		}
 	}
 );
@@ -423,7 +420,8 @@ const usersSlice = createSlice({
 			state.isAuth = false;
 			state.alert = {
 				title: 'Success',
-				message: 'Please check your email inbox to verify your account'
+				message: 'Please check your email inbox to verify your account',
+				titleColor: 'green'
 			};
 		});
 		builder.addCase(signup.rejected, (state, action) => {
@@ -448,11 +446,11 @@ const usersSlice = createSlice({
 			state.loading = true;
 		});
 		builder.addCase(getUser.fulfilled, (state, action) => {
-			state.user = action?.payload?.user;
-			state.isAuth = !!action?.payload?.token;
-			state.token = action?.payload?.token;
+			state.user = action.payload.user;
+			state.isAuth = !!action.payload.token;
+			state.token = action.payload.token;
 			state.loading = false;
-			state.client = action?.payload?.client;
+			state.client = action.payload.client;
 		});
 		builder.addCase(getUser.rejected, (state, action) => {
 			state.error = {
@@ -542,6 +540,14 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.success = 'Account verified';
+			localStorage.setItem(
+				'userData',
+				JSON.stringify({
+					user: action.payload.user,
+					isAuth: !!action.payload.token,
+					token: action.payload.token
+				})
+			);
 		});
 		builder.addCase(verifyUser.rejected, (state, action) => {
 			state.error = { message: action.payload as string };

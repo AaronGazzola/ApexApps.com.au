@@ -1,14 +1,21 @@
 import Snackbar from './Snackbar';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { clearUsers, getUser, getUsers } from '../redux/users/users.slice';
+import {
+	clearUsers,
+	getUser,
+	getUsers,
+	logout
+} from '../redux/users/users.slice';
 import { clearProjects } from '../redux/projects/projects.slice';
 import { useEffect } from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import { clearMilestones } from '../redux/milestones/milestones.slice';
+import { useRouter } from 'next/router';
 
 const UserFeedback = () => {
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const { users, projects, milestones } = useAppSelector(state => state);
 	const error = users.error || projects.error || milestones.error;
 	const success = users.success || projects.success || milestones.success;
@@ -41,7 +48,7 @@ const UserFeedback = () => {
 	// clear users after timeout
 	useEffect(() => {
 		let timer: ReturnType<typeof setTimeout>;
-		if (error || success || alert) {
+		if (success && !error && !alert) {
 			timer = setTimeout(() => {
 				clearState();
 			}, 3000);
@@ -62,7 +69,11 @@ const UserFeedback = () => {
 			>
 				<h2
 					className={`title-sm ${
-						error ? 'text-red' : alert?.titleColor ? alert?.titleColor : ''
+						error
+							? 'text-red'
+							: alert?.titleColor
+							? `text-${alert?.titleColor}`
+							: ''
 					}`}
 				>
 					{error?.title
@@ -111,6 +122,10 @@ const UserFeedback = () => {
 					<Button
 						onClick={() => {
 							clearState();
+							if (error?.message === 'Unauthorized') {
+								dispatch(logout());
+								router.push('/login');
+							}
 						}}
 						type='button'
 						label='OK'

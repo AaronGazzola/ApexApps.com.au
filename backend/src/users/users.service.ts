@@ -337,21 +337,17 @@ export class UsersService {
   }
 
   async setClient(clientName: string, user: User) {
-    let client;
-    if (user.isAdmin) {
-      client = await this.userModel
-        .findOne({ clientName })
-        .populate('projects');
-    } else {
-      client = user;
-    }
+    const client = await this.userModel
+      .findOne({ clientName })
+      .populate('projects');
+
     user.client = client;
 
-    const returnUser = await user.save();
+    await user.save();
 
     return {
       success: true,
-      user: returnUser,
+      user,
       client,
     };
   }

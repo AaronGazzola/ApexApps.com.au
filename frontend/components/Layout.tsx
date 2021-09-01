@@ -15,6 +15,7 @@ import {
 } from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
 import { getProjects, setProject } from '../redux/projects/projects.slice';
+import { getMilestones } from '../redux/milestones/milestones.slice';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -35,53 +36,65 @@ const Layout = (props: LayoutProps) => {
 	const {
 		isAuth,
 		user,
-		success: usersSuccess
+		success: usersSuccess,
+		client
 	} = useAppSelector(state => state.users);
 	const { projects, project } = useAppSelector(state => state.projects);
 	const [onMount, setOnMount] = useState(true);
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 
+	const authRoutes = () => {
+		if (router.pathname.startsWith('/signup')) return false;
+		switch (router.pathname) {
+			case '/':
+			case '/portfolio':
+			case '/contact':
+			case '/login':
+				return false;
+			case '/project':
+			case '/timeline':
+			case '/milestones':
+			case '/proposal':
+				return true;
+			default:
+				break;
+		}
+	};
+
 	// check for user and login on page load
 	useEffect(() => {
 		if (onMount) {
 			// if first page load, check for user
-			dispatch(getUser());
+			if (authRoutes()) dispatch(getUser());
 			setOnMount(false);
 		} else if (isAuth && !user?.isVerified) {
 			// if user is logged in but not verified, logout
 			dispatch(logout());
 		} else if (isAuth) {
 			// if no client and user is not admin, set client to user
-			if (user && !user?.client && !user.isAdmin)
+			if (user && !user?.client && !user?.isAdmin) {
 				dispatch(setClient(user.clientName));
+			}
+			// if user is admin and client does not match user.client, set client to user.client
+			if (
+				user &&
+				user?.isAdmin &&
+				user?.client?._id !== client?._id &&
+				user?.client?.clientName
+			) {
+				dispatch(setClient(user?.client?.clientName));
+			}
 			// if admin, get users
 			if (user?.isAdmin) dispatch(getUsers());
 			// if logged in, redirect from header links to /project
-			if (router.pathname.startsWith('/signup')) router.push('/project');
-			switch (router.pathname) {
-				case '/':
-				case '/portfolio':
-				case '/contact':
-				case '/login':
-					router.push('/project');
-					break;
-				default:
-					break;
-			}
+			if (!authRoutes()) router.push('/project');
 		} else if (!isAuth) {
 			// if not logged in redirect from drawer links to /login
-			switch (router.pathname) {
-				case '/project':
-				case '/timeline':
-				case '/milestones':
-				case '/proposal':
-					router.push('/login');
-					break;
-				default:
-					break;
-			}
+			if (authRoutes()) router.push('/login');
 		}
-	}, [isAuth, dispatch]);
+	}, [isAuth]);
+
+	// if client !== user.client, set user.client
 
 	// when users are updated, get users
 	useEffect(() => {
@@ -95,9 +108,10 @@ const Layout = (props: LayoutProps) => {
 
 	// when projects change, if active project is not in projects, set project to first in array
 	useEffect(() => {
-		const projectFound = projects?.find(item => item._id === project?._id);
+		const projectFound = projects?.find(x => x._id === project?._id);
 		if (projects?.length && !projectFound)
 			dispatch(setProject(projects?.[0]._id));
+		if (user?.project) dispatch(getMilestones());
 	}, [projects]);
 
 	return (

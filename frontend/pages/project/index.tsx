@@ -231,7 +231,7 @@ const index = () => {
 					</>
 				)}
 			</div>
-			{user?.isAdmin && client?.isVerified && (
+			{user?.isAdmin && !client?.isVerified && (
 				<div className='box w-72 sm:w-80'>
 					<h2 className='title-sm'>Client Signup Link</h2>
 					<p className='mt-2 text-gray-dark font-medium text-center'>

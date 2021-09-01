@@ -353,7 +353,6 @@ const Milestone = (props: MilestoneProps) => {
 						buttonClasses='mt-2'
 					/>
 					{features?.map((feature, index) => {
-						console.log(feature);
 						if (!state[`title${feature._id}`]) {
 							return <React.Fragment key={index}></React.Fragment>;
 						} else {
@@ -368,8 +367,8 @@ const Milestone = (props: MilestoneProps) => {
 						}
             `}
 										style={{
-											transition: 'max-height .3s ease-out',
-											maxHeight: openFeature === feature._id ? 10000 : 32
+											transition: 'max-height .3s ease',
+											maxHeight: openFeature === feature._id ? '' : 32
 										}}
 									>
 										<SVG
