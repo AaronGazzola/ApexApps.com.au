@@ -535,12 +535,6 @@ const Milestone = (props: MilestoneProps) => {
 	} else {
 		return (
 			<React.Fragment key={milestoneId}>
-				<div className='flex justify-between'>
-					<div>
-						<div className='rounded-full bg-gray-dark w-4 h-4'></div>
-						<p className='font-semibold text-gray-dark'>Planned</p>
-					</div>
-				</div>
 				<div className='box w-72 sm:w-80'></div>
 			</React.Fragment>
 		);

@@ -15,7 +15,6 @@ import {
 } from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
 import { getProjects, setProject } from '../redux/projects/projects.slice';
-import { getMilestones } from '../redux/milestones/milestones.slice';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -105,11 +104,6 @@ const Layout = (props: LayoutProps) => {
 			dispatch(setProject(projects[0]._id));
 		}
 	}, [projects]);
-
-	// when project changes, set milestones
-	useEffect(() => {
-		if (user?.project) dispatch(getMilestones());
-	}, [project]);
 
 	return (
 		<>
