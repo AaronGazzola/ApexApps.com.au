@@ -38,7 +38,7 @@ const Logo = (props: LogoProps) => {
 					height={height}
 				/>
 				{variant !== 'drawer-sm' && (
-					<p className='font-extrabold text-xxxs sm:text-xxs text-blue-darkest whitespace-nowrap'>
+					<p className='font-extrabold text-xxxs sm:text-xs text-blue-darkest whitespace-nowrap'>
 						APEX APPS
 					</p>
 				)}

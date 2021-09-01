@@ -534,11 +534,72 @@ const Milestone = (props: MilestoneProps) => {
 		);
 	} else {
 		return (
-			<React.Fragment key={milestoneId}>
-				<div className='box w-72 sm:w-80'></div>
-			</React.Fragment>
+			<div className='box w-72 sm:w-80' key={milestoneId}>
+				<h2 className='title-sm mb-4'>{title}</h2>
+				<div className='flex flex-col w-full'>
+					<div className='flex justify-between'>
+						<p>
+							<span className='font-semibold text-gray-dark'>Start: </span>
+							{moment(startDate).format('D-MMM-YY')}
+						</p>
+						<p>
+							<span className='font-semibold text-gray-dark'>End: </span>
+							{moment(endDate).format('D-MMM-YY')}
+						</p>
+					</div>
+					<div className='flex items-end justify-between'>
+						<p>
+							<span className='font-semibold text-gray-dark'>Price: </span>
+							{price.toLocaleString('en-US')}
+						</p>
+						<div className='rounded-full border-2 border-gray-dark flex flex-nowrap px-1 py-0.5 items-center mt-1'>
+							<SVG
+								name='lightBulb'
+								classes='fill-current text-gray-dark h-4 w-4 sm:w-5 sm:h-5'
+							/>
+							<p className='font-bold text-gray-dark text-xs pr-1 '>Planned</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		);
 	}
 };
+
+{
+	/* <div className='flex flex-col items-center border rounded-md border-gray-dark'>
+							<p className='text-gray-dark text-xs'>Key:</p>
+
+							<div className='flex justify-between w-72 sm:w-80 sm:px-2 py-1'>
+								<div className='rounded-full border-2 border-gray-dark flex flex-nowrap px-1 py-0.5 items-center'>
+									<SVG
+										name='lightBulb'
+										classes='fill-current text-gray-dark h-4 w-4 sm:w-5 sm:h-5'
+									/>
+									<p className='font-bold text-gray-dark text-xs pr-1 '>
+										Planned
+									</p>
+								</div>
+								<div className='rounded-full bg-blue-darkest flex flex-nowrap px-1 py-0.5 items-center'>
+									<SVG
+										name='pulse'
+										classes='fill-current text-white h-4 w-4 mx-0.5 sm:w-5 sm:h-5'
+									/>
+									<p className='font-bold text-white text-xs pr-1 whitespace-nowrap'>
+										In Progress
+									</p>
+								</div>
+								<div className='rounded-full bg-green flex flex-nowrap px-1 py-0.5 items-center'>
+									<SVG
+										name='checkMark'
+										classes='fill-current text-white h-5 w-5'
+									/>
+									<p className='font-bold text-white text-xs pr-1 '>
+										Completed
+									</p>
+								</div>
+							</div>
+						</div> */
+}
 
 export default Milestone;

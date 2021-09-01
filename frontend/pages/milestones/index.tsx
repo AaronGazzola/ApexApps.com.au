@@ -61,33 +61,7 @@ const index = () => {
 							}
 						/>
 					) : (
-						<div className='flex justify-between w-72 sm:w-80 px-2 py-1'>
-							<div className='rounded-full border-2 border-gray-dark flex flex-nowrap px-1 py-0.5 items-center'>
-								<SVG
-									name='lightBulb'
-									classes='fill-current text-gray-dark h-5 w-5'
-								/>
-								<p className='font-bold text-gray-dark text-xxs pr-1 '>
-									Planned
-								</p>
-							</div>
-							<div className='rounded-full bg-blue-darkest flex flex-nowrap px-1 py-0.5 items-center'>
-								<SVG
-									name='pulse'
-									classes='fill-current text-white h-5 w-5 mx-0.5'
-								/>
-								<p className='font-bold text-white text-xxs pr-1 '>
-									In Progress
-								</p>
-							</div>
-							<div className='rounded-full bg-green flex flex-nowrap px-1 py-0.5 items-center'>
-								<SVG
-									name='checkMark'
-									classes='fill-current text-white h-5 w-5'
-								/>
-								<p className='font-bold text-white text-xxs pr-1 '>Completed</p>
-							</div>
-						</div>
+						<></>
 					)}
 
 					{milestones?.map((milestone, index) => (

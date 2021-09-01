@@ -110,7 +110,7 @@ export class ProjectsService {
     const { title, description } = editProjectDto;
 
     // check if user is admin or user is client
-    if (!user.isAdmin && user._id !== user.client._id)
+    if (!user.isAdmin && user._id.toString() !== user.client._id.toString())
       throw new ErrorResponse('Not authorised to access this content', 401);
 
     const project = await this.projectModel.findById(user.project._id);

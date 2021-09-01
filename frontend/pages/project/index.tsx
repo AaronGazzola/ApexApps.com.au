@@ -127,9 +127,13 @@ const index = () => {
 					</>
 				) : (
 					<>
-						<h2 className='title-sm text-gray-dark'>{user?.userName}</h2>
+						<h2 className='title-sm font-medium text-gray-dark w-full break-words text-center'>
+							{user?.userName}
+						</h2>
 						<hr className='w-52 h-0.5 bg-gray-300 mb-1' />
-						<h3 className='text-sm'>{user?.email}</h3>
+						<h3 className='text-sm text-gray-dark font-medium w-full break-words text-center'>
+							{user?.email}
+						</h3>
 						<div className='w-min flex justify-between mt-3'>
 							<Button
 								label='Log out'
@@ -241,7 +245,7 @@ const index = () => {
 					</p>
 				</div>
 			)}
-			<div className='box w-72 sm:w-3/4 lg:w-1/2 max-w-lg'>
+			<div className='box w-72 sm:w-min sm:max-w-lg' style={{ minWidth: 280 }}>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -252,10 +256,12 @@ const index = () => {
 					</>
 				) : (
 					<>
-						<h2 className='title-sm'>{project?.title}</h2>
+						<h2 className='title-sm w-full text-center break-words'>
+							{project?.title}
+						</h2>
 						<p
-							className={`my-2 text-gray-dark ${
-								!project?.description ? 'italic' : ''
+							className={`w-full my-2 break-words text-center ${
+								!project?.description ? 'italic text-gray-dark' : ''
 							}`}
 						>
 							{project?.description
@@ -293,14 +299,14 @@ const index = () => {
 							className='relative flex w-full mb-4'
 							style={{ minHeight: 20 }}
 						>
-							<p className='text-gray-dark w-1/2 pr-7 text-right'>
+							<p className=' w-1/2 pr-7 text-right'>
 								{moment(project?.estimate?.startFrom).format('D-MMM-YY')}
 							</p>
 							<SVG
 								name='doubleArrow'
 								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
 							/>
-							<p className='text-gray-dark w-1/2 pl-7'>
+							<p className=' w-1/2 pl-7'>
 								{moment(project?.estimate?.startTo).format('D-MMM-YY')}
 							</p>
 						</div>
@@ -311,14 +317,14 @@ const index = () => {
 							className='relative flex w-full mb-4'
 							style={{ minHeight: 20 }}
 						>
-							<p className='text-gray-dark w-1/2 pr-7 text-right'>
+							<p className='w-1/2 pr-7 text-right'>
 								{moment(project?.estimate?.endFrom).format('D-MMM-YY')}
 							</p>
 							<SVG
 								name='doubleArrow'
 								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
 							/>
-							<p className='text-gray-dark w-1/2 pl-7'>
+							<p className='w-1/2 pl-7'>
 								{moment(project?.estimate?.endTo).format('D-MMM-YY')}
 							</p>
 						</div>
@@ -326,7 +332,7 @@ const index = () => {
 							Total cost between
 						</p>
 						<div className='relative flex w-full mb-2'>
-							<p className='text-gray-dark w-1/2 pr-7 text-right'>
+							<p className=' w-1/2 pr-7 text-right'>
 								${project?.estimate?.costFrom?.toLocaleString('en-US')}
 								<span className='text-xxxs font-semibold'>
 									{project?.estimate?.currency}
@@ -336,7 +342,7 @@ const index = () => {
 								name='doubleArrow'
 								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
 							/>
-							<p className='text-gray-dark w-1/2 pl-7'>
+							<p className=' w-1/2 pl-7'>
 								${project?.estimate?.costTo?.toLocaleString('en-US')}
 								<span className='text-xxxs font-semibold'>
 									{project?.estimate?.currency}
