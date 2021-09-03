@@ -63,12 +63,13 @@ export const getUser = createAsyncThunk(
 			users: { token: stateToken }
 		} = getState() as RootState;
 
-		const rawLocalUserData = localStorage.getItem('userData');
+		const localUserData = localStorage.getItem('userData');
 
 		let localToken = '';
-		if (rawLocalUserData) localToken = JSON.parse(rawLocalUserData).token;
+		if (localUserData) localToken = JSON.parse(localUserData).token;
 
-		const token = !!localToken ? localToken : stateToken;
+		const token = localToken ? localToken : stateToken ? stateToken : '';
+		if (!token) return;
 		try {
 			const { data }: UserResponse = await axios.get(
 				'http://localhost:5000/auth/me',
@@ -446,11 +447,13 @@ const usersSlice = createSlice({
 			state.loading = true;
 		});
 		builder.addCase(getUser.fulfilled, (state, action) => {
-			state.user = action.payload.user;
-			state.isAuth = !!action.payload.token;
-			state.token = action.payload.token;
 			state.loading = false;
-			state.client = action.payload.client;
+			if (action.payload) {
+				state.user = action.payload.user;
+				state.isAuth = !!action.payload.token;
+				state.token = action.payload.token;
+				state.client = action.payload.client;
+			}
 		});
 		builder.addCase(getUser.rejected, (state, action) => {
 			state.error = {

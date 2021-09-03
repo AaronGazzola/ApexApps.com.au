@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from '../components/Modal';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import Input from './Input';
@@ -142,6 +142,14 @@ const Milestone = (props: MilestoneProps) => {
 			})
 		);
 	};
+
+	const milestoneState = features.every(
+		feature => feature.state === 'Completed'
+	)
+		? 'Completed'
+		: features.some(feature => feature.state === 'In progress')
+		? 'In progress'
+		: 'Planned';
 
 	const renderModalContent = (modalType: string) => {
 		switch (modalType) {
@@ -547,59 +555,115 @@ const Milestone = (props: MilestoneProps) => {
 							{moment(endDate).format('D-MMM-YY')}
 						</p>
 					</div>
-					<div className='flex items-end justify-between'>
+					<div className='flex items-end justify-between mt-0.5'>
 						<p>
 							<span className='font-semibold text-gray-dark'>Price: </span>
 							{price.toLocaleString('en-US')}
 						</p>
-						<div className='rounded-full border-2 border-gray-dark flex flex-nowrap px-1 py-0.5 items-center mt-1'>
-							<SVG
-								name='lightBulb'
-								classes='fill-current text-gray-dark h-4 w-4 sm:w-5 sm:h-5'
-							/>
-							<p className='font-bold text-gray-dark text-xs pr-1 '>Planned</p>
-						</div>
+						{milestoneState === 'Completed' ? (
+							<div className='rounded-full bg-green flex flex-nowrap px-1 py-0.5 items-center'>
+								<SVG
+									name='checkMark'
+									classes='fill-current text-white h-5 w-5'
+								/>
+								<p className='font-bold text-white text-xs pr-1 '>Completed</p>
+							</div>
+						) : milestoneState === 'In progress' ? (
+							<div className='rounded-full bg-blue-darkest flex flex-nowrap px-1 py-0.5 items-center'>
+								<SVG
+									name='pulse'
+									classes='fill-current text-white h-4 w-4 mx-0.5 sm:w-5 sm:h-5'
+								/>
+								<p className='font-bold text-white text-xs pr-1 whitespace-nowrap'>
+									In Progress
+								</p>
+							</div>
+						) : (
+							<div className='rounded-full border-2 border-gray-dark flex flex-nowrap pl-0.5 pr-1  items-center mt-1'>
+								<SVG
+									name='lightBulb'
+									classes='fill-current text-gray-dark h-4 w-4 sm:w-5 sm:h-5'
+								/>
+								<p className='font-bold text-gray-dark text-xs pr-1 '>
+									Planned
+								</p>
+							</div>
+						)}
 					</div>
 				</div>
-			</div>
-		);
-	}
-};
-
-{
-	/* <div className='flex flex-col items-center border rounded-md border-gray-dark'>
-							<p className='text-gray-dark text-xs'>Key:</p>
-
-							<div className='flex justify-between w-72 sm:w-80 sm:px-2 py-1'>
-								<div className='rounded-full border-2 border-gray-dark flex flex-nowrap px-1 py-0.5 items-center'>
-									<SVG
-										name='lightBulb'
-										classes='fill-current text-gray-dark h-4 w-4 sm:w-5 sm:h-5'
-									/>
-									<p className='font-bold text-gray-dark text-xs pr-1 '>
-										Planned
-									</p>
-								</div>
-								<div className='rounded-full bg-blue-darkest flex flex-nowrap px-1 py-0.5 items-center'>
-									<SVG
-										name='pulse'
-										classes='fill-current text-white h-4 w-4 mx-0.5 sm:w-5 sm:h-5'
-									/>
-									<p className='font-bold text-white text-xs pr-1 whitespace-nowrap'>
-										In Progress
-									</p>
-								</div>
-								<div className='rounded-full bg-green flex flex-nowrap px-1 py-0.5 items-center'>
+				{features.map((feature, index) => (
+					<div
+						key={feature._id}
+						className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4 flex flex-col 
+						${
+							feature.state === 'Completed'
+								? 'border-green'
+								: feature.state === 'In progress'
+								? 'border-blue-darkest'
+								: 'border-gray-dark'
+						}`}
+					>
+						<div
+							className={`flex items-center py-2 cursor-pointer
+							`}
+							onClick={() =>
+								dispatch(
+									setOpenFeature(openFeature === feature._id ? '' : feature._id)
+								)
+							}
+						>
+							<div
+								className={`rounded-full h-5 w-5 mr-2 ${
+									feature.state === 'Completed'
+										? 'bg-green'
+										: feature.state === 'In progress'
+										? 'bg-blue-darkest'
+										: 'bg-gray'
+								}`}
+							>
+								{feature.state === 'Completed' ? (
 									<SVG
 										name='checkMark'
 										classes='fill-current text-white h-5 w-5'
 									/>
-									<p className='font-bold text-white text-xs pr-1 '>
-										Completed
-									</p>
-								</div>
+								) : feature.state === 'In progress' ? (
+									<SVG
+										name='pulse'
+										classes='fill-current text-white w-4 h-4 mt-0.5 ml-0.5'
+									/>
+								) : (
+									<SVG
+										name='lightBulbFill'
+										classes='fill-current text-white h-4 w-4 mt-0.5 ml-0.5'
+									/>
+								)}
 							</div>
-						</div> */
-}
+							<h3 className='font-semibold text-gray-dark mt-0.5'>
+								{feature.title}
+							</h3>
+
+							<SVG
+								name='chevronLeft'
+								classes={`absolute w-6 h-6 right-3 top-1 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+									openFeature === feature._id
+										? 'rotate-90 translate-y-2 text-blue-dark'
+										: '-rotate-90'
+								}`}
+							/>
+						</div>
+						<ol className='mb-2'>
+							{feature.steps.map(step => (
+								<li key={step._id} className='flex items-center'>
+									<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2'></div>
+									<p className='font-medium text-sm'>{step.content}</p>
+								</li>
+							))}
+						</ol>
+					</div>
+				))}
+			</div>
+		);
+	}
+};
 
 export default Milestone;

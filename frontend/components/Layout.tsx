@@ -65,16 +65,15 @@ const Layout = (props: LayoutProps) => {
 	useEffect(() => {
 		if (onMount) {
 			// if first page load, check for user
-			if (onAuthRoute()) dispatch(getUser());
+			dispatch(getUser());
 			setOnMount(false);
 		} else if (isAuth && !user?.isVerified) {
 			// if user is logged in but not verified, logout
 			dispatch(logout());
 		} else if (isAuth) {
 			// if user is not admin and no client is on user, set client to user
-			if (user && !user?.isAdmin && !user.client) {
+			if (user && !user?.isAdmin && !user.client)
 				dispatch(setClient(user.clientName));
-			}
 			// if admin, get users
 			if (user?.isAdmin) dispatch(getUsers());
 			// if logged in, redirect from header links to /project

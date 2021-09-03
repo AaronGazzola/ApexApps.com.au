@@ -63,6 +63,11 @@ const index = () => {
 					) : (
 						<></>
 					)}
+					{milestones && !milestones.length && (
+						<div className='box w-72 sm:w-80'>
+							<p>No milestones to display</p>
+						</div>
+					)}
 
 					{milestones?.map((milestone, index) => (
 						<React.Fragment key={milestone._id}>
