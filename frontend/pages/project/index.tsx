@@ -23,9 +23,11 @@ import {
 	setProject,
 	uploadContract
 } from '../../redux/projects/projects.slice';
+import { useRouter } from 'next/router';
 
 const index = () => {
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const {
 		client,
 		loading: usersLoading,
@@ -61,6 +63,7 @@ const index = () => {
 
 	const logoutHandler = (e: SyntheticEvent) => {
 		dispatch(logout());
+		router.push('/login');
 	};
 	const openModalhandler = (modalType: string) => {
 		setModalIsOpen(true);
@@ -203,7 +206,7 @@ const index = () => {
 						<Input
 							value={project?.title}
 							onChange={setProjectHandler}
-							label='Project'
+							label='Select project'
 							type='select'
 							id='project'
 							fullWidth
@@ -334,7 +337,7 @@ const index = () => {
 						<div className='relative flex w-full mb-2'>
 							<p className=' w-1/2 pr-7 text-right'>
 								${project?.estimate?.costFrom?.toLocaleString('en-US')}
-								<span className='text-xxxs font-semibold'>
+								<span className='text-xxs font-semibold'>
 									{project?.estimate?.currency}
 								</span>
 							</p>
@@ -344,7 +347,7 @@ const index = () => {
 							/>
 							<p className=' w-1/2 pl-7'>
 								${project?.estimate?.costTo?.toLocaleString('en-US')}
-								<span className='text-xxxs font-semibold'>
+								<span className='text-xxs font-semibold'>
 									{project?.estimate?.currency}
 								</span>
 							</p>

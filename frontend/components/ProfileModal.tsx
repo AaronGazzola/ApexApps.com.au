@@ -5,6 +5,7 @@ import { updateUser } from '../redux/users/users.slice';
 import Button from './Button';
 import Input from './Input';
 import SVG from './SVG';
+import { Collapse } from '@material-ui/core';
 
 const ProfileModal = () => {
 	const dispatch = useAppDispatch();
@@ -149,86 +150,81 @@ const ProfileModal = () => {
 			/>
 			<div
 				className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4
-        ${
-					passwordIsOpen
-						? 'max-h-80 border-blue-darkest'
-						: 'max-h-8 border-gray-light'
-				}
-        `}
-				style={{
-					transition: 'max-height .3s ease-out'
-				}}
+					${passwordIsOpen ? 'border-blue-darkest' : 'border-gray-light'}
+					`}
 			>
-				<SVG
-					name='chevronLeft'
-					classes={`absolute right-2 top-1 fill-current text-gray transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
-						passwordIsOpen
-							? 'rotate-90 translate-y-1 text-blue-dark'
-							: '-rotate-90'
-					}`}
-				/>
-				<div
-					className='absolute top-0 left-0 w-full h-8 cursor-pointer'
-					onClick={() => setPasswordIsOpen(prev => !prev)}
-				></div>
-				<p
-					className={`font-semibold ${
-						passwordIsOpen ? 'text-blue-dark' : 'text-gray-dark'
-					} text-sm text-center mt-1 mb-2`}
-				>
-					Change password
-				</p>
-				<Input
-					placeholder='Current password'
-					type={passwordIsHidden ? 'password' : 'text'}
-					value={currentPassword.value}
-					onChange={changeHandler}
-					id='currentPassword'
-					isValid={currentPassword.isValid}
-					helperText={
-						currentPassword.isTouched && !currentPassword.isValid
-							? 'Password must be 6 or more characters'
-							: ''
-					}
-					isTouched={currentPassword.isTouched}
-					touchHandler={touchHandler}
-					label='Current password'
-					passwordIsHidden={passwordIsHidden}
-					endIcon={
-						<SVG
-							name={passwordIsHidden ? 'eyeOpen' : 'eyeClosed'}
-							classes='fill-current text-gray cursor-pointer'
-							onClick={() => setPasswordIsHidden(prev => !prev)}
-						/>
-					}
-					containerClasses='mt-2'
-				/>
-				<Input
-					placeholder='New password'
-					type={passwordIsHidden ? 'password' : 'text'}
-					value={newPassword.value}
-					onChange={changeHandler}
-					id='newPassword'
-					isValid={newPassword.isValid}
-					helperText={
-						newPassword.isTouched && !newPassword.isValid
-							? 'Password must be 6 or more characters'
-							: ''
-					}
-					isTouched={newPassword.isTouched}
-					touchHandler={touchHandler}
-					label='New password'
-					passwordIsHidden={passwordIsHidden}
-					endIcon={
-						<SVG
-							name={passwordIsHidden ? 'eyeOpen' : 'eyeClosed'}
-							classes='fill-current text-gray cursor-pointer'
-							onClick={() => setPasswordIsHidden(prev => !prev)}
-						/>
-					}
-					containerClasses='mt-1 mb-2'
-					labelTop
-				/>
+				<Collapse in={passwordIsOpen} timeout='auto' collapsedSize={30}>
+					<SVG
+						name='chevronLeft'
+						classes={`absolute right-2 top-1 fill-current text-gray transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+							passwordIsOpen
+								? 'rotate-90 translate-y-1 text-blue-dark'
+								: '-rotate-90'
+						}`}
+					/>
+					<div
+						className='absolute top-0 left-0 w-full h-8 cursor-pointer'
+						onClick={() => setPasswordIsOpen(prev => !prev)}
+					></div>
+					<p
+						className={`font-semibold ${
+							passwordIsOpen ? 'text-blue-dark' : 'text-gray-dark'
+						} text-sm text-center mt-1 mb-2`}
+					>
+						Change password
+					</p>
+					<Input
+						placeholder='Current password'
+						type={passwordIsHidden ? 'password' : 'text'}
+						value={currentPassword.value}
+						onChange={changeHandler}
+						id='currentPassword'
+						isValid={currentPassword.isValid}
+						helperText={
+							currentPassword.isTouched && !currentPassword.isValid
+								? 'Password must be 6 or more characters'
+								: ''
+						}
+						isTouched={currentPassword.isTouched}
+						touchHandler={touchHandler}
+						label='Current password'
+						passwordIsHidden={passwordIsHidden}
+						endIcon={
+							<SVG
+								name={passwordIsHidden ? 'eyeOpen' : 'eyeClosed'}
+								classes='fill-current text-gray cursor-pointer'
+								onClick={() => setPasswordIsHidden(prev => !prev)}
+							/>
+						}
+						containerClasses='mt-2'
+					/>
+					<Input
+						placeholder='New password'
+						type={passwordIsHidden ? 'password' : 'text'}
+						value={newPassword.value}
+						onChange={changeHandler}
+						id='newPassword'
+						isValid={newPassword.isValid}
+						helperText={
+							newPassword.isTouched && !newPassword.isValid
+								? 'Password must be 6 or more characters'
+								: ''
+						}
+						isTouched={newPassword.isTouched}
+						touchHandler={touchHandler}
+						label='New password'
+						passwordIsHidden={passwordIsHidden}
+						endIcon={
+							<SVG
+								name={passwordIsHidden ? 'eyeOpen' : 'eyeClosed'}
+								classes='fill-current text-gray cursor-pointer'
+								onClick={() => setPasswordIsHidden(prev => !prev)}
+							/>
+						}
+						containerClasses='mt-1 mb-2'
+						labelTop
+					/>
+				</Collapse>
 			</div>
 			<Button
 				variant='contained'

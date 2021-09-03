@@ -70,6 +70,7 @@ const Layout = (props: LayoutProps) => {
 		} else if (isAuth && !user?.isVerified) {
 			// if user is logged in but not verified, logout
 			dispatch(logout());
+			router.push('/login');
 		} else if (isAuth) {
 			// if user is not admin and no client is on user, set client to user
 			if (user && !user?.isAdmin && !user.client)

@@ -32,11 +32,14 @@ const index = () => {
 		<>
 			<Meta title='Milestones | Apex Apps' />
 			<h1 className='title'>Milestones</h1>
-			{!user?.isAdmin && loading ? (
-				<div
-					className='w-10 h-10 border-t-2 border-l-2 border-blue-darkest animate-spin'
-					style={{ borderRadius: '50%' }}
-				></div>
+			{user && !user?.isAdmin && loading ? (
+				<>
+					{[...new Array(3)].map((x, i) => (
+						<div key={i} className='box w-72 sm:w-80'>
+							<div className='skeleton w-52 h-6'></div>
+						</div>
+					))}
+				</>
 			) : (
 				<>
 					{user?.isAdmin && loading ? (
@@ -63,7 +66,7 @@ const index = () => {
 					) : (
 						<></>
 					)}
-					{milestones && !milestones.length && (
+					{milestones && !milestones.length && !loading && (
 						<div className='box w-72 sm:w-80'>
 							<p>No milestones to display</p>
 						</div>
