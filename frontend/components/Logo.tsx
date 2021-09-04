@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useAppSelector } from '../redux/hooks';
 
 interface LogoProps {
-	variant: 'header' | 'drawer-sm' | 'drawer-lg';
+	variant: 'header' | 'drawer-sm' | 'drawer-lg' | 'drawer-xs';
 }
 
 const Logo = (props: LogoProps) => {
@@ -18,8 +18,11 @@ const Logo = (props: LogoProps) => {
 		case 'header':
 			width = height = breakpoint === 'xs' ? 40 : 60;
 			break;
-		case 'drawer-sm':
+		case 'drawer-xs':
 			width = height = 30;
+			break;
+		case 'drawer-sm':
+			width = height = 40;
 			break;
 		case 'drawer-lg':
 			width = height = 55;
@@ -37,7 +40,7 @@ const Logo = (props: LogoProps) => {
 					width={width}
 					height={height}
 				/>
-				{variant !== 'drawer-sm' && (
+				{variant !== 'drawer-xs' && (
 					<p className='font-extrabold text-xxxs sm:text-xs text-blue-darkest whitespace-nowrap'>
 						APEX APPS
 					</p>

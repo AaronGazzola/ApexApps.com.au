@@ -7,6 +7,7 @@ import { MilestonesController } from './milestones.controller';
 import { MilestonesService } from './milestones.service';
 import { MilestoneSchema } from './schemas/milestone.schema';
 import { ProjectSchema } from '../projects/schemas/project.schema';
+import { UpdateSchema } from './schemas/update.schema';
 
 @Module({
   imports: [
@@ -16,6 +17,8 @@ import { ProjectSchema } from '../projects/schemas/project.schema';
       { name: 'Project', schema: ProjectSchema },
       { name: 'Feature', schema: FeatureSchema },
       { name: 'Step', schema: StepSchema },
+      { name: 'Feature', schema: FeatureSchema },
+      { name: 'Update', schema: UpdateSchema },
     ]),
   ],
   controllers: [MilestonesController],

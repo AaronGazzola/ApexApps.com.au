@@ -46,9 +46,8 @@ const Milestone = (props: MilestoneProps) => {
 		milestoneId
 	} = props;
 	const { user } = useAppSelector(state => state.users);
-	const { openFeature, openMilestone, loading, feature, step } = useAppSelector(
-		state => state.milestones
-	);
+	const { openFeature, openMilestone, loading, feature, step, milestones } =
+		useAppSelector(state => state.milestones);
 	const dispatch = useAppDispatch();
 	let initialState = {
 		[`title${milestoneId}`]: title ? title : '',
@@ -552,25 +551,35 @@ const Milestone = (props: MilestoneProps) => {
 	} else {
 		return (
 			<div className='box w-72 sm:w-80 relative' key={milestoneId}>
-				<SVG
-					name='chevronLeft'
-					classes={`absolute w-7 h-7 right-4 top-3 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
-						openMilestone === milestoneId
-							? 'rotate-90 translate-y-2 text-blue-dark'
-							: '-rotate-90'
-					}`}
-				/>
-				<div
-					className='absolute top-0 left-0 h-16 w-full cursor-pointer'
-					onClick={() =>
-						dispatch(
-							setOpenMilestone(openMilestone === milestoneId ? '' : milestoneId)
-						)
-					}
-				></div>
+				{milestones && milestones?.length > 1 && (
+					<>
+						<SVG
+							name='chevronLeft'
+							classes={`absolute w-7 h-7 right-4 top-3 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+								openMilestone === milestoneId
+									? 'rotate-90 translate-y-2 text-blue-dark'
+									: '-rotate-90'
+							}`}
+						/>
+						<div
+							className='absolute top-0 left-0 h-16 w-full cursor-pointer'
+							onClick={() =>
+								dispatch(
+									setOpenMilestone(
+										openMilestone === milestoneId ? '' : milestoneId
+									)
+								)
+							}
+						></div>
+					</>
+				)}
 				<h2 className='title-sm'>{title}</h2>
 				<Collapse
-					in={openMilestone === milestoneId}
+					in={
+						milestones && milestones?.length > 1
+							? openMilestone === milestoneId
+							: true
+					}
 					timeout='auto'
 					collapsedSize={0}
 					style={{ width: '100%' }}

@@ -239,10 +239,129 @@ export const deleteStep = createAsyncThunk(
 	}
 );
 
+export const addUpdate = createAsyncThunk(
+	'projects/addUpdate',
+	async (
+		{
+			id,
+			date,
+			notes,
+			buttonLink,
+			buttonLabel,
+			publish
+		}: {
+			id: String;
+			date: Date;
+			notes: String;
+			buttonLink: String;
+			buttonLabel: String;
+			publish: Boolean;
+		},
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.post(
+				`http://localhost:5000/milestones/update`,
+				{ id, date, notes, buttonLink, buttonLabel, publish },
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const editUpdate = createAsyncThunk(
+	'projects/editUpdate',
+	async (
+		{
+			id,
+			date,
+			notes,
+			buttonLink,
+			buttonLabel,
+			publish
+		}: {
+			id: String;
+			date: Date;
+			notes: String;
+			buttonLink: String;
+			buttonLabel: String;
+			publish: Boolean;
+		},
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.put(
+				`http://localhost:5000/milestones/update`,
+				{ id, date, notes, buttonLink, buttonLabel, publish },
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const deleteUpdate = createAsyncThunk(
+	'projects/deleteUpdate',
+	async (updateId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+
+		try {
+			const { data }: MilestonesResponse = await axios.delete(
+				`http://localhost:5000/milestones/update/${updateId}`,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialState: MilestonesState = {
 	loading: false,
 	openFeature: '',
-	openMilestone: ''
+	openMilestone: '',
+	openUpdate: ''
 };
 
 const milestonesSlice = createSlice({
@@ -259,6 +378,9 @@ const milestonesSlice = createSlice({
 		},
 		setOpenMilestone(state, action) {
 			state.openMilestone = action.payload;
+		},
+		setOpenUpdate(state, action) {
+			state.openUpdate = action.payload;
 		}
 	},
 	extraReducers: builder => {
@@ -359,9 +481,49 @@ const milestonesSlice = createSlice({
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
+		builder.addCase(addUpdate.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(addUpdate.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Update added';
+		});
+		builder.addCase(addUpdate.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(editUpdate.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(editUpdate.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Update updated';
+		});
+		builder.addCase(editUpdate.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(deleteUpdate.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(deleteUpdate.fulfilled, (state, action) => {
+			state.loading = false;
+			state.milestones = action.payload.milestones;
+			state.success = 'Update deleted';
+		});
+		builder.addCase(deleteUpdate.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
 	}
 });
 
-export const { clearMilestones, setOpenFeature, setOpenMilestone } =
-	milestonesSlice.actions;
+export const {
+	clearMilestones,
+	setOpenFeature,
+	setOpenMilestone,
+	setOpenUpdate
+} = milestonesSlice.actions;
 export default milestonesSlice.reducer;

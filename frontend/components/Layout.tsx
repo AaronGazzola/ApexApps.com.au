@@ -4,9 +4,8 @@ import Header from './Header';
 import setScreenDimensions from '../hooks/setScreenDimensions';
 import Drawer from './Drawer';
 import Footer from './Footer';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 import {
 	getUser,
 	getUsers,
@@ -24,7 +23,7 @@ const Layout = (props: LayoutProps) => {
 	// add 'resize' event listener to window to store window dimensions in redux store
 	setScreenDimensions();
 	const router = useRouter();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const {
 		breakpoint,
 		headerHeight,
@@ -35,7 +34,6 @@ const Layout = (props: LayoutProps) => {
 	const {
 		isAuth,
 		user,
-		users,
 		success: usersSuccess,
 		client
 	} = useAppSelector(state => state.users);

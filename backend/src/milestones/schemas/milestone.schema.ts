@@ -10,4 +10,5 @@ export const MilestoneSchema = new mongoose.Schema({
   buttonLabel: String,
   buttonLink: String,
   features: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feature' }],
+  updates: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Update' }],
 });

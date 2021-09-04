@@ -15,18 +15,15 @@ const index = () => {
 		state => state.milestones
 	);
 	const { isAuth, user } = useAppSelector(state => state.users);
-	const { project } = useAppSelector(state => state.projects);
 	const loading = milestonesLoading || !milestones;
 
 	const addMilestoneHandler = (index: number) => {
 		dispatch(addMilestone(index));
 	};
 
-	// if logged in, get milestones
 	useEffect(() => {
-		if (isAuth && user?.project?._id === project?._id)
-			dispatch(getMilestones());
-	}, [isAuth, project]);
+		if (isAuth) dispatch(getMilestones());
+	}, [isAuth]);
 
 	return (
 		<>
@@ -34,11 +31,22 @@ const index = () => {
 			<h1 className='title'>Milestones</h1>
 			{user && !user?.isAdmin && loading ? (
 				<>
-					{[...new Array(3)].map((x, i) => (
-						<div key={i} className='box w-72 sm:w-80'>
-							<div className='skeleton w-52 h-6'></div>
+					<div className='box w-72 sm:w-80'>
+						<div className='skeleton w-52 h-7 mb-4'></div>
+						<div className='flex justify-between w-full mb-2'>
+							<div className='skeleton w-28 h-4'></div>
+							<div className='skeleton w-28 h-4'></div>
 						</div>
-					))}
+						<div className='flex justify-between w-full mb-4'>
+							<div className='skeleton w-28 h-4'></div>
+							<div className='skeleton w-28 h-4'></div>
+						</div>
+						<div className='skeleton w-full h-8 mb-4'></div>
+						<div className='skeleton w-full h-8 mb-4'></div>
+						<div className='skeleton w-full h-8 mb-4'></div>
+						<div className='skeleton w-full h-16 mb-4'></div>
+						<div className='skeleton w-full h-8'></div>
+					</div>
 				</>
 			) : (
 				<>

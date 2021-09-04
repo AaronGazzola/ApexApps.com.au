@@ -37,10 +37,11 @@ const Drawer = (props: drawerProps) => {
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
 	const { isAuth } = useAppSelector(state => state.users);
+	const { breakpoint } = useAppSelector(state => state.utils);
 
 	return (
 		<div
-			className='fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-10'
+			className='fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-20'
 			style={{
 				transform:
 					isAuth && (drawerIsOpen || screenIsXL)
@@ -59,7 +60,7 @@ const Drawer = (props: drawerProps) => {
 						isAuth && (drawerIsOpen || screenIsXL) ? '' : 'opacity-0'
 					}`}
 				>
-					<Logo variant='drawer-lg' />
+					<Logo variant={breakpoint === 'xs' ? 'drawer-sm' : 'drawer-lg'} />
 				</div>
 
 				<div
@@ -67,7 +68,7 @@ const Drawer = (props: drawerProps) => {
 						isAuth && (drawerIsOpen || screenIsXL) ? 'opacity-0' : ''
 					}`}
 				>
-					<Logo variant='drawer-sm' />
+					<Logo variant='drawer-xs' />
 				</div>
 			</div>
 			{!screenIsXL && isAuth && (

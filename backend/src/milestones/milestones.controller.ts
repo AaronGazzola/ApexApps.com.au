@@ -12,6 +12,7 @@ import {
 import { MilestonesService } from './milestones.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Milestone } from './interfaces/milestone.interface';
+import { UpdateDto } from './dto/update.dto';
 
 @Controller('milestones')
 export class MilestonesController {
@@ -72,5 +73,23 @@ export class MilestonesController {
   @Delete('/step/:sid')
   async deleteStep(@Request() req) {
     return await this.milestonesService.deleteStep(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/update/:uid')
+  async deleteUpdate(@Request() req) {
+    return await this.milestonesService.deleteUpdate(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/update')
+  async editUpdate(@Request() req, @Body(ValidationPipe) updateDto: UpdateDto) {
+    return await this.milestonesService.editUpdate(req.user, updateDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/update')
+  async addUpdate(@Request() req, @Body(ValidationPipe) updateDto: UpdateDto) {
+    return await this.milestonesService.addUpdate(req.user, updateDto);
   }
 }

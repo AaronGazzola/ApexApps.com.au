@@ -1,3 +1,12 @@
+export interface Update {
+	_id: string;
+	notes: string;
+	date: Date;
+	buttonLink: string;
+	buttonLabel: string;
+	publish: boolean;
+}
+
 export interface Step {
 	_id: string;
 	content: string;
@@ -21,6 +30,7 @@ export interface Milestone {
 	buttonLabel?: string;
 	buttonLink?: string;
 	features?: Feature[];
+	updates?: Update[];
 }
 
 export interface MilestonesResponse {
@@ -30,6 +40,7 @@ export interface MilestonesResponse {
 		milestones?: Milestone[];
 		step?: Step;
 		feature?: Feature;
+		update?: Update;
 	};
 }
 
@@ -38,6 +49,7 @@ export interface MilestonesState {
 	milestones?: Milestone[];
 	openFeature: string;
 	openMilestone: string;
+	openUpdate: string;
 	feature?: Feature;
 	step?: Step;
 	loading: boolean;

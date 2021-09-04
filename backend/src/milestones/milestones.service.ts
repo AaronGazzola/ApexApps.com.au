@@ -1,3 +1,4 @@
+import { UpdateDto } from './dto/update.dto';
 import { Feature } from './interfaces/feature.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,6 +10,7 @@ import ErrorResponse from 'src/shared/errorResponse';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Step } from './interfaces/step.interface';
+import { Update } from './interfaces/update.interface';
 
 @Injectable()
 export class MilestonesService {
@@ -17,6 +19,7 @@ export class MilestonesService {
     @InjectModel('Feature') private featureModel: Model<Feature>,
     @InjectModel('Project') private projectModel: Model<Project>,
     @InjectModel('Step') private stepModel: Model<Step>,
+    @InjectModel('Update') private updateModel: Model<Update>,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
 
@@ -25,12 +28,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     return {
@@ -47,12 +55,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     const milestone = await this.milestoneModel.create({
@@ -89,12 +102,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     return {
@@ -120,12 +138,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     return {
@@ -152,12 +175,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     return {
@@ -178,12 +206,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     return {
@@ -204,12 +237,17 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
     return {
@@ -230,14 +268,143 @@ export class MilestonesService {
       .findById(user.project._id)
       .populate({
         path: 'milestones',
-        populate: {
-          path: 'features',
-          populate: {
-            path: 'steps',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
           },
-        },
+          {
+            path: 'updates',
+          },
+        ],
       });
 
+    return {
+      success: true,
+      milestones: project.milestones,
+    };
+  }
+  async addUpdate(user: User, updateDto: UpdateDto) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const {
+      id: milestoneId,
+      notes,
+      date,
+      buttonLink,
+      buttonLabel,
+      publish,
+    } = updateDto;
+
+    const milestone = await this.milestoneModel.findById(milestoneId);
+
+    const update = await this.updateModel.create({
+      date,
+      notes,
+      buttonLink,
+      buttonLabel,
+      publish,
+    });
+
+    milestone.updates.push(update);
+
+    await milestone.save();
+
+    const project = await this.projectModel
+      .findById(user.project._id)
+      .populate({
+        path: 'milestones',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
+          },
+          {
+            path: 'updates',
+          },
+        ],
+      });
+
+    return {
+      success: true,
+      milestones: project.milestones,
+      update,
+    };
+  }
+
+  async deleteUpdate(user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const { uid: updateId } = this.req.params;
+
+    await this.updateModel.findByIdAndDelete(updateId);
+
+    const project = await this.projectModel
+      .findById(user.project._id)
+      .populate({
+        path: 'milestones',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
+          },
+          {
+            path: 'updates',
+          },
+        ],
+      });
+
+    return {
+      success: true,
+      milestones: project.milestones,
+    };
+  }
+
+  async editUpdate(user: User, updateDto: UpdateDto) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+    const {
+      id: updateId,
+      notes,
+      date,
+      buttonLink,
+      buttonLabel,
+      publish,
+    } = updateDto;
+
+    const update = await this.updateModel.findById(updateId);
+    update.notes = notes;
+    update.date = date;
+    update.buttonLink = buttonLink;
+    update.buttonLabel = buttonLabel;
+    update.publish = publish;
+
+    await update.save();
+
+    const project = await this.projectModel
+      .findById(user.project._id)
+      .populate({
+        path: 'milestones',
+        populate: [
+          {
+            path: 'features',
+            populate: {
+              path: 'steps',
+            },
+          },
+          {
+            path: 'updates',
+          },
+        ],
+      });
     return {
       success: true,
       milestones: project.milestones,
