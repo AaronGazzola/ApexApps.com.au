@@ -15,6 +15,7 @@ import {
 } from '../../redux/users/users.slice';
 import ConfirmModal from '../../components/ConfirmModal';
 import Modal from '../../components/Modal';
+import Image from 'next/image';
 
 interface Section {
 	title: string;
@@ -33,6 +34,7 @@ const index = () => {
 		proposals,
 		success: usersSuccess
 	} = useAppSelector(state => state.users);
+	const { breakpoint } = useAppSelector(state => state.utils);
 
 	const initialState = {
 		currentClient: false,
@@ -229,7 +231,7 @@ const index = () => {
 	return (
 		<>
 			<Meta title='Proposal | Apex Apps' />
-			<h1 className='title'>Proposal</h1>
+			<h1 className='title'>Project Proposal</h1>
 			{user?.isAdmin ? (
 				<>
 					<Modal
@@ -423,7 +425,42 @@ const index = () => {
 					</form>
 				</>
 			) : (
-				<></>
+				<div className='flex items-center w-72 flex-wrap-reverse justify-center sm:w-auto'>
+					<div className='mr-0 sm:mr-4 flex flex-col items-center'>
+						<div className='box w-72 sm:w-80 h-min'>
+							<p className='text-sm font-medium'>
+								Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+							</p>
+							<p className='text-sm font-medium'>
+								I create elegant and powerful web applications - accessable on
+								any device
+							</p>
+						</div>
+						<Button
+							label='More about Apex Apps'
+							variant='simple'
+							color='green'
+							buttonClasses='border border-green px-1.5 py-0.5'
+							size='small'
+							type='link'
+							path='/about'
+						/>
+					</div>
+					<div
+						className='rounded-full overflow-hidden mb-4 sm:mb-0'
+						style={{
+							width: breakpoint === 'xs' ? 160 : 180,
+							height: breakpoint === 'xs' ? 160 : 180
+						}}
+					>
+						<Image
+							src='/assets/images/profile-dark.jpg'
+							width={breakpoint === 'xs' ? 160 : 180}
+							height={breakpoint === 'xs' ? 160 : 180}
+							alt='Aaron Gazzola'
+						/>
+					</div>
+				</div>
 			)}
 		</>
 	);

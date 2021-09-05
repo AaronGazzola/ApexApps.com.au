@@ -39,10 +39,10 @@
 @layer components {
 	@responsive {
 		.title {
-			@apply text-4xl text-blue-darkest mb-3;
+			@apply text-4xl text-blue-darkest mb-3 text-center;
 		}
 		.title-sm {
-			@apply text-2xl text-blue-darkest mb-1;
+			@apply text-2xl text-blue-darkest mb-1 text-center;
 		}
 		.text-xxxs {
 			font-size: 8px;
