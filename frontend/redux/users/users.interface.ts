@@ -11,6 +11,7 @@ export interface Proposal {
 	videoLink: string;
 	currentClient?: boolean;
 	_id?: string;
+	withClient?: boolean;
 }
 
 export interface User {

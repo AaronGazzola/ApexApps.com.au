@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '../redux/hooks';
 import Button from './Button';
-import Input from './Input';
 
 interface ConfirmModalProps {
 	content?: string;
@@ -52,6 +51,7 @@ const ConfirmModal = (props: ConfirmModalProps) => {
 					variant='simple'
 					buttonClasses='px-4'
 					onClick={confirmFunction}
+					loading={loading}
 				/>
 			</div>
 		</>

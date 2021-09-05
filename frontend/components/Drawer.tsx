@@ -10,7 +10,7 @@ interface drawerProps {
 	screenIsXL: boolean;
 }
 
-const navItems = [
+const initialNavItems = [
 	{
 		title: 'Project',
 		path: '/project',
@@ -25,19 +25,25 @@ const navItems = [
 		title: 'Timeline',
 		path: '/timeline',
 		icon: 'watch'
-	},
-	{
-		title: 'Proposal',
-		path: '/proposal',
-		icon: 'card'
 	}
 ];
 
 const Drawer = (props: drawerProps) => {
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
-	const { isAuth } = useAppSelector(state => state.users);
+	const { isAuth, user } = useAppSelector(state => state.users);
 	const { breakpoint } = useAppSelector(state => state.utils);
+
+	let navItems = initialNavItems;
+	if (user?.isAdmin || user?.client?.proposal)
+		navItems = [
+			...initialNavItems,
+			{
+				title: 'Proposal',
+				path: '/proposal',
+				icon: 'card'
+			}
+		];
 
 	return (
 		<div

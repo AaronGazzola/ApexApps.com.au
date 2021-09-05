@@ -139,7 +139,14 @@ export class UsersService {
     }
 
     // save user
-    const returnUser = await currentUser.save();
+    await currentUser.save();
+
+    const returnUser = await this.userModel.findById(currentUser._id).populate({
+      path: 'client',
+      populate: {
+        path: 'proposal',
+      },
+    });
 
     const payload = { username: returnUser.email, sub: returnUser._id };
 
@@ -187,7 +194,12 @@ export class UsersService {
   async findUserById(id: string) {
     let user;
     try {
-      user = await this.userModel.findOne({ _id: id });
+      user = await this.userModel.findOne({ _id: id }).populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
     } catch (err) {
       throw new ErrorResponse('Invalid signup link', 401);
     }
@@ -210,7 +222,12 @@ export class UsersService {
     // find user with token
     let user;
     try {
-      user = await this.userModel.findOne({ verifyUserToken });
+      user = await this.userModel.findOne({ verifyUserToken }).populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
     } catch (err) {
       throw new ErrorResponse(
         'Invalid email token, please request access to sign up',
@@ -247,7 +264,12 @@ export class UsersService {
     // find user with token
     let user;
     try {
-      user = await this.userModel.findOne({ verifyEmailToken });
+      user = await this.userModel.findOne({ verifyEmailToken }).populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
     } catch (err) {
       throw new ErrorResponse('Invalid token', 401);
     }
@@ -313,12 +335,19 @@ export class UsersService {
       .update(token)
       .digest('hex');
 
-    const user = await this.userModel.findOne({
-      resetPasswordToken,
-      resetPasswordExpire: {
-        $gt: moment().toDate(),
-      },
-    });
+    const user = await this.userModel
+      .findOne({
+        resetPasswordToken,
+        resetPasswordExpire: {
+          $gt: moment().toDate(),
+        },
+      })
+      .populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
 
     if (!user) {
       throw new ErrorResponse('Invalid password reset token', 401);
@@ -366,18 +395,27 @@ export class UsersService {
       videoLink,
     });
 
+    const proposals = await this.proposalModel.find({ withClient: false });
+
     let returnUser = user;
     if (currentClient) {
       const client = await this.userModel.findById(user.client._id);
+
+      proposal.withClient = true;
+
+      await proposal.save();
 
       client.proposal = proposal;
 
       await client.save();
 
-      returnUser = await this.userModel.findById(user._id);
+      returnUser = await this.userModel.findById(user._id).populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
     }
-
-    const proposals = await this.proposalModel.find();
 
     return {
       success: true,
@@ -404,14 +442,26 @@ export class UsersService {
     let returnUser = user;
     if (currentClient) {
       const client = await this.userModel.findById(user.client._id);
+
+      foundProposal.withClient = true;
+
+      await foundProposal.save();
+
       client.proposal = foundProposal;
 
       await client.save();
 
-      returnUser = await this.userModel.findById(user._id);
+      returnUser = await this.userModel.findById(user._id).populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
     }
 
-    const proposals = await this.proposalModel.find();
+    const proposals = await this.proposalModel.find({ withClient: false });
+
+    if (!foundProposal.withClient) proposals.unshift(foundProposal);
 
     return {
       success: true,
@@ -420,6 +470,7 @@ export class UsersService {
       user: returnUser,
     };
   }
+
   async getProposals(user: User) {
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);
@@ -428,14 +479,15 @@ export class UsersService {
       .findById(user.client._id)
       .populate('proposal');
 
-    const proposal = client.proposal ? client.proposal : undefined;
+    const clientProposal = client.proposal;
 
-    const proposals = await this.proposalModel.find();
+    const proposals = await this.proposalModel.find({ withClient: false });
+
+    if (clientProposal) proposals.unshift(clientProposal);
 
     return {
       success: true,
       proposals,
-      proposal,
     };
   }
 
@@ -449,6 +501,7 @@ export class UsersService {
     return {
       success: true,
       proposal,
+      user,
     };
   }
 
@@ -461,6 +514,30 @@ export class UsersService {
     return {
       success: true,
       proposal,
+    };
+  }
+
+  async deleteProposal(user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const { pid: proposalId } = this.req.params;
+
+    await this.proposalModel.findByIdAndDelete(proposalId);
+
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('proposal');
+
+    const clientProposal = client.proposal;
+
+    const proposals = await this.proposalModel.find({ withClient: false });
+
+    if (clientProposal) proposals.unshift(clientProposal);
+
+    return {
+      success: true,
+      proposals,
     };
   }
 }

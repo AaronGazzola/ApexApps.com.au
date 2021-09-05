@@ -86,7 +86,13 @@ export class AuthService {
 
   async getUser(_id: string) {
     try {
-      const user = await this.userModel.findById(_id).populate('client');
+      const user = await this.userModel.findById(_id).populate({
+        path: 'client',
+        populate: {
+          path: 'proposal',
+        },
+      });
+
       if (!user) {
         throw new ErrorResponse('No user found', 404);
       }
@@ -111,7 +117,12 @@ export class AuthService {
 
     const valid = await bcrypt.compare(password, user.password);
 
-    const returnUser = await this.userModel.findById(user._id);
+    const returnUser = await this.userModel.findById(user._id).populate({
+      path: 'client',
+      populate: {
+        path: 'proposal',
+      },
+    });
 
     if (valid) {
       return returnUser;

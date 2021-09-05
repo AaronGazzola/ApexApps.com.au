@@ -10,5 +10,6 @@ export const ProposalSchema = new mongoose.Schema({
       buttonLink: String,
     },
   ],
-  introVideo: String,
+  videoLink: String,
+  withClient: { type: Boolean, default: false },
 });

@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   Request,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -130,5 +131,11 @@ export class UsersController {
     @Body() { proposalId }: { proposalId: string },
   ) {
     return await this.usersService.setProposal(req.user, proposalId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('proposals/:pid')
+  async deleteProposal(@Request() req) {
+    return await this.usersService.deleteProposal(req.user);
   }
 }

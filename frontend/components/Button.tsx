@@ -62,9 +62,9 @@ const Button = (props: ButtonProps) => {
 			type={type !== 'link' && type !== 'file' ? type : undefined}
 			onClick={type === 'link' ? () => {} : onClick}
 		>
-			{startIcon && startIcon}
+			{startIcon && !loading && startIcon}
 			{loading ? (
-				<div className='flex justify-center'>
+				<div className='flex justify-center items-center w-7 h-7'>
 					<div
 						className='w-6 h-6 border-t-2 border-l-2 border-current animate-spin'
 						style={{ borderRadius: '50%' }}
@@ -73,7 +73,7 @@ const Button = (props: ButtonProps) => {
 			) : (
 				label
 			)}
-			{endIcon && endIcon}
+			{endIcon && !loading && endIcon}
 		</button>
 	);
 

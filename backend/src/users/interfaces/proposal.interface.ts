@@ -10,4 +10,5 @@ export interface Proposal extends Document {
   }[];
   videoLink: string;
   _id: string;
+  withClient?: boolean;
 }

@@ -469,8 +469,8 @@ export const getProposals = createAsyncThunk(
 	}
 );
 
-export const getProposal = createAsyncThunk(
-	'users/getProposal',
+export const getClientProposal = createAsyncThunk(
+	'users/getClientProposal',
 	async (_, { rejectWithValue, getState }) => {
 		const {
 			users: { token }
@@ -478,6 +478,32 @@ export const getProposal = createAsyncThunk(
 		try {
 			const { data }: UserResponse = await axios.get(
 				'http://localhost:5000/users/proposals/client',
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const deleteProposal = createAsyncThunk(
+	'users/deleteProposal',
+	async (proposalId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.delete(
+				`http://localhost:5000/users/proposals/${proposalId}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -778,6 +804,7 @@ const usersSlice = createSlice({
 			state.proposal = action.payload.proposal;
 			state.proposals = action.payload.proposals;
 			state.user = action.payload.user;
+			state.success = 'Proposal added';
 		});
 		builder.addCase(addProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -792,6 +819,7 @@ const usersSlice = createSlice({
 			state.proposal = action.payload.proposal;
 			state.proposals = action.payload.proposals;
 			state.user = action.payload.user;
+			state.success = 'Proposal updated';
 		});
 		builder.addCase(editProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -809,15 +837,15 @@ const usersSlice = createSlice({
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
-		builder.addCase(getProposal.pending, (state, action) => {
+		builder.addCase(getClientProposal.pending, (state, action) => {
 			state.loading = true;
 		});
 
-		builder.addCase(getProposal.fulfilled, (state, action) => {
+		builder.addCase(getClientProposal.fulfilled, (state, action) => {
 			state.loading = false;
 			state.proposal = action.payload.proposal;
 		});
-		builder.addCase(getProposal.rejected, (state, action) => {
+		builder.addCase(getClientProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
@@ -830,6 +858,19 @@ const usersSlice = createSlice({
 			state.proposal = action.payload.proposal;
 		});
 		builder.addCase(setProposal.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(deleteProposal.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(deleteProposal.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposals = action.payload.proposals;
+			state.success = 'Proposal deleted';
+		});
+		builder.addCase(deleteProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

@@ -114,7 +114,7 @@ const Input = (props: InputProps) => {
 						id={id}
 						className={`checkbox w-5 h-5 z-20`}
 						onChange={onChange}
-						defaultChecked={!!value}
+						checked={!!value}
 					/>
 					<SVG
 						name='checkMark'
