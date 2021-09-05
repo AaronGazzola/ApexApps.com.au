@@ -41,12 +41,15 @@ const UpdateModal = (props: UpdateModalProps) => {
 		const value =
 			target.id === 'date'
 				? new Date(moment(e.currentTarget.value).toDate())
+				: target.id === 'publish'
+				? target.checked
 				: target.value;
 		setState({
 			...state,
 			[target.id]: value
 		});
 	};
+
 	const submitHandler = (e: SyntheticEvent) => {
 		e.preventDefault();
 		const update = {
@@ -54,7 +57,7 @@ const UpdateModal = (props: UpdateModalProps) => {
 			notes,
 			buttonLink,
 			buttonLabel,
-			publish: publish === 'Publish' ? true : false,
+			publish,
 			id
 		};
 		if (type == 'add') {
@@ -114,25 +117,26 @@ const UpdateModal = (props: UpdateModalProps) => {
 				id='buttonLabel'
 				fullWidth
 			/>
-			<Input
-				value={publish ? 'Publish' : "Don't publish"}
-				onChange={changeHandler}
-				label='Publish'
-				type='select'
-				id='publish'
-				fullWidth
-				options={['Publish', "Don't publish"]}
-				containerClasses='mt-4 '
-				inputClasses=''
-				labelTop
-			/>
+			<div className='flex justify-center mt-4'>
+				<Input
+					value={publish}
+					onChange={changeHandler}
+					label='Publish'
+					type='checkbox'
+					id='publish'
+					fullWidth
+					inputClasses=''
+					labelTop
+					validation={false}
+				/>
+			</div>
 			<Button
 				variant='contained'
 				type='submit'
 				color='green'
 				label={`${type === 'add' ? 'Add' : 'Edit'} Update`}
 				fullWidth
-				buttonClasses='p-2 mt-4'
+				buttonClasses='p-2 mt-5'
 				loading={loading}
 			/>
 		</form>

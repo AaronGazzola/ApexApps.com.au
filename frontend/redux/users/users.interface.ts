@@ -1,5 +1,18 @@
 import { Project } from '../projects/projects.interface';
 
+export interface Proposal {
+	title: string;
+	sections: {
+		title: string;
+		content: string;
+		buttonLabel: string;
+		buttonLink: string;
+	}[];
+	videoLink: string;
+	currentClient?: boolean;
+	_id?: string;
+}
+
 export interface User {
 	userName?: string;
 	clientName: string;
@@ -11,6 +24,7 @@ export interface User {
 	client?: User;
 	project?: Project;
 	projects?: Project[];
+	proposal?: Proposal;
 }
 
 export type UserState = {
@@ -20,6 +34,8 @@ export type UserState = {
 	user?: User;
 	users?: User[];
 	client?: User;
+	proposal?: Proposal;
+	proposals?: Proposal[];
 	error?: null | {
 		title?: string;
 		message: string;
@@ -54,6 +70,8 @@ export interface UserResponse {
 		user?: User;
 		users?: User[];
 		client?: User;
+		proposal?: Proposal;
+		proposals?: Proposal[];
 	};
 }
 

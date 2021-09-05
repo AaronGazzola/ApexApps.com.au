@@ -6,7 +6,8 @@ import {
 	SignupData,
 	UserResponse,
 	User,
-	UpdateData
+	UpdateData,
+	Proposal
 } from './users.interface';
 import axios from 'axios';
 
@@ -355,6 +356,145 @@ export const setClient = createAsyncThunk(
 	}
 );
 
+export const addProposal = createAsyncThunk(
+	'users/addProposal',
+	async (proposal: Proposal, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/proposals',
+				proposal,
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const editProposal = createAsyncThunk(
+	'users/editProposal',
+	async (
+		{ proposal, proposalId }: { proposal: Proposal; proposalId: string },
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.put(
+				'http://localhost:5000/users/proposals',
+				{ proposal, proposalId },
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const setProposal = createAsyncThunk(
+	'users/setProposal',
+	async (proposalId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.post(
+				'http://localhost:5000/users/proposals/set',
+				{ proposalId },
+				{
+					headers: {
+						...config.headers,
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const getProposals = createAsyncThunk(
+	'users/getProposals',
+	async (_, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.get(
+				'http://localhost:5000/users/proposals',
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const getProposal = createAsyncThunk(
+	'users/getProposal',
+	async (_, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.get(
+				'http://localhost:5000/users/proposals/client',
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 const initialUser: User = {
 	userName: '',
 	clientName: '',
@@ -384,6 +524,20 @@ const usersSlice = createSlice({
 			state.error = null;
 			state.success = '';
 			state.alert = null;
+		},
+		resetProposal(state) {
+			state.proposal = {
+				title: 'New Proposal',
+				sections: [
+					{
+						title: '',
+						content: '',
+						buttonLink: '',
+						buttonLabel: ''
+					}
+				],
+				videoLink: ''
+			};
 		}
 	},
 	extraReducers: builder => {
@@ -615,7 +769,71 @@ const usersSlice = createSlice({
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});
+		builder.addCase(addProposal.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(addProposal.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposal = action.payload.proposal;
+			state.proposals = action.payload.proposals;
+			state.user = action.payload.user;
+		});
+		builder.addCase(addProposal.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(editProposal.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(editProposal.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposal = action.payload.proposal;
+			state.proposals = action.payload.proposals;
+			state.user = action.payload.user;
+		});
+		builder.addCase(editProposal.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(getProposals.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(getProposals.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposals = action.payload.proposals;
+		});
+		builder.addCase(getProposals.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(getProposal.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(getProposal.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposal = action.payload.proposal;
+		});
+		builder.addCase(getProposal.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(setProposal.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(setProposal.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposal = action.payload.proposal;
+		});
+		builder.addCase(setProposal.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
 	}
 });
-export const { logout, clearUsers } = usersSlice.actions;
+export const { logout, clearUsers, resetProposal } = usersSlice.actions;
 export default usersSlice.reducer;

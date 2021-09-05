@@ -15,6 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { SendVerifyUserDto } from './dto/send-verify-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { AddProposalDto } from './dto/add-proposal.dto';
 
 @Controller('users')
 export class UsersController {
@@ -92,5 +93,42 @@ export class UsersController {
     @Request() req,
   ) {
     return await this.usersService.setClient(clientName, req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('proposals')
+  async addProposal(@Body() addProposalDto: AddProposalDto, @Request() req) {
+    return await this.usersService.addProposal(req.user, addProposalDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('proposals')
+  async editProposal(
+    @Body()
+    { proposal, proposalId }: { proposal: AddProposalDto; proposalId: string },
+    @Request() req,
+  ) {
+    return await this.usersService.editProposal(req.user, proposal, proposalId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('proposals')
+  async getProposals(@Request() req) {
+    return await this.usersService.getProposals(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('proposals/client')
+  async getProposal(@Request() req) {
+    return await this.usersService.getProposal(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('proposals/set')
+  async setProposal(
+    @Request() req,
+    @Body() { proposalId }: { proposalId: string },
+  ) {
+    return await this.usersService.setProposal(req.user, proposalId);
   }
 }

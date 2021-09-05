@@ -1,3 +1,4 @@
+import { AddProposalDto } from './dto/add-proposal.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import * as crypto from 'crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,11 +14,13 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import * as moment from 'moment';
 import ErrorResponse from 'src/shared/errorResponse';
+import { Proposal } from './interfaces/proposal.interface';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
+    @InjectModel('Proposal') private proposalModel: Model<Proposal>,
     private jwtService: JwtService,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
@@ -349,6 +352,115 @@ export class UsersService {
       success: true,
       user,
       client,
+    };
+  }
+  async addProposal(user: User, addProposalDto: AddProposalDto) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const { title, sections, videoLink, currentClient } = addProposalDto;
+
+    const proposal = await this.proposalModel.create({
+      title,
+      sections,
+      videoLink,
+    });
+
+    let returnUser = user;
+    if (currentClient) {
+      const client = await this.userModel.findById(user.client._id);
+
+      client.proposal = proposal;
+
+      await client.save();
+
+      returnUser = await this.userModel.findById(user._id);
+    }
+
+    const proposals = await this.proposalModel.find();
+
+    return {
+      success: true,
+      proposals,
+      proposal,
+      user: returnUser,
+    };
+  }
+
+  async editProposal(user: User, proposal: AddProposalDto, proposalId: string) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const { title, sections, videoLink, currentClient } = proposal;
+
+    const foundProposal = await this.proposalModel.findById(proposalId);
+
+    foundProposal.title = title;
+    foundProposal.videoLink = videoLink;
+    foundProposal.sections = sections;
+
+    await foundProposal.save();
+
+    let returnUser = user;
+    if (currentClient) {
+      const client = await this.userModel.findById(user.client._id);
+      client.proposal = foundProposal;
+
+      await client.save();
+
+      returnUser = await this.userModel.findById(user._id);
+    }
+
+    const proposals = await this.proposalModel.find();
+
+    return {
+      success: true,
+      proposals,
+      proposal: foundProposal,
+      user: returnUser,
+    };
+  }
+  async getProposals(user: User) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('proposal');
+
+    const proposal = client.proposal ? client.proposal : undefined;
+
+    const proposals = await this.proposalModel.find();
+
+    return {
+      success: true,
+      proposals,
+      proposal,
+    };
+  }
+
+  async getProposal(user: User) {
+    const client = await this.userModel
+      .findById(user.client._id)
+      .populate('proposal');
+
+    const proposal = client.proposal ? client.proposal : undefined;
+
+    return {
+      success: true,
+      proposal,
+    };
+  }
+
+  async setProposal(user: User, proposalId: string) {
+    if (!user.isAdmin)
+      throw new ErrorResponse('User must be admin to access this content', 401);
+
+    const proposal = await this.proposalModel.findById(proposalId);
+
+    return {
+      success: true,
+      proposal,
     };
   }
 }

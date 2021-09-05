@@ -2,7 +2,14 @@ import React, { FormEventHandler } from 'react';
 import SVG from './SVG';
 
 interface InputProps {
-	type: 'text' | 'textarea' | 'password' | 'select' | 'date' | 'number';
+	type:
+		| 'text'
+		| 'textarea'
+		| 'password'
+		| 'select'
+		| 'date'
+		| 'number'
+		| 'checkbox';
 	placeholder?: string;
 	value: string | number | undefined;
 	onChange?:
@@ -29,6 +36,8 @@ interface InputProps {
 	autoFocus?: boolean;
 	rows?: number;
 	maxLength?: number;
+	checkboxClasses?: string;
+	checkClasses?: string;
 }
 
 const Input = (props: InputProps) => {
@@ -53,7 +62,9 @@ const Input = (props: InputProps) => {
 		validation = true,
 		autoFocus = false,
 		maxLength = 10000,
-		rows = 3
+		rows = 3,
+		checkboxClasses = '',
+		checkClasses = ''
 	} = props;
 
 	return (
@@ -96,6 +107,35 @@ const Input = (props: InputProps) => {
 						classes='fill-current text-gray-light absolute right-3 top-1/2 transform -rotate-90 w-4 h-4'
 					/>
 				</>
+			) : type === 'checkbox' ? (
+				<div className='flex relative items-center'>
+					<input
+						type='checkbox'
+						id={id}
+						className={`checkbox w-5 h-5 z-20`}
+						onChange={onChange}
+						defaultChecked={!!value}
+					/>
+					<SVG
+						name='checkMark'
+						classes={`checkbox-control absolute top-1/2 transform -translate-y-1/2 left-0 w-5 h-5 z-10 fill-current text-blue-darkest ${checkClasses}`}
+					></SVG>
+					<div
+						className={`border-2 border-blue-darkest rounded-md absolute top-1/2 transform -translate-y-1/2 left-0 w-5 h-5 ${checkboxClasses}`}
+					></div>
+					<label
+						htmlFor={id}
+						className={`select-none cursor-pointer ml-7 text-sm font-medium ${
+							!isValid && isTouched && validation
+								? 'text-red form-label'
+								: isValid && validation
+								? 'text-green form-label'
+								: 'text-gray-dark form-label'
+						}`}
+					>
+						{label}
+					</label>
+				</div>
 			) : (
 				<>
 					<p

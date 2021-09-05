@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { Project } from '../../projects/interfaces/project.interface';
-import { Client } from './client.interface';
+import { Proposal } from './proposal.interface';
 
 export interface User extends Document {
   userName: string;
@@ -17,5 +17,6 @@ export interface User extends Document {
   _id: string;
   projects: Project[];
   project?: Project;
-  client?: Client;
+  client?: User;
+  proposal?: Proposal;
 }

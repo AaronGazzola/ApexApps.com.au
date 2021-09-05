@@ -42,4 +42,5 @@ export const UserSchema = new mongoose.Schema({
   verifyEmailToken: { type: String, select: false },
   projects: [ProjectSchema],
   project: ProjectSchema,
+  proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
 });
