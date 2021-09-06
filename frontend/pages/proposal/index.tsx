@@ -273,7 +273,7 @@ const index = () => {
 										color='red'
 										variant='simple'
 										label='Delete proposal'
-										buttonClasses='border-2 border-red px-1.5 py-1 mt-4'
+										buttonClasses='border border-red px-1.5 py-1 mt-4'
 										onClick={() =>
 											setModalState({
 												...modalState,
@@ -425,42 +425,108 @@ const index = () => {
 					</form>
 				</>
 			) : (
-				<div className='flex items-center w-72 flex-wrap-reverse justify-center sm:w-auto'>
-					<div className='mr-0 sm:mr-4 flex flex-col items-center'>
-						<div className='box w-72 sm:w-80 h-min'>
-							<p className='text-sm font-medium'>
-								Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
-							</p>
-							<p className='text-sm font-medium'>
-								I create elegant and powerful web applications - accessable on
-								any device
-							</p>
+				<>
+					<div className='flex items-center w-72 mb-6 flex-wrap-reverse justify-center sm:w-auto'>
+						<div className='mr-0 sm:mr-4 flex flex-col items-center'>
+							<div className='box w-72 sm:w-80 h-min'>
+								<p className='text-sm font-medium'>
+									Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+								</p>
+								<p className='text-sm font-medium'>
+									I create elegant and powerful web applications - accessable on
+									any device
+								</p>
+							</div>
+							<Button
+								label='More about Apex Apps'
+								variant='simple'
+								color='green'
+								buttonClasses='border border-green px-1.5 py-0.5'
+								size='small'
+								type='link'
+								path='/'
+							/>
 						</div>
-						<Button
-							label='More about Apex Apps'
-							variant='simple'
-							color='green'
-							buttonClasses='border border-green px-1.5 py-0.5'
-							size='small'
-							type='link'
-							path='/about'
-						/>
+						<div
+							className='rounded-full overflow-hidden mb-4 sm:mb-0 shadow-xl'
+							style={{
+								width: breakpoint === 'xs' ? 160 : 180,
+								height: breakpoint === 'xs' ? 160 : 180
+							}}
+						>
+							<Image
+								src='/assets/images/profile-dark.jpg'
+								width={breakpoint === 'xs' ? 160 : 180}
+								height={breakpoint === 'xs' ? 160 : 180}
+								alt='Aaron Gazzola'
+							/>
+						</div>
 					</div>
-					<div
-						className='rounded-full overflow-hidden mb-4 sm:mb-0'
-						style={{
-							width: breakpoint === 'xs' ? 160 : 180,
-							height: breakpoint === 'xs' ? 160 : 180
-						}}
-					>
-						<Image
-							src='/assets/images/profile-dark.jpg'
-							width={breakpoint === 'xs' ? 160 : 180}
-							height={breakpoint === 'xs' ? 160 : 180}
-							alt='Aaron Gazzola'
-						/>
-					</div>
-				</div>
+					<h1 className='title mb-4'>{proposal?.title}</h1>
+					{proposal?.sections?.map(section => (
+						<div className='box w-72 sm:max-w-lg sm:w-min h-min'>
+							<h2 className='title-sm mb-3 w-full min-w-max'>
+								{section.title}
+							</h2>
+							<p className='text-sm font-medium w-full min-w-max'>
+								{section.title}
+							</p>
+							{section.buttonLink && section.buttonLabel && (
+								<a
+									href={section.buttonLink}
+									target='_blank'
+									rel='noreferrer noopener'
+									className='w-full'
+								>
+									<Button
+										label={section.buttonLabel}
+										type='button'
+										color='green'
+										variant='simple'
+										size='small'
+										buttonClasses='border border-green px-1.5 py-0.5 mt-4'
+										fullWidth
+									/>
+								</a>
+							)}
+						</div>
+					))}
+					{proposal?.videoLink && (
+						<div className='w-full sm:px-8'>
+							<div className='box full p-4'>
+								<h2 className='title-sm mb-2 sm:mb-4'>Personal introduction</h2>
+								<div
+									className='w-full relative'
+									style={{ paddingTop: '56.25%' }}
+								>
+									<iframe
+										className='absolute top-0 left-0 w-full h-full'
+										width='560'
+										height='315'
+										src={
+											videoLink?.startsWith('https://www.youtube.com/embed')
+												? videoLink
+												: `https://www.youtube.com/embed/${videoLink}`
+										}
+										title='Personal introduction video'
+										frameBorder='0'
+										allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+										allowFullScreen
+									></iframe>
+								</div>
+							</div>
+						</div>
+					)}
+					<Button
+						label="Let's chat!"
+						size='large'
+						variant='contained'
+						color='green'
+						type='link'
+						path='/contact'
+						buttonClasses='py-1.5 px-20 mt-2 sm:mt-4'
+					/>
+				</>
 			)}
 		</>
 	);
