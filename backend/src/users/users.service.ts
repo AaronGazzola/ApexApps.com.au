@@ -517,6 +517,23 @@ export class UsersService {
     };
   }
 
+  async getProposalById() {
+    const { pid: proposalId } = this.req.params;
+    let proposal;
+    try {
+      proposal = await this.proposalModel.findOne({ _id: proposalId });
+    } catch (err) {
+      throw new ErrorResponse('Invalid proposal link', 401);
+    }
+    if (!proposal) {
+      throw new ErrorResponse('Invalid proposal link', 401);
+    }
+    return {
+      success: true,
+      proposal,
+    };
+  }
+
   async deleteProposal(user: User) {
     if (!user.isAdmin)
       throw new ErrorResponse('User must be admin to access this content', 401);

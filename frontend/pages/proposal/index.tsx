@@ -269,23 +269,35 @@ const index = () => {
 								containerClasses='mt-4'
 							/>
 							{proposal?._id && (
-								<div className='flex justify-end'>
-									<Button
-										size='small'
-										color='red'
-										variant='simple'
-										label='Delete proposal'
-										buttonClasses='border border-red px-1.5 py-1 mt-4'
-										onClick={() =>
-											setModalState({
-												...modalState,
-												isOpen: true,
-												type: 'deleteProposal',
-												content: title
-											})
-										}
-									/>
-								</div>
+								<>
+									<div className='flex justify-end w-full'>
+										<Button
+											size='small'
+											color='red'
+											variant='simple'
+											label='Delete proposal'
+											buttonClasses='px-1.5 py-1 mt-2'
+											onClick={() =>
+												setModalState({
+													...modalState,
+													isOpen: true,
+													type: 'deleteProposal',
+													content: title
+												})
+											}
+										/>
+									</div>
+									<div className='border border-gray-light rounded-md p-2 w-full flex flex-col items-center'>
+										<p className='font-semibold text-sm text-gray-dark'>
+											Proposal link:
+										</p>
+										<p className='text-sm'>
+											apexapps.com.au/proposal/
+											<br />
+											{proposal._id}
+										</p>
+									</div>
+								</>
 							)}
 							<Input
 								type='text'
@@ -540,9 +552,11 @@ const index = () => {
 												width='560'
 												height='315'
 												src={
-													videoLink?.startsWith('https://www.youtube.com/embed')
-														? videoLink
-														: `https://www.youtube.com/embed/${videoLink}`
+													proposal?.videoLink?.startsWith(
+														'https://www.youtube.com/embed'
+													)
+														? proposal?.videoLink
+														: `https://www.youtube.com/embed/${proposal?.videoLink}`
 												}
 												title='Personal introduction video'
 												frameBorder='0'

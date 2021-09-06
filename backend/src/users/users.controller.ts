@@ -138,4 +138,9 @@ export class UsersController {
   async deleteProposal(@Request() req) {
     return await this.usersService.deleteProposal(req.user);
   }
+
+  @Get('/proposals/:pid')
+  async getProposalById() {
+    return await this.usersService.getProposalById();
+  }
 }

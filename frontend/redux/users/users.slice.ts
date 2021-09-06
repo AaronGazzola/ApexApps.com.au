@@ -469,6 +469,25 @@ export const getProposals = createAsyncThunk(
 	}
 );
 
+export const getProposalById = createAsyncThunk(
+	'users/getProposalById',
+	async (proposalId: string, { rejectWithValue }) => {
+		try {
+			const { data }: UserResponse = await axios.get(
+				`http://localhost:5000/users/proposals/${proposalId}`,
+				config
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
 export const getClientProposal = createAsyncThunk(
 	'users/getClientProposal',
 	async (_, { rejectWithValue, getState }) => {
@@ -871,6 +890,18 @@ const usersSlice = createSlice({
 			state.success = 'Proposal deleted';
 		});
 		builder.addCase(deleteProposal.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(getProposalById.pending, (state, action) => {
+			state.loading = true;
+		});
+
+		builder.addCase(getProposalById.fulfilled, (state, action) => {
+			state.loading = false;
+			state.proposal = action.payload.proposal;
+		});
+		builder.addCase(getProposalById.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

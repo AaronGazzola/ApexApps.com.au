@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useAppSelector } from '../redux/hooks';
 import DrawerLink from './DrawerLink';
@@ -29,13 +30,18 @@ const initialNavItems = [
 ];
 
 const Drawer = (props: drawerProps) => {
+	const router = useRouter();
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
 	const { isAuth, user } = useAppSelector(state => state.users);
 	const { breakpoint } = useAppSelector(state => state.utils);
 
 	let navItems = initialNavItems;
-	if (user?.isAdmin || user?.client?.proposal)
+	if (
+		user?.isAdmin ||
+		user?.client?.proposal ||
+		router.pathname.startsWith('/proposal/')
+	)
 		navItems = [
 			...initialNavItems,
 			{
