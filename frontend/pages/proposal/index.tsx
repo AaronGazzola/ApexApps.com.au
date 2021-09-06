@@ -464,65 +464,96 @@ const index = () => {
 							/>
 						</div>
 					</div>
-					<h1 className='title mb-4'>{proposal?.title}</h1>
-					{proposal?.sections?.map((section, index) => (
-						<div className='box w-72 sm:max-w-lg sm:min-w-max' key={index}>
-							<h2 className='title-sm mb-3 w-full sm:max-w-lg'>
-								{section.title}
-							</h2>
-							<p className='text-sm font-medium w-full sm:max-w-lg'>
-								{section.content.split('<br/>').map((paragraph, index) => (
-									<React.Fragment key={index}>
-										{paragraph}
-										<br />
-									</React.Fragment>
-								))}
-							</p>
-							{section.buttonLink && section.buttonLabel && (
-								<a
-									href={section.buttonLink}
-									target='_blank'
-									rel='noreferrer noopener'
-									className='w-full'
-								>
-									<Button
-										label={section.buttonLabel}
-										type='button'
-										color='green'
-										variant='simple'
-										size='small'
-										buttonClasses='border border-green px-1.5 py-0.5 mt-4'
-										fullWidth
-									/>
-								</a>
-							)}
-						</div>
-					))}
-					{proposal?.videoLink && (
-						<div className='w-full sm:px-8'>
-							<div className='box full p-4'>
-								<h2 className='title-sm mb-2 sm:mb-4'>Personal introduction</h2>
-								<div
-									className='w-full relative'
-									style={{ paddingTop: '56.25%' }}
-								>
-									<iframe
-										className='absolute top-0 left-0 w-full h-full'
-										width='560'
-										height='315'
-										src={
-											videoLink?.startsWith('https://www.youtube.com/embed')
-												? videoLink
-												: `https://www.youtube.com/embed/${videoLink}`
-										}
-										title='Personal introduction video'
-										frameBorder='0'
-										allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-										allowFullScreen
-									></iframe>
+					{loading || !user?.client?.proposal ? (
+						<>
+							<div className='skeleton w-72 h-8 mb-4'></div>
+							<div className='box w-72 sm:max-w-lg sm:w-full'>
+								<div className='skeleton w-60 h-7 mb-3'></div>
+								<div className='flex flex-col items-left w-full'>
+									<div className='skeleton w-11/12 h-4 mb-2 '></div>
+									<div className='skeleton w-10/12 h-4 mb-2 '></div>
+									<div className='skeleton w-8/12 h-4 mb-6 '></div>
+									<div className='skeleton w-12/12 h-4 mb-2 '></div>
+									<div className='skeleton w-4/12 h-4 '></div>
 								</div>
 							</div>
-						</div>
+							<div className='box w-72 sm:max-w-lg sm:w-full'>
+								<div className='skeleton w-60 h-7 mb-3'></div>
+								<div className='flex flex-col items-left w-full'>
+									<div className='skeleton w-5/12 h-4 mb-2 '></div>
+									<div className='skeleton w-10/12 h-4 mb-2 '></div>
+									<div className='skeleton w-8/12 h-4 mb-6 '></div>
+									<div className='skeleton w-8/12 h-4 mb-4 '></div>
+									<div className='skeleton w-11/12 h-4 mb-2 '></div>
+									<div className='skeleton w-6/12 h-4 '></div>
+								</div>
+							</div>
+						</>
+					) : (
+						<>
+							<h1 className='title mb-4'>{proposal?.title}</h1>
+							{proposal?.sections?.map((section, index) => (
+								<div className='box w-72 sm:max-w-lg sm:min-w-max' key={index}>
+									<h2 className='title-sm mb-3 w-full sm:max-w-lg'>
+										{section.title}
+									</h2>
+									<p className='text-sm font-medium w-full sm:max-w-lg'>
+										{section.content.split('<br/>').map((paragraph, index) => (
+											<React.Fragment key={index}>
+												{paragraph}
+												<br />
+											</React.Fragment>
+										))}
+									</p>
+									{section.buttonLink && section.buttonLabel && (
+										<a
+											href={section.buttonLink}
+											target='_blank'
+											rel='noreferrer noopener'
+											className='w-full'
+										>
+											<Button
+												label={section.buttonLabel}
+												type='button'
+												color='green'
+												variant='simple'
+												size='small'
+												buttonClasses='border border-green px-1.5 py-0.5 mt-4'
+												fullWidth
+											/>
+										</a>
+									)}
+								</div>
+							))}
+							{proposal?.videoLink && (
+								<div className='w-full sm:px-8'>
+									<div className='box full p-4'>
+										<h2 className='title-sm mb-2 sm:mb-4'>
+											Personal introduction
+										</h2>
+										<div
+											className='w-full relative'
+											style={{ paddingTop: '56.25%' }}
+										>
+											<iframe
+												className='absolute top-0 left-0 w-full h-full'
+												width='560'
+												height='315'
+												src={
+													videoLink?.startsWith('https://www.youtube.com/embed')
+														? videoLink
+														: `https://www.youtube.com/embed/${videoLink}`
+												}
+												title='Personal introduction video'
+												frameBorder='0'
+												allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+												allowFullScreen
+											></iframe>
+										</div>
+									</div>
+								</div>
+							)}
+						</>
 					)}
 					<Button
 						label="Let's chat!"
