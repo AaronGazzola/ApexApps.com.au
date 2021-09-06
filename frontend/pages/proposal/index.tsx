@@ -83,8 +83,10 @@ const index = () => {
 		e: React.FormEvent<HTMLInputElement | HTMLSelectElement>,
 		{ index, field }: { index: number; field: string }
 	) => {
+		const sectionCopy = { ...sections[index] };
+		sectionCopy[field] = e.currentTarget.value;
 		const sectionsCopy = [...sections];
-		sectionsCopy[index][field] = e.currentTarget.value;
+		sectionsCopy[index] = sectionCopy;
 		setState({
 			...state,
 			sections: sectionsCopy
@@ -341,7 +343,7 @@ const index = () => {
 										placeholder='Title'
 									/>
 									<Input
-										type='text'
+										type='textarea'
 										label='Content'
 										value={sections[index].content}
 										id={`section${index + 1}content`}
@@ -463,13 +465,18 @@ const index = () => {
 						</div>
 					</div>
 					<h1 className='title mb-4'>{proposal?.title}</h1>
-					{proposal?.sections?.map(section => (
-						<div className='box w-72 sm:max-w-lg sm:w-min h-min'>
-							<h2 className='title-sm mb-3 w-full min-w-max'>
+					{proposal?.sections?.map((section, index) => (
+						<div className='box w-72 sm:max-w-lg sm:min-w-max' key={index}>
+							<h2 className='title-sm mb-3 w-full sm:max-w-lg'>
 								{section.title}
 							</h2>
-							<p className='text-sm font-medium w-full min-w-max'>
-								{section.title}
+							<p className='text-sm font-medium w-full sm:max-w-lg'>
+								{section.content.split('<br/>').map((paragraph, index) => (
+									<React.Fragment key={index}>
+										{paragraph}
+										<br />
+									</React.Fragment>
+								))}
 							</p>
 							{section.buttonLink && section.buttonLabel && (
 								<a
