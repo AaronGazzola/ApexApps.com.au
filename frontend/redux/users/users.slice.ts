@@ -583,6 +583,34 @@ const usersSlice = createSlice({
 				],
 				videoLink: ''
 			};
+		},
+		userTour(state) {
+			state.isAuth = true;
+			state.onTour = true;
+			state.client = {
+				userName: 'Aristotle',
+				clientName: 'tourClient',
+				email: 'aristotle@example.com',
+				isVerified: true,
+				isAdmin: false,
+				_id: 'abc123'
+			};
+			state.user = {
+				userName: 'Aristotle',
+				clientName: 'tourClient',
+				email: 'aristotle@example.com',
+				isVerified: true,
+				isAdmin: false,
+				_id: 'abc123',
+				client: {
+					userName: 'Aristotle',
+					clientName: 'tourClient',
+					email: 'aristotle@example.com',
+					isVerified: true,
+					isAdmin: false,
+					_id: 'abc123'
+				}
+			};
 		}
 	},
 	extraReducers: builder => {
@@ -907,5 +935,6 @@ const usersSlice = createSlice({
 		});
 	}
 });
-export const { logout, clearUsers, resetProposal } = usersSlice.actions;
+export const { logout, clearUsers, resetProposal, userTour } =
+	usersSlice.actions;
 export default usersSlice.reducer;

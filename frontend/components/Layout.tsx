@@ -35,7 +35,8 @@ const Layout = (props: LayoutProps) => {
 		isAuth,
 		user,
 		success: usersSuccess,
-		client
+		client,
+		onTour
 	} = useAppSelector(state => state.users);
 	const { projects, project } = useAppSelector(state => state.projects);
 	const [onMount, setOnMount] = useState(true);
@@ -63,7 +64,7 @@ const Layout = (props: LayoutProps) => {
 	useEffect(() => {
 		if (onMount) {
 			// if first page load, check for user
-			dispatch(getUser());
+			if (!onTour) dispatch(getUser());
 			setOnMount(false);
 		} else if (isAuth && !user?.isVerified) {
 			// if user is logged in but not verified, logout
@@ -75,8 +76,6 @@ const Layout = (props: LayoutProps) => {
 				dispatch(setClient(user.clientName));
 			// if admin, get users
 			if (user?.isAdmin) dispatch(getUsers());
-			// if logged in, redirect from header links to /project
-			if (!onAuthRoute()) router.push('/project');
 		} else if (!isAuth) {
 			// if not logged in redirect from drawer links to /login
 			if (onAuthRoute()) router.push('/login');
@@ -88,11 +87,12 @@ const Layout = (props: LayoutProps) => {
 	useEffect(() => {
 		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
 		if (usersSuccess) dispatch(getUser());
+		if (usersSuccess?.startsWith('Welcome')) router.push('/project');
 	}, [usersSuccess]);
 
 	// when client changes, get projects
 	useEffect(() => {
-		if (client) dispatch(getProjects());
+		if (client && !onTour) dispatch(getProjects());
 	}, [client]);
 
 	// when projects change, if project is not found on projects, set project to first in array

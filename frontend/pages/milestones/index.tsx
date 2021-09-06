@@ -14,7 +14,7 @@ const index = () => {
 	const { milestones, loading: milestonesLoading } = useAppSelector(
 		state => state.milestones
 	);
-	const { isAuth, user } = useAppSelector(state => state.users);
+	const { isAuth, user, onTour } = useAppSelector(state => state.users);
 	const loading = milestonesLoading || !milestones;
 
 	const addMilestoneHandler = (index: number) => {
@@ -22,7 +22,7 @@ const index = () => {
 	};
 
 	useEffect(() => {
-		if (isAuth) dispatch(getMilestones());
+		if (isAuth && !onTour) dispatch(getMilestones());
 	}, [isAuth]);
 
 	return (

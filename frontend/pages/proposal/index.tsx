@@ -28,6 +28,7 @@ const index = () => {
 	const dispatch = useAppDispatch();
 	const {
 		user,
+		onTour,
 		isAuth,
 		loading,
 		proposal,
@@ -191,7 +192,7 @@ const index = () => {
 	// if proposal exists on client, get this proposal
 	useEffect(() => {
 		if (user?.isAdmin) dispatch(getProposals());
-		if (user?.client?.proposal) {
+		if (user?.client?.proposal && !onTour) {
 			setState({
 				...state,
 				currentClient: true

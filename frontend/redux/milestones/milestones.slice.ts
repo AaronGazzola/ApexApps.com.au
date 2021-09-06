@@ -381,6 +381,235 @@ const milestonesSlice = createSlice({
 		},
 		setOpenUpdate(state, action) {
 			state.openUpdate = action.payload;
+		},
+		milestonesTour(state) {
+			state.milestones = [
+				{
+					title: 'Design and prototype',
+					_id: 'milestone1',
+					startDate: new Date('1970-01-01T00:00:00.000+00:00'),
+					endDate: new Date('1970-01-07T00:00:00.000+00:00'),
+					price: 2500,
+					currency: 'USD',
+					notes:
+						'App design utilised a calming palette of cold colours with a simple and modern aesthetic',
+					buttonLabel: 'View protoype',
+					buttonLink: '#',
+					features: [
+						{
+							_id: 'feature1',
+							title: 'Logo design',
+							state: 'Completed',
+							steps: [
+								{ _id: 'step1', content: 'Concept board' },
+								{ _id: 'step2', content: 'Draft selection' }
+							]
+						},
+						{
+							_id: 'feature2',
+							title: 'Navigation design',
+							state: 'Completed',
+							steps: [
+								{ _id: 'step3', content: 'Header logo and links' },
+								{ _id: 'step4', content: 'Drawer links and icons' },
+								{ _id: 'step5', content: 'Footer design' },
+								{ _id: 'step6', content: 'Colour palette' }
+							]
+						},
+						{
+							_id: 'feature3',
+							title: 'Page layout',
+							state: 'Completed',
+							steps: [
+								{ _id: 'step7', content: 'Text formatting and layout' },
+								{
+									_id: 'step8',
+									content: 'Responsive page design for all screen sizes'
+								},
+								{ _id: 'step9', content: 'Color palette selection' }
+							]
+						},
+						{
+							_id: 'feature4',
+							title: 'Specific page UI design',
+							state: 'Completed',
+							steps: [
+								{ _id: 'step10', content: 'Profile Page' },
+								{
+									_id: 'step11',
+									content: 'Course search page'
+								},
+								{ _id: 'step12', content: 'Course content page' }
+							]
+						}
+					],
+					updates: [
+						{
+							_id: 'update1',
+							notes:
+								'Click the button below to view a selection of logo designs in various colour palettes',
+							date: new Date('1970-01-07T00:00:00.000+00:00'),
+							buttonLink: '#',
+							buttonLabel: 'View designs',
+							publish: true
+						}
+					]
+				},
+				{
+					title: 'User interface implementation',
+					_id: 'milestone2',
+					startDate: new Date('1970-01-08T00:00:00.000+00:00'),
+					endDate: new Date('1970-01-25T00:00:00.000+00:00'),
+					price: 2500,
+					currency: 'USD',
+					notes: 'Click button below to test frontend user interface',
+					buttonLabel: 'Test interface',
+					buttonLink: '#',
+					features: [
+						{
+							_id: 'feature5',
+							title: 'Develop interface components',
+							state: 'Completed',
+							steps: [
+								{ _id: 'step13', content: 'Buttons' },
+								{ _id: 'step14', content: 'Inputs' },
+								{ _id: 'step15', content: 'Text and text boxes' },
+								{ _id: 'step16', content: 'Loading animations' }
+							]
+						},
+						{
+							_id: 'feature6',
+							title: 'Navigation implementation',
+							state: 'Completed',
+							steps: [
+								{ _id: 'step17', content: 'Header' },
+								{ _id: 'step18', content: 'Drawer' },
+								{ _id: 'step19', content: 'Footer' }
+							]
+						},
+						{
+							_id: 'feature7',
+							title: 'Implement static pages',
+							state: 'In progress',
+							steps: [
+								{ _id: 'step20', content: 'About page' },
+								{ _id: 'step21', content: 'Contact page' },
+								{ _id: 'step22', content: 'Terms and conditions page' },
+								{ _id: 'step23', content: 'Privacy policy page' }
+							]
+						},
+						{
+							_id: 'feature8',
+							title: 'Site metadata',
+							state: 'In progress',
+							steps: [
+								{ _id: 'step24', content: 'Favicon implementation' },
+								{ _id: 'step25', content: 'Page tab titles' },
+								{ _id: 'step26', content: 'page descriptions' },
+								{ _id: 'step27', content: 'Page keywords' }
+							]
+						}
+					],
+					updates: [
+						{
+							_id: 'update2',
+							notes:
+								'Navigation user interface has been implemented, click the link below to view progress so far.',
+							date: new Date('1970-01-15T00:00:00.000+00:00'),
+							buttonLink: '#',
+							buttonLabel: 'View designs',
+							publish: true
+						}
+					]
+				},
+				{
+					title: 'Core app functionality',
+					_id: 'milestone3',
+					startDate: new Date('1970-01-25T00:00:00.000+00:00'),
+					endDate: new Date('1970-02-14T00:00:00.000+00:00'),
+					price: 7500,
+					currency: 'USD',
+					notes: '',
+					buttonLabel: '',
+					buttonLink: '',
+					features: [
+						{
+							_id: 'feature9',
+							title: 'Configure API server',
+							state: 'Planned',
+							steps: [
+								{ _id: 'step28', content: 'Initialise database' },
+								{ _id: 'step29', content: 'Instantiate datbase schemas' },
+								{
+									_id: 'step30',
+									content: 'Design API routes and controllers'
+								}
+							]
+						},
+						{
+							_id: 'feature10',
+							title: 'User Authentication',
+							state: 'Planned',
+							steps: [
+								{
+									_id: 'step31',
+									content: 'Login and Signup user interface'
+								},
+								{
+									_id: 'step32',
+									content:
+										'Implement user authentication routes and controllers'
+								},
+								{
+									_id: 'step33',
+									content: 'Implement email verification'
+								},
+								{
+									_id: 'step34',
+									content: 'Implement forgot password routes and controllers'
+								}
+							]
+						},
+						{
+							_id: 'feature11',
+							title: 'User profile',
+							state: 'Planned',
+							steps: [
+								{
+									_id: 'step35',
+									content: 'User profile interface implementation'
+								},
+								{
+									_id: 'step36',
+									content: 'Edit profile routes and controllers'
+								},
+								{
+									_id: 'step37',
+									content: 'Verify email change routes and controllers'
+								}
+							]
+						}
+					],
+					updates: [
+						{
+							_id: 'update3',
+							notes: '',
+							date: new Date('1970-02-01T00:00:00.000+00:00'),
+							buttonLink: '',
+							buttonLabel: '',
+							publish: false
+						},
+						{
+							_id: 'update4',
+							notes: '',
+							date: new Date('1970-02-08T00:00:00.000+00:00'),
+							buttonLink: '',
+							buttonLabel: '',
+							publish: false
+						}
+					]
+				}
+			];
 		}
 	},
 	extraReducers: builder => {
@@ -524,6 +753,7 @@ export const {
 	clearMilestones,
 	setOpenFeature,
 	setOpenMilestone,
-	setOpenUpdate
+	setOpenUpdate,
+	milestonesTour
 } = milestonesSlice.actions;
 export default milestonesSlice.reducer;

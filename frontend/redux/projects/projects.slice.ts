@@ -251,6 +251,42 @@ const projectsSlice = createSlice({
 			state.error = null;
 			state.success = '';
 			state.alert = null;
+		},
+		projectsTour(state) {
+			state.project = {
+				title: 'Metaphysics Online',
+				_id: 'abc123',
+				description:
+					'We are what we repeatedly do. Excellence, therefore, isn’t an act, but a habit.',
+				contractUploaded: false,
+				estimate: {
+					startFrom: new Date('1970-01-01T00:00:00.000+00:00'),
+					startTo: new Date('1970-01-01T00:00:00.000+00:00'),
+					endFrom: new Date('1970-03-31T00:00:00.000+00:00'),
+					endTo: new Date('1970-04-07T00:00:00.000+00:00'),
+					costFrom: 32000,
+					costTo: 42000,
+					currency: 'USD'
+				}
+			};
+			state.projects = [
+				{
+					title: 'Metaphysics Online',
+					_id: 'abc123',
+					description:
+						'We are what we repeatedly do. Excellence, therefore, isn’t an act, but a habit.',
+					contractUploaded: false,
+					estimate: {
+						startFrom: new Date('1970-01-01T00:00:00.000+00:00'),
+						startTo: new Date('1970-01-01T00:00:00.000+00:00'),
+						endFrom: new Date('1970-03-31T00:00:00.000+00:00'),
+						endTo: new Date('1970-04-07T00:00:00.000+00:00'),
+						costFrom: 32000,
+						costTo: 42000,
+						currency: 'USD'
+					}
+				}
+			];
 		}
 	},
 	extraReducers: builder => {
@@ -343,5 +379,5 @@ const projectsSlice = createSlice({
 	}
 });
 
-export const { clearProjects } = projectsSlice.actions;
+export const { clearProjects, projectsTour } = projectsSlice.actions;
 export default projectsSlice.reducer;

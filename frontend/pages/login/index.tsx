@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { login } from '../../redux/users/users.slice';
+import { login, userTour } from '../../redux/users/users.slice';
 import SVG from '../../components/SVG';
+import { milestonesTour } from '../../redux/milestones/milestones.slice';
+import { projectsTour } from '../../redux/projects/projects.slice';
+import { useRouter } from 'next/router';
 
 const index = () => {
+	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { loading } = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
@@ -75,6 +79,13 @@ const index = () => {
 				})
 			);
 		}
+	};
+
+	const takeTourHandler = () => {
+		dispatch(userTour());
+		dispatch(milestonesTour());
+		dispatch(projectsTour());
+		router.push('/project');
 	};
 
 	return (
@@ -161,19 +172,19 @@ const index = () => {
 				/>
 				<Button
 					label='Take a tour'
-					path='#'
 					startIcon={<div className='w-5'></div>}
 					endIcon={
 						<div className='w-5 h-5'>
 							<SVG name='map' classes='fill-current w-full' />
 						</div>
 					}
-					type='link'
+					type='button'
 					fullWidth
 					color='green-700'
 					variant='simple'
 					size='small'
 					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
+					onClick={takeTourHandler}
 				/>
 			</form>
 		</>

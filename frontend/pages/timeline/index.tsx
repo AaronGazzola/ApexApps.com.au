@@ -20,7 +20,7 @@ const index = () => {
 	const { milestones, loading, openUpdate } = useAppSelector(
 		state => state.milestones
 	);
-	const { isAuth, user } = useAppSelector(state => state.users);
+	const { isAuth, user, onTour } = useAppSelector(state => state.users);
 	const [modalState, setModalState] = useState({
 		isOpen: false,
 		type: '',
@@ -65,7 +65,7 @@ const index = () => {
 	};
 
 	useEffect(() => {
-		if (isAuth) dispatch(getMilestones());
+		if (isAuth && !onTour) dispatch(getMilestones());
 	}, [isAuth]);
 
 	let sortedMilestones: Milestone[] = [];
