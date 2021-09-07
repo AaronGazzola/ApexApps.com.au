@@ -28,6 +28,7 @@ const index = () => {
 	const dispatch = useAppDispatch();
 	const {
 		user,
+		userView,
 		onTour,
 		isAuth,
 		loading,
@@ -235,7 +236,7 @@ const index = () => {
 		<>
 			<Meta title='Proposal | Apex Apps' />
 			<h1 className='title'>Project Proposal</h1>
-			{user?.isAdmin ? (
+			{user?.isAdmin && !userView ? (
 				<>
 					<Modal
 						isOpen={modalState.isOpen}

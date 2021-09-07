@@ -32,6 +32,7 @@ export type UserState = {
 	loading: boolean;
 	isAuth: boolean;
 	token?: string;
+	userView?: boolean;
 	noUser?: boolean;
 	onTour?: boolean;
 	user?: User;

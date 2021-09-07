@@ -14,7 +14,9 @@ const index = () => {
 	const { milestones, loading: milestonesLoading } = useAppSelector(
 		state => state.milestones
 	);
-	const { isAuth, user, onTour } = useAppSelector(state => state.users);
+	const { isAuth, user, onTour, userView } = useAppSelector(
+		state => state.users
+	);
 	const loading = milestonesLoading || !milestones;
 
 	const addMilestoneHandler = (index: number) => {
@@ -29,7 +31,7 @@ const index = () => {
 		<>
 			<Meta title='Milestones | Apex Apps' />
 			<h1 className='title'>Milestones</h1>
-			{user && !user?.isAdmin && loading ? (
+			{user && (!user?.isAdmin || userView) && loading ? (
 				<>
 					<div className='box w-72 sm:w-80'>
 						<div className='skeleton w-52 h-7 mb-4'></div>
@@ -55,21 +57,11 @@ const index = () => {
 							className='w-8 h-8 border-t-2 border-l-2 border-blue-darkest animate-spin'
 							style={{ borderRadius: '50%' }}
 						></div>
-					) : user?.isAdmin ? (
-						<Button
-							type='button'
-							size='large'
-							variant='simple'
-							color='green'
+					) : user?.isAdmin && !userView ? (
+						<SVG
 							onClick={e => addMilestoneHandler(0)}
-							endIcon={
-								<div className='w-8 h-8'>
-									<SVG
-										name='add'
-										classes='fill-current text-green w-full h-full'
-									/>
-								</div>
-							}
+							name='add'
+							classes='fill-current text-green w-8 h-8 cursor-pointer'
 						/>
 					) : (
 						<></>
@@ -94,21 +86,11 @@ const index = () => {
 								features={milestone.features}
 								milestoneId={milestone._id}
 							/>
-							{user?.isAdmin && (
-								<Button
-									type='button'
-									size='large'
-									variant='simple'
-									color='green'
-									onClick={() => addMilestoneHandler(index + 1)}
-									endIcon={
-										<div className='w-8 h-8'>
-											<SVG
-												name='add'
-												classes='fill-current text-green w-full h-full'
-											/>
-										</div>
-									}
+							{user?.isAdmin && !userView && (
+								<SVG
+									onClick={e => addMilestoneHandler(index + 1)}
+									name='add'
+									classes='fill-current text-green w-8 h-8 cursor-pointer'
 								/>
 							)}
 						</React.Fragment>

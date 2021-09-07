@@ -45,7 +45,7 @@ const Milestone = (props: MilestoneProps) => {
 		features = [],
 		milestoneId
 	} = props;
-	const { user } = useAppSelector(state => state.users);
+	const { user, userView } = useAppSelector(state => state.users);
 	const { openFeature, openMilestone, loading, feature, step, milestones } =
 		useAppSelector(state => state.milestones);
 	const dispatch = useAppDispatch();
@@ -210,7 +210,7 @@ const Milestone = (props: MilestoneProps) => {
 			});
 	}, [feature, step]);
 
-	if (user?.isAdmin) {
+	if (user?.isAdmin && !userView) {
 		return (
 			<React.Fragment key={milestoneId}>
 				<Modal
@@ -348,21 +348,10 @@ const Milestone = (props: MilestoneProps) => {
 								id={`buttonLink${milestoneId}`}
 								validation={false}
 							/>
-							<Button
-								type='button'
-								size='large'
-								variant='simple'
-								color='green'
+							<SVG
 								onClick={() => addFeatureHandler(0)}
-								endIcon={
-									<div className='w-6 h-6'>
-										<SVG
-											name='add'
-											classes='fill-current text-green w-full h-full'
-										/>
-									</div>
-								}
-								buttonClasses='mt-2'
+								name='add'
+								classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 							/>
 							{features?.map((feature, index) => {
 								if (!state[`title${feature._id}`]) {
@@ -439,22 +428,12 @@ const Milestone = (props: MilestoneProps) => {
 															validation={false}
 															options={['Planned', 'In progress', 'Completed']}
 														/>
-														<Button
-															type='button'
-															size='large'
-															variant='simple'
-															color='green'
+														<SVG
 															onClick={() => addStepHandler(feature._id, 0)}
-															endIcon={
-																<div className='w-6 h-6'>
-																	<SVG
-																		name='add'
-																		classes='fill-current text-green w-full h-full'
-																	/>
-																</div>
-															}
-															buttonClasses='mt-4'
+															name='add'
+															classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 														/>
+
 														{feature.steps.map((step, index) => {
 															if (!state[`step${step._id}`]) {
 																return (
@@ -487,23 +466,12 @@ const Milestone = (props: MilestoneProps) => {
 																				}
 																			/>
 																		</div>
-																		<Button
-																			type='button'
-																			size='large'
-																			variant='simple'
-																			color='green'
+																		<SVG
 																			onClick={() =>
 																				addStepHandler(feature._id, index + 1)
 																			}
-																			endIcon={
-																				<div className='w-6 h-6'>
-																					<SVG
-																						name='add'
-																						classes='fill-current text-green w-full h-full'
-																					/>
-																				</div>
-																			}
-																			buttonClasses='mt-2'
+																			name='add'
+																			classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 																		/>
 																	</React.Fragment>
 																);
@@ -512,21 +480,10 @@ const Milestone = (props: MilestoneProps) => {
 													</div>
 												</Collapse>
 											</div>
-											<Button
-												type='button'
-												size='large'
-												variant='simple'
-												color='green'
+											<SVG
 												onClick={() => addFeatureHandler(index + 1)}
-												endIcon={
-													<div className='w-6 h-6'>
-														<SVG
-															name='add'
-															classes='fill-current text-green w-full h-full'
-														/>
-													</div>
-												}
-												buttonClasses='mt-2'
+												name='add'
+												classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 											/>
 										</React.Fragment>
 									);

@@ -20,7 +20,9 @@ const index = () => {
 	const { milestones, loading, openUpdate } = useAppSelector(
 		state => state.milestones
 	);
-	const { isAuth, user, onTour } = useAppSelector(state => state.users);
+	const { isAuth, user, onTour, userView } = useAppSelector(
+		state => state.users
+	);
 	const [modalState, setModalState] = useState({
 		isOpen: false,
 		type: '',
@@ -252,7 +254,7 @@ const index = () => {
 										</p>
 									</div>
 								</div>
-								{user?.isAdmin && (
+								{user?.isAdmin && !userView && (
 									<div className='flex pl-10 justify-center w-full'>
 										<Button
 											label='Add update'
@@ -296,7 +298,7 @@ const index = () => {
 												}
 												${openUpdate === update._id ? 'rotate-90 translate-y-2' : '-rotate-90'}`}
 											/>
-											{user?.isAdmin && (
+											{user?.isAdmin && !userView && (
 												<SVG
 													name='close'
 													classes={`absolute left-1 top-0 fill-current text-red w-8 h-8 z-20 cursor-pointer`}
@@ -380,7 +382,7 @@ const index = () => {
 																/>
 															</a>
 														)}
-													{user?.isAdmin && (
+													{user?.isAdmin && !userView && (
 														<Button
 															label='Edit update'
 															type='button'

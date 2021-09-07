@@ -561,6 +561,7 @@ const usersSlice = createSlice({
 	reducers: {
 		usersLogout(state) {
 			state.isAuth = false;
+			state.noUser = false;
 			state.user = undefined;
 			localStorage.removeItem('userData');
 			state.onTour = false;
@@ -612,6 +613,9 @@ const usersSlice = createSlice({
 					_id: 'abc123'
 				}
 			};
+		},
+		toggleUserView(state) {
+			state.userView = !state.userView;
 		}
 	},
 	extraReducers: builder => {
@@ -939,6 +943,11 @@ const usersSlice = createSlice({
 		});
 	}
 });
-export const { usersLogout, clearUsers, resetProposal, userTour } =
-	usersSlice.actions;
+export const {
+	usersLogout,
+	clearUsers,
+	resetProposal,
+	userTour,
+	toggleUserView
+} = usersSlice.actions;
 export default usersSlice.reducer;

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { toggleUserView } from '../redux/users/users.slice';
 import DrawerLink from './DrawerLink';
 import Logo from './Logo';
 import SVG from './SVG';
@@ -30,10 +31,11 @@ const initialNavItems = [
 ];
 
 const Drawer = (props: drawerProps) => {
+	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
-	const { isAuth, user } = useAppSelector(state => state.users);
+	const { isAuth, user, userView } = useAppSelector(state => state.users);
 	const { breakpoint } = useAppSelector(state => state.utils);
 
 	let navItems = initialNavItems;
@@ -111,6 +113,32 @@ const Drawer = (props: drawerProps) => {
 					setDrawerIsOpen={setDrawerIsOpen}
 				/>
 			))}
+			{user?.isAdmin && (
+				<div
+					className={`group flex justify-between p-1.5 pl-6 hover:bg-blue-darkest cursor-pointer text-blue-darkest`}
+					onClick={
+						breakpoint === 'xs'
+							? () => {
+									setDrawerIsOpen(false);
+									dispatch(toggleUserView());
+							  }
+							: () => {
+									dispatch(toggleUserView());
+							  }
+					}
+					style={{ WebkitBackfaceVisibility: 'hidden' }}
+				>
+					<p
+						className={`font-semibold mr-4 group-hover:text-white text-blue-darkest`}
+					>
+						User view
+					</p>
+					<SVG
+						name={userView ? 'starFill' : 'star'}
+						classes='fill-current group-hover:text-white'
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
