@@ -9,11 +9,16 @@ import { useRouter } from 'next/router';
 import {
 	getUser,
 	getUsers,
-	logout,
+	usersLogout,
 	setClient
 } from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
-import { getProjects, setProject } from '../redux/projects/projects.slice';
+import {
+	getProjects,
+	projectsLogout,
+	setProject
+} from '../redux/projects/projects.slice';
+import { milestonesLogout } from '../redux/milestones/milestones.slice';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -36,11 +41,20 @@ const Layout = (props: LayoutProps) => {
 		user,
 		success: usersSuccess,
 		client,
-		onTour
+		onTour,
+		noUser
 	} = useAppSelector(state => state.users);
 	const { projects, project } = useAppSelector(state => state.projects);
 	const [onMount, setOnMount] = useState(true);
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
+
+	const tourBannerHeight = 40;
+
+	const logout = () => {
+		dispatch(usersLogout());
+		dispatch(projectsLogout());
+		dispatch(milestonesLogout());
+	};
 
 	const onAuthRoute = () => {
 		if (router.pathname.startsWith('/signup')) return false;
@@ -68,10 +82,9 @@ const Layout = (props: LayoutProps) => {
 			setOnMount(false);
 		} else if (isAuth && !user?.isVerified) {
 			// if user is logged in but not verified, logout
-			dispatch(logout());
+			logout();
 			router.push('/login');
 		} else if (isAuth) {
-			// if user is not admin and no client is on user, set client to user
 			if (user && !user?.isAdmin && !user.client)
 				dispatch(setClient(user.clientName));
 			// if admin, get users
@@ -79,9 +92,9 @@ const Layout = (props: LayoutProps) => {
 		} else if (!isAuth) {
 			// if not logged in redirect from drawer links to /login
 			if (onAuthRoute()) router.push('/login');
-			dispatch(logout());
+			logout();
 		}
-	}, [isAuth]);
+	}, [isAuth, noUser]);
 
 	// when users are updated, get user and users
 	useEffect(() => {
@@ -103,10 +116,15 @@ const Layout = (props: LayoutProps) => {
 		}
 	}, [projects]);
 
+	// on navigation, logout onTour user if not on AuthRoute
+	useEffect(() => {
+		if (!onAuthRoute() && onTour) logout();
+	}, [router.pathname]);
+
 	return (
 		<>
 			<Meta />
-			<Header headerHeight={headerHeight} />
+			<Header headerHeight={headerHeight} tourBannerHeight={tourBannerHeight} />
 			<Drawer
 				headerHeight={headerHeight}
 				minDrawerWidth={minDrawerWidth}
@@ -117,7 +135,7 @@ const Layout = (props: LayoutProps) => {
 				className='relative flex flex-col items-center h-min overflow-x-hidden pt-3 sm:pt-4'
 				style={{
 					minHeight: `calc((var(--vh) * 100) - ${
-						headerHeight + footerHeight
+						headerHeight + footerHeight + (onTour ? tourBannerHeight : 0)
 					}px)`,
 					width: screenIsXL
 						? `calc(100vw - ${maxDrawerWidth * 2}px)`
@@ -125,7 +143,7 @@ const Layout = (props: LayoutProps) => {
 								minDrawerWidth * (breakpoint === 'xs' ? 1 : 2)
 						  }px)`,
 					marginLeft: screenIsXL ? maxDrawerWidth : minDrawerWidth,
-					marginTop: headerHeight
+					marginTop: headerHeight + (onTour ? tourBannerHeight : 0)
 				}}
 			>
 				{props.children}

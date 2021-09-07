@@ -72,7 +72,7 @@ const index = () => {
 	if (milestones?.length) {
 		sortedMilestones = [...milestones];
 		sortedMilestones.sort(
-			(a, b) => moment(b.startDate).unix() - moment(a.startDate).unix()
+			(a, b) => moment(a.startDate).unix() - moment(b.startDate).unix()
 		);
 	}
 
@@ -84,7 +84,7 @@ const index = () => {
 			>
 				{renderModalContent(modalState.type)}
 			</Modal>
-			<Meta title='Contact Aaron | Apex Apps' />
+			<Meta title='Timeline | Apex Apps' />
 			<h1 className='title'>Timeline</h1>
 			{loading || !milestones ? (
 				<>
@@ -306,7 +306,7 @@ const index = () => {
 															isOpen: true,
 															type: 'deleteUpdate',
 															id: update._id,
-															date: update.date
+															date: new Date(update.date)
 														})
 													}
 												/>
@@ -393,7 +393,7 @@ const index = () => {
 																	id: update._id,
 																	type: 'editUpdate',
 																	isOpen: true,
-																	date: update.date,
+																	date: new Date(update.date),
 																	notes: update.notes,
 																	buttonLink: update.buttonLink,
 																	buttonLabel: update.buttonLabel,

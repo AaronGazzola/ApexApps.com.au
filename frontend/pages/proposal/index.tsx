@@ -506,11 +506,9 @@ const index = () => {
 						<>
 							<h1 className='title mb-4'>{proposal?.title}</h1>
 							{proposal?.sections?.map((section, index) => (
-								<div className='box w-72 sm:max-w-lg sm:min-w-max' key={index}>
-									<h2 className='title-sm mb-3 w-full sm:max-w-lg'>
-										{section.title}
-									</h2>
-									<p className='text-sm font-medium w-full sm:max-w-lg'>
+								<div className='text-box p-4' key={index}>
+									<h2 className='box-title'>{section.title}</h2>
+									<p className='box-text font-medium text-sm'>
 										{section.content.split('<br/>').map((paragraph, index) => (
 											<React.Fragment key={index}>
 												{paragraph}

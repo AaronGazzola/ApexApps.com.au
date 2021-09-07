@@ -22,8 +22,8 @@ import { Collapse } from '@material-ui/core';
 interface MilestoneProps {
 	title: string;
 	milestoneId: string;
-	startDate?: Date;
-	endDate?: Date;
+	startDate?: Date | string;
+	endDate?: Date | string;
 	price?: number;
 	currency?: string;
 	notes?: string;
@@ -553,16 +553,42 @@ const Milestone = (props: MilestoneProps) => {
 			<div className='box w-72 sm:w-80 relative' key={milestoneId}>
 				{milestones && milestones?.length > 1 && (
 					<>
+						<div
+							className={`absolute rounded-full w-7 h-7 right-4 left-3 mt-1 mr-2 transition-opacity duration-300
+								${openMilestone !== milestoneId ? 'opacity-100' : 'opacity-0'}
+								${
+									milestoneState === 'Completed'
+										? 'bg-green'
+										: milestoneState === 'In progress'
+										? 'bg-blue-darkest'
+										: 'bg-gray'
+								}`}
+						>
+							{milestoneState === 'Completed' ? (
+								<SVG
+									name='checkMark'
+									classes='fill-current text-white h-7 w-7'
+								/>
+							) : milestoneState === 'In progress' ? (
+								<SVG
+									name='pulse'
+									classes='fill-current text-white w-6 h-6 mt-0.5 ml-0.5'
+								/>
+							) : (
+								<SVG
+									name='lightBulbFill'
+									classes='fill-current text-white h-6 w-6 mt-0.5 ml-0.5'
+								/>
+							)}
+						</div>
+
 						<SVG
 							name='chevronLeft'
-							classes={`absolute w-7 h-7 right-4 top-3 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+							classes={`cursor-pointer absolute w-7 h-7 right-4 top-3 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
 								openMilestone === milestoneId
 									? 'rotate-90 translate-y-2 text-blue-dark'
 									: '-rotate-90'
 							}`}
-						/>
-						<div
-							className='absolute top-0 left-0 h-16 w-full cursor-pointer'
 							onClick={() =>
 								dispatch(
 									setOpenMilestone(
@@ -570,10 +596,21 @@ const Milestone = (props: MilestoneProps) => {
 									)
 								)
 							}
-						></div>
+						/>
+						<div
+							className='w-full cursor-pointer'
+							onClick={() =>
+								dispatch(
+									setOpenMilestone(
+										openMilestone === milestoneId ? '' : milestoneId
+									)
+								)
+							}
+						>
+							<h2 className='title-sm px-7'>{title}</h2>
+						</div>
 					</>
 				)}
-				<h2 className='title-sm'>{title}</h2>
 				<Collapse
 					in={
 						milestones && milestones?.length > 1
@@ -651,7 +688,7 @@ const Milestone = (props: MilestoneProps) => {
 						}`}
 						>
 							<div
-								className={`flex items-center py-2 cursor-pointer
+								className={`flex items-start py-2 cursor-pointer
 							`}
 								onClick={() =>
 									dispatch(
@@ -662,7 +699,7 @@ const Milestone = (props: MilestoneProps) => {
 								}
 							>
 								<div
-									className={`rounded-full h-5 w-5 mr-2 ${
+									className={`rounded-full h-5 w-5 mt-1 mr-2 ${
 										feature.state === 'Completed'
 											? 'bg-green'
 											: feature.state === 'In progress'
@@ -687,17 +724,24 @@ const Milestone = (props: MilestoneProps) => {
 										/>
 									)}
 								</div>
-								<h3 className='font-semibold text-gray-dark mt-0.5'>
+								<h3 className='font-semibold text-gray-dark mt-0.5 pr-2'>
 									{feature.title}
 								</h3>
 
 								<SVG
 									name='chevronLeft'
-									classes={`absolute w-6 h-6 right-3 top-1 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+									classes={`cursor-pointer absolute w-6 h-6 right-3 top-1 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
 										openFeature === feature._id
 											? 'rotate-90 translate-y-2 text-blue-dark'
 											: '-rotate-90'
 									}`}
+									onClick={() =>
+										dispatch(
+											setOpenFeature(
+												openFeature === feature._id ? '' : feature._id
+											)
+										)
+									}
 								/>
 							</div>
 							<Collapse
@@ -707,8 +751,8 @@ const Milestone = (props: MilestoneProps) => {
 							>
 								<ol className='mb-2'>
 									{feature.steps.map(step => (
-										<li key={step._id} className='flex items-center'>
-											<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2'></div>
+										<li key={step._id} className='flex items-start'>
+											<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2 mt-2'></div>
 											<p className='font-medium text-sm'>{step.content}</p>
 										</li>
 									))}

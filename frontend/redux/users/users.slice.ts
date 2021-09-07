@@ -552,7 +552,6 @@ const initialUser: User = {
 const initialState: UserState = {
 	loading: false,
 	isAuth: false,
-	user: initialUser,
 	token: ''
 };
 
@@ -560,10 +559,12 @@ const usersSlice = createSlice({
 	name: 'users',
 	initialState,
 	reducers: {
-		logout(state) {
+		usersLogout(state) {
 			state.isAuth = false;
-			state.user = initialUser;
+			state.user = undefined;
 			localStorage.removeItem('userData');
+			state.onTour = false;
+			state.token = '';
 		},
 		clearUsers(state) {
 			state.error = null;
@@ -619,6 +620,7 @@ const usersSlice = createSlice({
 		});
 		builder.addCase(login.fulfilled, (state, action) => {
 			state.user = action.payload.user;
+			state.noUser = false;
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
@@ -680,6 +682,8 @@ const usersSlice = createSlice({
 				state.isAuth = !!action.payload.token;
 				state.token = action.payload.token;
 				state.client = action.payload.client;
+			} else {
+				state.noUser = true;
 			}
 		});
 		builder.addCase(getUser.rejected, (state, action) => {
@@ -935,6 +939,6 @@ const usersSlice = createSlice({
 		});
 	}
 });
-export const { logout, clearUsers, resetProposal, userTour } =
+export const { usersLogout, clearUsers, resetProposal, userTour } =
 	usersSlice.actions;
 export default usersSlice.reducer;

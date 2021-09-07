@@ -4,19 +4,31 @@ import {
 	clearUsers,
 	getUser,
 	getUsers,
-	logout
+	usersLogout
 } from '../redux/users/users.slice';
-import { clearProjects } from '../redux/projects/projects.slice';
+import {
+	clearProjects,
+	projectsLogout
+} from '../redux/projects/projects.slice';
 import { useEffect } from 'react';
 import Modal from './Modal';
 import Button from './Button';
-import { clearMilestones } from '../redux/milestones/milestones.slice';
+import {
+	clearMilestones,
+	milestonesLogout
+} from '../redux/milestones/milestones.slice';
 import { useRouter } from 'next/router';
+import SVG from './SVG';
 
 const UserFeedback = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const { users, projects, milestones } = useAppSelector(state => state);
+	const {
+		users,
+		projects,
+		milestones,
+		users: { onTour }
+	} = useAppSelector(state => state);
 	const error = users.error || projects.error || milestones.error;
 	const success = users.success || projects.success || milestones.success;
 	const alert = users.alert || projects.alert;
@@ -25,6 +37,11 @@ const UserFeedback = () => {
 		dispatch(clearUsers());
 		dispatch(clearProjects());
 		dispatch(clearMilestones());
+	};
+	const logout = () => {
+		dispatch(usersLogout());
+		dispatch(milestonesLogout());
+		dispatch(projectsLogout());
 	};
 
 	const clickHandler = (e: React.SyntheticEvent) => {
@@ -76,7 +93,9 @@ const UserFeedback = () => {
 							: ''
 					}`}
 				>
-					{error?.title
+					{error?.message === 'Unauthorized' && onTour
+						? 'Unauthorized'
+						: error?.title
 						? error?.title
 						: error
 						? 'Error'
@@ -85,7 +104,13 @@ const UserFeedback = () => {
 						: 'Alert'}
 				</h2>
 				<p className={`font-medium text-gray-dark my-3`}>
-					{error ? error.message : alert?.message ? alert?.message : ''}
+					{error?.message === 'Unauthorized' && onTour
+						? 'Contact Aaron to request access'
+						: error?.message
+						? error.message
+						: alert?.message
+						? alert?.message
+						: ''}
 				</p>
 				<div className='flex w-full justify-between'>
 					{alert?.link ? (
@@ -97,7 +122,7 @@ const UserFeedback = () => {
 							variant='simple'
 							buttonClasses='px-4'
 						/>
-					) : error?.retry ? (
+					) : error?.retry && !onTour ? (
 						<Button
 							type='button'
 							label='Retry'
@@ -116,14 +141,29 @@ const UserFeedback = () => {
 									  }
 							}
 						/>
+					) : error?.message === 'Unauthorized' && onTour ? (
+						<Button
+							type='button'
+							label='Request access'
+							color='yellow'
+							variant='simple'
+							startIcon={
+								<SVG name='key' classes='fill-current text-yellow mr-2' />
+							}
+							buttonClasses='px-2 py-1.5 border border-yellow'
+							onClick={() => {
+								clearState();
+								router.push('/contact');
+							}}
+						/>
 					) : (
 						<div className='w-10'></div>
 					)}
 					<Button
 						onClick={() => {
 							clearState();
-							if (error?.message === 'Unauthorized') {
-								dispatch(logout());
+							if (error?.message === 'Unauthorized' && !onTour) {
+								logout();
 								router.push('/login');
 							}
 						}}

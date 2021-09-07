@@ -11,7 +11,7 @@ import Input from '../../components/Input';
 import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { logout, setClient } from '../../redux/users/users.slice';
+import { usersLogout, setClient } from '../../redux/users/users.slice';
 import Modal from '../../components/Modal';
 import EditProfileModal from '../../components/ProfileModal';
 import ClientModal from '../../components/ClientModal';
@@ -20,10 +20,12 @@ import ConfirmModal from '../../components/ConfirmModal';
 import EstimateModal from '../../components/EstimateModal';
 import {
 	deleteProject,
+	projectsLogout,
 	setProject,
 	uploadContract
 } from '../../redux/projects/projects.slice';
 import { useRouter } from 'next/router';
+import { milestonesLogout } from '../../redux/milestones/milestones.slice';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -62,7 +64,9 @@ const index = () => {
 	};
 
 	const logoutHandler = (e: SyntheticEvent) => {
-		dispatch(logout());
+		dispatch(usersLogout());
+		dispatch(milestonesLogout());
+		dispatch(projectsLogout());
 		router.push('/login');
 	};
 	const openModalhandler = (modalType: string) => {
@@ -248,7 +252,7 @@ const index = () => {
 					</p>
 				</div>
 			)}
-			<div className='box w-72 sm:w-min sm:max-w-lg' style={{ minWidth: 280 }}>
+			<div className='text-box'>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -259,11 +263,9 @@ const index = () => {
 					</>
 				) : (
 					<>
-						<h2 className='title-sm w-full text-center break-words'>
-							{project?.title}
-						</h2>
+						<h2 className='box-title break-words'>{project?.title}</h2>
 						<p
-							className={`w-full my-2 break-words text-center ${
+							className={`box-text my-2 break-words ${
 								!project?.description ? 'italic text-gray-dark' : ''
 							}`}
 						>

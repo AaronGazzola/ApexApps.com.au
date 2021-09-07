@@ -382,19 +382,22 @@ const milestonesSlice = createSlice({
 		setOpenUpdate(state, action) {
 			state.openUpdate = action.payload;
 		},
+		milestonesLogout(state) {
+			state.milestones = undefined;
+		},
 		milestonesTour(state) {
 			state.milestones = [
 				{
 					title: 'Design and prototype',
 					_id: 'milestone1',
-					startDate: new Date('1970-01-01T00:00:00.000+00:00'),
-					endDate: new Date('1970-01-07T00:00:00.000+00:00'),
+					startDate: '2050-01-01T00:00:00.000+00:00',
+					endDate: '2050-01-07T00:00:00.000+00:00',
 					price: 2500,
 					currency: 'USD',
 					notes:
 						'App design utilised a calming palette of cold colours with a simple and modern aesthetic',
 					buttonLabel: 'View protoype',
-					buttonLink: '#',
+					buttonLink: '/',
 					features: [
 						{
 							_id: 'feature1',
@@ -448,8 +451,8 @@ const milestonesSlice = createSlice({
 							_id: 'update1',
 							notes:
 								'Click the button below to view a selection of logo designs in various colour palettes',
-							date: new Date('1970-01-07T00:00:00.000+00:00'),
-							buttonLink: '#',
+							date: '2050-01-07T00:00:00.000+00:00',
+							buttonLink: '/',
 							buttonLabel: 'View designs',
 							publish: true
 						}
@@ -458,13 +461,13 @@ const milestonesSlice = createSlice({
 				{
 					title: 'User interface implementation',
 					_id: 'milestone2',
-					startDate: new Date('1970-01-08T00:00:00.000+00:00'),
-					endDate: new Date('1970-01-25T00:00:00.000+00:00'),
-					price: 2500,
+					startDate: '2050-01-08T00:00:00.000+00:00',
+					endDate: '2050-01-25T00:00:00.000+00:00',
+					price: 5000,
 					currency: 'USD',
 					notes: 'Click button below to test frontend user interface',
 					buttonLabel: 'Test interface',
-					buttonLink: '#',
+					buttonLink: '/',
 					features: [
 						{
 							_id: 'feature5',
@@ -515,8 +518,8 @@ const milestonesSlice = createSlice({
 							_id: 'update2',
 							notes:
 								'Navigation user interface has been implemented, click the link below to view progress so far.',
-							date: new Date('1970-01-15T00:00:00.000+00:00'),
-							buttonLink: '#',
+							date: '2050-01-15T00:00:00.000+00:00',
+							buttonLink: '/',
 							buttonLabel: 'View designs',
 							publish: true
 						}
@@ -525,13 +528,13 @@ const milestonesSlice = createSlice({
 				{
 					title: 'Core app functionality',
 					_id: 'milestone3',
-					startDate: new Date('1970-01-25T00:00:00.000+00:00'),
-					endDate: new Date('1970-02-14T00:00:00.000+00:00'),
+					startDate: '2050-01-25T00:00:00.000+00:00',
+					endDate: '2050-02-14T00:00:00.000+00:00',
 					price: 7500,
 					currency: 'USD',
 					notes: '',
 					buttonLabel: '',
-					buttonLink: '',
+					buttonLink: '/',
 					features: [
 						{
 							_id: 'feature9',
@@ -594,16 +597,16 @@ const milestonesSlice = createSlice({
 						{
 							_id: 'update3',
 							notes: '',
-							date: new Date('1970-02-01T00:00:00.000+00:00'),
-							buttonLink: '',
+							date: '2050-02-01T00:00:00.000+00:00',
+							buttonLink: '/',
 							buttonLabel: '',
 							publish: false
 						},
 						{
 							_id: 'update4',
 							notes: '',
-							date: new Date('1970-02-08T00:00:00.000+00:00'),
-							buttonLink: '',
+							date: '2050-02-08T00:00:00.000+00:00',
+							buttonLink: '/',
 							buttonLabel: '',
 							publish: false
 						}
@@ -754,6 +757,7 @@ export const {
 	setOpenFeature,
 	setOpenMilestone,
 	setOpenUpdate,
-	milestonesTour
+	milestonesTour,
+	milestonesLogout
 } = milestonesSlice.actions;
 export default milestonesSlice.reducer;

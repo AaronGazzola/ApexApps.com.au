@@ -6,7 +6,7 @@ import Button from './Button';
 import Input from './Input';
 
 interface UpdateModalProps {
-	date?: Date;
+	date?: Date | string;
 	notes?: string;
 	id: string;
 	type: 'add' | 'edit';

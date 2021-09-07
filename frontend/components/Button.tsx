@@ -64,14 +64,20 @@ const Button = (props: ButtonProps) => {
 		>
 			{startIcon && !loading && startIcon}
 			{loading ? (
-				<div className='flex justify-center items-center w-7 h-7'>
+				<div
+					className={`flex flex-grow justify-center items-center ${
+						size === 'small' ? 'w-6 h-6' : 'w-7 h-7'
+					}`}
+				>
 					<div
-						className='w-6 h-6 border-t-2 border-l-2 border-current animate-spin'
+						className={`${
+							size === 'small' ? 'w-4 h-4' : 'w-6 h-6'
+						} border-t-2 border-l-2 border-current animate-spin`}
 						style={{ borderRadius: '50%' }}
 					></div>
 				</div>
 			) : (
-				label
+				<span className='break-words w-full'>{label}</span>
 			)}
 			{endIcon && !loading && endIcon}
 		</button>

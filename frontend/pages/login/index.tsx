@@ -102,12 +102,12 @@ const index = () => {
 					helperText={
 						email.isTouched && !email.isValid
 							? 'Please enter your email address'
-							: ''
+							: ' '
 					}
 					isTouched={email.isTouched}
 					touchHandler={touchHandler}
 					label='Email'
-					containerClasses='mb-0.5'
+					containerClasses=''
 				/>
 				<Input
 					placeholder='Password'

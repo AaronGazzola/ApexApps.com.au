@@ -99,6 +99,7 @@ const Input = (props: InputProps) => {
 					<label
 						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold text-blue-darkest form-label`}
 						htmlFor={id}
+						style={{ minHeight: 18 }}
 					>
 						{!isValid && isTouched ? helperText : label}
 					</label>
@@ -139,13 +140,14 @@ const Input = (props: InputProps) => {
 			) : (
 				<>
 					<p
-						className={`text-xs font-semibold pl-1 pt-0.5 ${
+						className={`text-xs font-semibold pl-1 pt-0.5  ${
 							!isValid && isTouched && validation
 								? 'text-red'
 								: isValid && validation
 								? 'text-green form-label'
 								: 'text-blue-darkest form-label'
 						}`}
+						style={{ minHeight: 18 }}
 					>
 						{helperText}
 					</p>

@@ -1,6 +1,7 @@
 import { RootState } from './../store';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Project, ProjectsResponse, ProjectsState } from './projects.interface';
+import moment from 'moment';
 import axios from 'axios';
 
 const config = {
@@ -252,6 +253,10 @@ const projectsSlice = createSlice({
 			state.success = '';
 			state.alert = null;
 		},
+		projectsLogout(state) {
+			state.project = undefined;
+			state.projects = undefined;
+		},
 		projectsTour(state) {
 			state.project = {
 				title: 'Metaphysics Online',
@@ -260,12 +265,12 @@ const projectsSlice = createSlice({
 					'We are what we repeatedly do. Excellence, therefore, isn’t an act, but a habit.',
 				contractUploaded: false,
 				estimate: {
-					startFrom: new Date('1970-01-01T00:00:00.000+00:00'),
-					startTo: new Date('1970-01-01T00:00:00.000+00:00'),
-					endFrom: new Date('1970-03-31T00:00:00.000+00:00'),
-					endTo: new Date('1970-04-07T00:00:00.000+00:00'),
-					costFrom: 32000,
-					costTo: 42000,
+					startFrom: '2050-01-01T00:00:00.000+00:00',
+					startTo: '2050-01-01T00:00:00.000+00:00',
+					endFrom: '2050-03-31T00:00:00.000+00:00',
+					endTo: '2050-04-30T00:00:00.000+00:00',
+					costFrom: 36000,
+					costTo: 48000,
 					currency: 'USD'
 				}
 			};
@@ -277,12 +282,12 @@ const projectsSlice = createSlice({
 						'We are what we repeatedly do. Excellence, therefore, isn’t an act, but a habit.',
 					contractUploaded: false,
 					estimate: {
-						startFrom: new Date('1970-01-01T00:00:00.000+00:00'),
-						startTo: new Date('1970-01-01T00:00:00.000+00:00'),
-						endFrom: new Date('1970-03-31T00:00:00.000+00:00'),
-						endTo: new Date('1970-04-07T00:00:00.000+00:00'),
-						costFrom: 32000,
-						costTo: 42000,
+						startFrom: '2050-01-01T00:00:00.000+00:00',
+						startTo: '2050-01-01T00:00:00.000+00:00',
+						endFrom: '2050-03-31T00:00:00.000+00:00',
+						endTo: '2050-04-30T00:00:00.000+00:00',
+						costFrom: 36000,
+						costTo: 48000,
 						currency: 'USD'
 					}
 				}
@@ -379,5 +384,6 @@ const projectsSlice = createSlice({
 	}
 });
 
-export const { clearProjects, projectsTour } = projectsSlice.actions;
+export const { clearProjects, projectsTour, projectsLogout } =
+	projectsSlice.actions;
 export default projectsSlice.reducer;

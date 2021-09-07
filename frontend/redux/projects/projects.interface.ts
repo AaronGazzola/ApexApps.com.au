@@ -5,10 +5,10 @@ export interface Project {
 	description?: string;
 	contractUploaded: boolean;
 	estimate?: {
-		startFrom: Date;
-		startTo: Date;
-		endFrom: Date;
-		endTo: Date;
+		startFrom: Date | string;
+		startTo: Date | string;
+		endFrom: Date | string;
+		endTo: Date | string;
 		costFrom: number;
 		costTo: number;
 		currency: 'USD' | 'AUD';

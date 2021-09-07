@@ -1,7 +1,7 @@
 export interface Update {
 	_id: string;
 	notes: string;
-	date: Date;
+	date: Date | string;
 	buttonLink: string;
 	buttonLabel: string;
 	publish: boolean;
@@ -22,8 +22,8 @@ export interface Feature {
 export interface Milestone {
 	title: string;
 	_id: string;
-	startDate: Date;
-	endDate: Date;
+	startDate: Date | string;
+	endDate: Date | string;
 	price: number;
 	currency: string;
 	notes?: string;
