@@ -82,12 +82,14 @@ const index = () => {
 			// if booking time is more that one hour in the future, add to end of array
 			if (melbourneTime.hour(hour).unix() > moment().add(1, 'h').unix())
 				melbourneTime.hour(hour);
-			melbourneBookingTimes.push(melbourneTime.toString());
+			melbourneBookingTimes.push(melbourneTime.format('HHmm DD-MM-YYY'));
 		});
 		// once all times are added, increment day by one
 		melbourneTime.add(1, 'd');
 	}
-	const bookingTimes = melbourneBookingTimes.map(time => moment(time));
+	const bookingTimes = melbourneBookingTimes.map(time =>
+		moment(time, 'HHmm DD-MM-YYY')
+	);
 
 	const changeHandler = (
 		e: React.FormEvent<
