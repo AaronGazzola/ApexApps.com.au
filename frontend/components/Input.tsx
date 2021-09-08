@@ -9,8 +9,10 @@ interface InputProps {
 		| 'select'
 		| 'date'
 		| 'number'
-		| 'checkbox';
+		| 'checkbox'
+		| 'radio';
 	placeholder?: string;
+	labelClasses?: string;
 	value: string | number | undefined;
 	onChange?:
 		| React.ChangeEventHandler<
@@ -64,7 +66,8 @@ const Input = (props: InputProps) => {
 		maxLength = 10000,
 		rows = 3,
 		checkboxClasses = '',
-		checkClasses = ''
+		checkClasses = '',
+		labelClasses = ''
 	} = props;
 
 	return (
@@ -97,7 +100,7 @@ const Input = (props: InputProps) => {
 						))}
 					</select>
 					<label
-						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold text-blue-darkest form-label`}
+						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold text-blue-darkest form-label ${labelClasses}`}
 						htmlFor={id}
 						style={{ minHeight: 18 }}
 					>
@@ -108,25 +111,33 @@ const Input = (props: InputProps) => {
 						classes='fill-current text-gray-light absolute right-3 top-1/2 transform -rotate-90 w-4 h-4'
 					/>
 				</>
-			) : type === 'checkbox' ? (
-				<div className='flex relative items-center'>
+			) : type === 'checkbox' || type === 'radio' ? (
+				<div className='flex relative items-center w-min flex-nowrap'>
 					<input
-						type='checkbox'
+						type={type}
 						id={id}
-						className={`checkbox w-5 h-5 z-20`}
+						className={`checkbox w-5 h-5 z-20 cursor-pointer`}
 						onChange={onChange}
 						checked={!!value}
 					/>
-					<SVG
-						name='checkMark'
-						classes={`checkbox-control absolute top-1/2 transform -translate-y-1/2 left-0 w-5 h-5 z-10 fill-current text-blue-darkest ${checkClasses}`}
-					></SVG>
+					{type === 'checkbox' ? (
+						<SVG
+							name='checkMark'
+							classes={`checkbox-control absolute top-1/2 transform -translate-y-1/2 left-0 w-5 h-5 z-10 fill-current text-blue-darkest ${checkClasses}`}
+						></SVG>
+					) : (
+						<div
+							className={`checkbox-control absolute top-1/2 left-1 transform -translate-y-1/2  w-3 h-3 z-10 rounded-full bg-blue-darkest ${checkClasses}`}
+						></div>
+					)}
 					<div
-						className={`border-2 border-blue-darkest rounded-md absolute top-1/2 transform -translate-y-1/2 left-0 w-5 h-5 ${checkboxClasses}`}
+						className={`border-2 border-blue-darkest ${
+							type === 'radio' ? 'rounded-full' : 'rounded-md'
+						} absolute top-1/2 transform -translate-y-1/2 left-0 w-5 h-5 ${checkboxClasses}`}
 					></div>
 					<label
 						htmlFor={id}
-						className={`select-none cursor-pointer ml-7 text-sm font-medium ${
+						className={`select-none cursor-pointer pl-6 text-sm font-medium whitespace-nowrap ${labelClasses} ${
 							!isValid && isTouched && validation
 								? 'text-red form-label'
 								: isValid && validation
@@ -205,7 +216,7 @@ const Input = (props: InputProps) => {
 						/>
 					)}
 					<label
-						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold ${
+						className={`transition-transform duration-300 ease-in-out text-xs p-1 pt-0.5 font-semibold ${labelClasses} ${
 							!isValid && isTouched && validation
 								? 'text-red form-label'
 								: isValid && validation
