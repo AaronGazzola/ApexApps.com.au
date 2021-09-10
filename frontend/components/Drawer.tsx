@@ -66,7 +66,7 @@ const Drawer = (props: drawerProps) => {
 				transform:
 					isAuth && (drawerIsOpen || screenIsXL)
 						? 'translateX(-12px)'
-						: `translateX(calc(-50% + ${minDrawerWidth}px))`,
+						: `translateX(calc(-100% + ${minDrawerWidth}px))`,
 				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
 				WebkitBackfaceVisibility: 'hidden'
 			}}
