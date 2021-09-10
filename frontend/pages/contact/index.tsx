@@ -1,3 +1,4 @@
+import React from 'react';
 import { Collapse } from '@material-ui/core';
 import moment, { Moment } from 'moment-timezone';
 import { useEffect, useState } from 'react';
@@ -10,7 +11,8 @@ import { useAppSelector } from '../../redux/hooks';
 const index = () => {
 	const { user, loading } = useAppSelector(state => state.users);
 	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
-	const [step, setStep] = useState(3);
+	const [lastBookingTodayHasPast, setLastBookingTodayHasPast] = useState(false);
+	const [step, setStep] = useState(1);
 	const [formState, setFormState] = useState({
 		name: {
 			isValid: false,
@@ -51,7 +53,7 @@ const index = () => {
 			isTouched: false,
 			value: ''
 		},
-		callTime: new Date()
+		callTime: ''
 	} as { [index: string]: any });
 	const {
 		name,
@@ -62,7 +64,8 @@ const index = () => {
 		useContactEmail,
 		contactEmail,
 		phone,
-		zoomName
+		zoomName,
+		callTime
 	} = formState;
 
 	const changeHandler = (
@@ -135,6 +138,13 @@ const index = () => {
 			}
 		});
 	};
+
+	const handleSelectTime = (callTime: string) => {
+		setFormState({
+			...formState,
+			callTime
+		});
+	};
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
 	};
@@ -179,29 +189,31 @@ const index = () => {
 		const melbourneTime = moment.tz(moment(), 'Australia/Melbourne').minute(0);
 
 		// set melbourne time of bookings by hour
-		let bookingHours = [7, 8, 9, 1, 2, 3, 6, 7, 8];
+		let bookingHours = [7, 8, 9, 13, 14, 15, 18, 19, 20];
 
 		// if last booking for today is already passed, skip today
-		const noBookingsToday =
-			melbourneTime.hour(bookingHours[bookingHours.length - 1]).unix() <
-			moment().unix();
-		if (noBookingsToday) melbourneTime.add(1, 'd');
+		const lastBookingTodayHasPast =
+			melbourneTime.hour() > bookingHours[bookingHours.length - 1];
+		if (lastBookingTodayHasPast) melbourneTime.add(1, 'd');
 
 		let melbourneBookingTimes: string[] = [];
 		for (let i = 0; i < 3; i++) {
 			bookingHours.forEach(hour => {
 				// if booking time is more that one hour in the future, add to end of array
-				if (melbourneTime.hour(hour).unix() > moment().add(1, 'h').unix())
-					melbourneTime.hour(hour);
-				melbourneBookingTimes.push(melbourneTime.format('HH:mm DD-MM-YYY'));
+				if (melbourneTime.hour(hour).unix() > moment().add(2, 'h').unix())
+					melbourneBookingTimes.push(
+						melbourneTime.format('HH:mm DD-MM-YYY ZZ')
+					);
 			});
 			// once all times are added, increment day by one
 			melbourneTime.add(1, 'd');
 		}
 		setBookingTimes(
-			melbourneBookingTimes.map(time => moment(time, 'HH:mm DD-MM-YYY'))
+			melbourneBookingTimes.map(time => moment(time, 'HH:mm DD-MM-YYY ZZ'))
 		);
+		setLastBookingTodayHasPast(lastBookingTodayHasPast);
 	}, []);
+
 	return (
 		<>
 			<Meta title='Contact Aaron | Apex Apps' />
@@ -493,7 +505,7 @@ const index = () => {
 								helperText={!contactEmail.isValid && contactEmail.isTouched}
 								touchHandler={touchHandler}
 								validation
-								containerClasses='mt-2 mb-4'
+								containerClasses='mt-2 mb-2'
 							/>
 						)}
 						<Collapse
@@ -502,26 +514,73 @@ const index = () => {
 							collapsedSize={0}
 							style={{ width: '100%' }}
 						>
-							<p className='text-sm font-md text-center w-full mb-4'>
-								Select a date and time for our call:
+							<p className='text-sm text-center w-full mb-4 italic text-gray-dark'>
+								Select a time and date for our call:
 							</p>
-							<div className='flex w-full justify-between relative'>
-								<SVG
-									name='chevronLeft'
-									classes='fill-current text-gray-light w-5 h-5 mt-3'
-								></SVG>
-								<div className='flex flex-col items-center'>
-									<p className='font-medium -mb-1'>{moment().format('ddd')}</p>
-									<p className='font-semibold'>{moment().format('D')}</p>
-									{/* <Button label={moment.tz('')} color='green' /> */}
-								</div>
-								<SVG
-									name='chevronRight'
-									classes='fill-current text-gray-light w-5 h-5 mt-3'
-								></SVG>
+							<div className='flex w-full justify-around relative'>
+								{[0, 1, 2].map(key => {
+									let days = key;
+									if (lastBookingTodayHasPast) days = key + 1;
+									return (
+										<div className='flex flex-col items-center' key={days}>
+											<p
+												className={`font-medium -mb-1 ${
+													moment().date() === moment().add(days, 'd').date()
+														? 'text-blue-darkest'
+														: ''
+												}`}
+											>
+												{moment().add(days, 'd').format('ddd')}
+											</p>
+											<p
+												className={`font-semibold mb-2 ${
+													moment().date() === moment().add(days, 'd').date()
+														? 'text-blue-darkest'
+														: ''
+												}`}
+											>
+												{moment().add(days, 'd').format('D')}
+											</p>
+											{bookingTimes.map(time => {
+												// if booking time is on current date, display
+												if (time.date() === moment().add(key, 'd').date()) {
+													return (
+														<button
+															key={`${key} ${time.format('HH:mm DD')}`}
+															className={`rounded-md border-none px-2 py-1 m-0 hover:bg-green hover:text-white hover:font-medium group
+															${callTime === time.format('HH:mm DD-MM-YYY ZZ') ? 'bg-green text-white' : ''}`}
+															onClick={() =>
+																handleSelectTime(
+																	time.format('HH:mm DD-MM-YYY ZZ')
+																)
+															}
+														>
+															{time.format('h:mm')}
+															<span
+																className={`font-medium group-hover:text-white text-xs ${
+																	callTime === time.format('HH:mm DD-MM-YYY ZZ')
+																		? 'bg-green text-white'
+																		: 'text-gray-dark'
+																}`}
+															>
+																{time.format('a')}
+															</span>
+														</button>
+													);
+												} else {
+													return (
+														<React.Fragment
+															key={`${key} ${time.format('HH:mm DD')}`}
+														></React.Fragment>
+													);
+												}
+											})}
+										</div>
+									);
+								})}
 							</div>
 						</Collapse>
-						<div className='flex justify-end w-full'>
+						<div className='flex justify-center w-full mt-6'>
 							<Button
 								variant='contained'
 								color='green'
@@ -530,12 +589,15 @@ const index = () => {
 									!name.isValid ||
 									!email.isValid ||
 									(contactMethod.value === 'email' && !contactEmail.isValid) ||
-									(contactMethod.value === 'phone' && !phone.isValid) ||
-									(contactMethod.value === 'zoom' && !zoomName.isValid)
+									(contactMethod.value === 'phone' &&
+										(!phone.isValid || !callTime)) ||
+									(contactMethod.value === 'zoom' &&
+										(!zoomName.isValid || !callTime))
 								}
 								label={contactMethod === 'call' ? 'Book call' : 'Send Email'}
 								type='button'
-								buttonClasses='px-6 py-1'
+								size='large'
+								buttonClasses='px-8 py-2'
 							/>
 						</div>
 					</Collapse>
