@@ -9,6 +9,7 @@ import { useAppSelector } from '../../redux/hooks';
 
 const index = () => {
 	const { user, loading } = useAppSelector(state => state.users);
+	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
 	const [step, setStep] = useState(3);
 	const [formState, setFormState] = useState({
 		name: {
@@ -63,33 +64,6 @@ const index = () => {
 		phone,
 		zoomName
 	} = formState;
-
-	// set Melbourne time
-	const melbourneTime = moment.tz(moment(), 'Australia/Melbourne').minute(0);
-
-	// set melbourne time of bookings by hour
-	let bookingHours = [7, 8, 9, 1, 2, 3, 6, 7, 8];
-
-	// if last booking for today is already passed, skip today
-	const noBookingsToday =
-		melbourneTime.hour(bookingHours[bookingHours.length - 1]).unix() <
-		moment().unix();
-	if (noBookingsToday) melbourneTime.add(1, 'd');
-
-	let melbourneBookingTimes: string[] = [];
-	for (let i = 0; i < 3; i++) {
-		bookingHours.forEach(hour => {
-			// if booking time is more that one hour in the future, add to end of array
-			if (melbourneTime.hour(hour).unix() > moment().add(1, 'h').unix())
-				melbourneTime.hour(hour);
-			melbourneBookingTimes.push(melbourneTime.format('HHmm DD-MM-YYY'));
-		});
-		// once all times are added, increment day by one
-		melbourneTime.add(1, 'd');
-	}
-	const bookingTimes = melbourneBookingTimes.map(time =>
-		moment(time, 'HHmm DD-MM-YYY')
-	);
 
 	const changeHandler = (
 		e: React.FormEvent<
@@ -199,6 +173,35 @@ const index = () => {
 			zoomName: emailState
 		});
 	}, [useContactEmail]);
+
+	useEffect(() => {
+		// set Melbourne time
+		const melbourneTime = moment.tz(moment(), 'Australia/Melbourne').minute(0);
+
+		// set melbourne time of bookings by hour
+		let bookingHours = [7, 8, 9, 1, 2, 3, 6, 7, 8];
+
+		// if last booking for today is already passed, skip today
+		const noBookingsToday =
+			melbourneTime.hour(bookingHours[bookingHours.length - 1]).unix() <
+			moment().unix();
+		if (noBookingsToday) melbourneTime.add(1, 'd');
+
+		let melbourneBookingTimes: string[] = [];
+		for (let i = 0; i < 3; i++) {
+			bookingHours.forEach(hour => {
+				// if booking time is more that one hour in the future, add to end of array
+				if (melbourneTime.hour(hour).unix() > moment().add(1, 'h').unix())
+					melbourneTime.hour(hour);
+				melbourneBookingTimes.push(melbourneTime.format('HH:mm DD-MM-YYY'));
+			});
+			// once all times are added, increment day by one
+			melbourneTime.add(1, 'd');
+		}
+		setBookingTimes(
+			melbourneBookingTimes.map(time => moment(time, 'HH:mm DD-MM-YYY'))
+		);
+	}, []);
 	return (
 		<>
 			<Meta title='Contact Aaron | Apex Apps' />

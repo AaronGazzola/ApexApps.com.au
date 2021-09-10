@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { toggleUserView } from '../redux/users/users.slice';
 import DrawerLink from './DrawerLink';
@@ -35,7 +35,9 @@ const Drawer = (props: drawerProps) => {
 	const router = useRouter();
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
-	const { isAuth, user, userView } = useAppSelector(state => state.users);
+	const { isAuth, onTour, user, userView } = useAppSelector(
+		state => state.users
+	);
 	const { breakpoint } = useAppSelector(state => state.utils);
 
 	let navItems = initialNavItems;
@@ -53,6 +55,10 @@ const Drawer = (props: drawerProps) => {
 			}
 		];
 
+	useEffect(() => {
+		if (onTour) setDrawerIsOpen(true);
+	}, [onTour]);
+
 	return (
 		<div
 			className='fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-20'
@@ -60,7 +66,7 @@ const Drawer = (props: drawerProps) => {
 				transform:
 					isAuth && (drawerIsOpen || screenIsXL)
 						? 'translateX(-12px)'
-						: `translateX(calc(-100% + ${minDrawerWidth}px))`,
+						: `translateX(calc(-50% + ${minDrawerWidth}px))`,
 				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
 				WebkitBackfaceVisibility: 'hidden'
 			}}

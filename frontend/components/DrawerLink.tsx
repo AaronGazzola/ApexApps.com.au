@@ -30,6 +30,7 @@ const DrawerLink = (props: DrawerLinkProps) => {
 					className={`font-semibold mr-4 group-hover:text-white ${
 						pathIsActive ? 'text-white' : 'text-blue-darkest'
 					}`}
+					style={{ WebkitBackfaceVisibility: 'hidden' }}
 				>
 					{title}
 				</p>
