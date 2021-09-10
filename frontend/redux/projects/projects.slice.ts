@@ -259,10 +259,10 @@ const projectsSlice = createSlice({
 		},
 		projectsTour(state) {
 			state.project = {
-				title: 'Metaphysics Online',
+				title: "Jane's Amazing App",
 				_id: 'abc123',
 				description:
-					'We are what we repeatedly do. Excellence, therefore, isn’t an act, but a habit.',
+					'An incredible, highly profitable online web application designed and developed by Apex Apps.',
 				contractUploaded: false,
 				estimate: {
 					startFrom: '2050-01-01T00:00:00.000+00:00',
@@ -276,10 +276,10 @@ const projectsSlice = createSlice({
 			};
 			state.projects = [
 				{
-					title: 'Metaphysics Online',
+					title: "Jane's Amazing App",
 					_id: 'abc123',
 					description:
-						'We are what we repeatedly do. Excellence, therefore, isn’t an act, but a habit.',
+						'An incredible, highly profitable online web application designed and developed by Apex Apps.',
 					contractUploaded: false,
 					estimate: {
 						startFrom: '2050-01-01T00:00:00.000+00:00',

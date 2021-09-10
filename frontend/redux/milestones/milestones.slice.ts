@@ -431,19 +431,6 @@ const milestonesSlice = createSlice({
 								},
 								{ _id: 'step9', content: 'Color palette selection' }
 							]
-						},
-						{
-							_id: 'feature4',
-							title: 'Specific page UI design',
-							state: 'Completed',
-							steps: [
-								{ _id: 'step10', content: 'Profile Page' },
-								{
-									_id: 'step11',
-									content: 'Course search page'
-								},
-								{ _id: 'step12', content: 'Course content page' }
-							]
 						}
 					],
 					updates: [

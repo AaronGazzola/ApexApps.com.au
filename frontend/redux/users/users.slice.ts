@@ -590,24 +590,24 @@ const usersSlice = createSlice({
 			state.isAuth = true;
 			state.onTour = true;
 			state.client = {
-				userName: 'Aristotle',
+				userName: 'Jane Doe',
 				clientName: 'tourClient',
-				email: 'aristotle@example.com',
+				email: 'jane@example.com',
 				isVerified: true,
 				isAdmin: false,
 				_id: 'abc123'
 			};
 			state.user = {
-				userName: 'Aristotle',
+				userName: 'Jane Doe',
 				clientName: 'tourClient',
-				email: 'aristotle@example.com',
+				email: 'jane@example.com',
 				isVerified: true,
 				isAdmin: false,
 				_id: 'abc123',
 				client: {
-					userName: 'Aristotle',
+					userName: 'Jane Doe',
 					clientName: 'tourClient',
-					email: 'aristotle@example.com',
+					email: 'jane@example.com',
 					isVerified: true,
 					isAdmin: false,
 					_id: 'abc123'

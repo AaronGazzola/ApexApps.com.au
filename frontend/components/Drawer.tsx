@@ -57,17 +57,54 @@ const Drawer = (props: drawerProps) => {
 
 	useEffect(() => {
 		if (onTour) setDrawerIsOpen(true);
-	}, [onTour]);
+	}, [onTour, isAuth]);
+
+	// close drawer when click outside
+	useEffect(() => {
+		function handleClickOutside(event: TouchEvent | MouseEvent) {
+			setDrawerIsOpen(false);
+		}
+		let main: HTMLElement | null = null;
+		let header: HTMLElement | null = null;
+		if (document !== null) {
+			main = document.querySelector('main');
+			header = document.querySelector('header');
+		}
+		if (
+			main !== null &&
+			header !== null &&
+			main !== undefined &&
+			header !== undefined
+		) {
+			main.addEventListener('mousedown', handleClickOutside);
+			header.addEventListener('mousedown', handleClickOutside);
+		}
+
+		return () => {
+			// Unbind the event listener on clean up
+			if (
+				main !== null &&
+				header !== null &&
+				main !== undefined &&
+				header !== undefined
+			) {
+				main.removeEventListener('mousedown', handleClickOutside);
+				header.removeEventListener('mousedown', handleClickOutside);
+			}
+		};
+	}, []);
 
 	return (
 		<div
-			className='fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-20'
+			className={`fixed top-0 left-0 w-min bg-blue-lightest select-none overflow-visible h-full z-20 ${
+				isAuth && (drawerIsOpen || screenIsXL) ? 'shadow-2xl' : ''
+			}`}
 			style={{
 				transform:
 					isAuth && (drawerIsOpen || screenIsXL)
 						? 'translateX(-12px)'
 						: `translateX(calc(-100% + ${minDrawerWidth}px))`,
-				transition: 'transform 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
+				transition: 'all 1s cubic-bezier( 0.68, -0.55, 0.265, 1.55 )',
 				WebkitBackfaceVisibility: 'hidden'
 			}}
 		>
