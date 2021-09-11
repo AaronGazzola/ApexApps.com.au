@@ -34,6 +34,12 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('/cancel-email-update')
+  async cancelEmailUpdate(@Request() req) {
+    return await this.usersService.cancelEmailUpdate(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('/')
   async addUser(@Body(ValidationPipe) addUserDto: AddUserDto, @Request() req) {
     return await this.usersService.addUser(addUserDto.name, req.user);

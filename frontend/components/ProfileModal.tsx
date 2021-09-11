@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { UpdateData } from '../redux/users/users.interface';
-import { updateUser } from '../redux/users/users.slice';
+import { cancelEmailUpdate, updateUser } from '../redux/users/users.slice';
 import Button from './Button';
 import Input from './Input';
 import SVG from './SVG';
@@ -148,8 +148,29 @@ const ProfileModal = () => {
 				}
 				containerClasses='mt-1'
 			/>
+			{user?.newEmail && (
+				<div className='flex w-full justify-end'>
+					<Button
+						label='Cancel email update'
+						color='yellow'
+						type='button'
+						variant='simple'
+						size='small'
+						buttonClasses='px-1.5 py-1'
+						endIcon={
+							<SVG
+								name='closeCircle'
+								classes='fill-current w-5 h-5 ml-0.5 mt-0.5'
+							/>
+						}
+						onClick={() => dispatch(cancelEmailUpdate())}
+					/>
+				</div>
+			)}
 			<div
-				className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4
+				className={`border rounded-lg w-full relative overflow-hidden px-3  ${
+					user?.newEmail ? 'mt-2' : 'mt-4'
+				}
 					${passwordIsOpen ? 'border-blue-darkest' : 'border-gray-light'}
 					`}
 			>

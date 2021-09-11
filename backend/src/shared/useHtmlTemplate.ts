@@ -241,7 +241,7 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
       ];
     case 'UPDATE_EMAIL':
       return [
-        user.email,
+        user.newEmail,
         `Update email request`,
         `${header}
         ${heading(`Hi ${user.userName},`)}

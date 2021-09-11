@@ -161,6 +161,17 @@ export class UsersService {
     };
   }
 
+  async cancelEmailUpdate(user: User) {
+    user.newEmail = undefined;
+    user.verifyEmailToken = undefined;
+
+    await user.save();
+
+    return {
+      success: true,
+    };
+  }
+
   async sendVerifyUser(email: string) {
     const user = await this.userModel.findOne({ email });
     if (!user) throw new ErrorResponse('Could not complete sign up', 500);
