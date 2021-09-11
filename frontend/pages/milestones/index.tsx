@@ -33,7 +33,7 @@ const index = () => {
 			<h1 className='title'>Milestones</h1>
 			{user && (!user?.isAdmin || userView) && loading ? (
 				<>
-					<div className='box w-72 sm:w-80'>
+					<div className='box w-72 sm:w-96'>
 						<div className='skeleton w-52 h-7 mb-4'></div>
 						<div className='flex justify-between w-full mb-2'>
 							<div className='skeleton w-28 h-4'></div>
@@ -67,7 +67,7 @@ const index = () => {
 						<></>
 					)}
 					{milestones && !milestones.length && !loading && (
-						<div className='box w-72 sm:w-80'>
+						<div className='box w-72 sm:w-96'>
 							<p>No milestones to display</p>
 						</div>
 					)}

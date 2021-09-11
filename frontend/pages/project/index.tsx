@@ -120,7 +120,7 @@ const index = () => {
 				{renderModalContent(modalType)}
 			</Modal>
 			<h1 className='title'>Project</h1>
-			<div className='box w-72 sm:w-80'>
+			<div className='box w-72 sm:w-96'>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -243,7 +243,7 @@ const index = () => {
 				)}
 			</div>
 			{user?.isAdmin && !client?.isVerified && (
-				<div className='box w-72 sm:w-80'>
+				<div className='box w-72 sm:w-96'>
 					<h2 className='title-sm'>Client Signup Link</h2>
 					<p className='mt-2 text-gray-dark font-medium text-center'>
 						ApexApps.dev/signup/
@@ -294,11 +294,9 @@ const index = () => {
 					<div className='skeleton w-52 h-7 m-1'></div>
 				</div>
 			) : project?.estimate?.costFrom || user?.isAdmin ? (
-				<div className='box w-72 sm:w-80'>
+				<div className='box w-72 sm:w-80 relative'>
 					<h2 className='title-sm mb-3'>Project Estimate</h2>
-					<p className='font-semibold text-gray-dark text-sm mb-1'>
-						Start Between
-					</p>
+					<p className='font-bold text-gray-dark text-sm mb-1'>Start Between</p>
 					<div className='relative flex w-full mb-4' style={{ minHeight: 20 }}>
 						<p className=' w-1/2 pr-7 text-right'>
 							{moment(project?.estimate?.startFrom).format('D-MMM-YY')}
@@ -347,6 +345,10 @@ const index = () => {
 							</span>
 						</p>
 					</div>
+					<p className='w-full text-center text-sm italic font-medium text-gray-dark mt-4'>
+						Estimated values may vary from actual cost and duration of
+						development
+					</p>
 					{user?.isAdmin && (
 						<div className='flex justify-end w-full mt-2'>
 							<Button
