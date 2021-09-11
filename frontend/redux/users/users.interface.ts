@@ -1,5 +1,19 @@
 import { Project } from '../projects/projects.interface';
 
+export interface Booking {
+	confirmed: boolean;
+	_id: string;
+	name: string;
+	email: string;
+	contactEmail: string;
+	projectTitle: string;
+	projectDescription: string;
+	contactMethod: string;
+	phone: string;
+	zoomName: string;
+	callTime: Date;
+}
+
 export interface Proposal {
 	title: string;
 	sections: {
@@ -35,6 +49,7 @@ export type UserState = {
 	userView?: boolean;
 	noUser?: boolean;
 	onTour?: boolean;
+	bookings?: Booking[];
 	user?: User;
 	users?: User[];
 	client?: User;
@@ -76,6 +91,7 @@ export interface UserResponse {
 		client?: User;
 		proposal?: Proposal;
 		proposals?: Proposal[];
+		bookings?: Booking[];
 	};
 }
 

@@ -540,14 +540,135 @@ export const deleteProposal = createAsyncThunk(
 	}
 );
 
-const initialUser: User = {
-	userName: '',
-	clientName: '',
-	email: '',
-	isVerified: false,
-	isAdmin: false,
-	_id: '0'
-};
+export const sendEmail = createAsyncThunk(
+	'users/sendEmail',
+	async (
+		formData: {
+			name: string;
+			email: string;
+			contactEmail: string;
+			projectTitle: string;
+			projectDescription: string;
+			emailComments: string;
+		},
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.post(
+				`http://localhost:5000/users/send-email`,
+				formData,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const bookCall = createAsyncThunk(
+	'users/bookCall',
+	async (
+		formData: {
+			name: string;
+			email: string;
+			contactEmail: string;
+			projectTitle: string;
+			projectDescription: string;
+			contactMethod: string;
+			phone: string;
+			zoomName: string;
+			callTime: string;
+		},
+		{ rejectWithValue, getState }
+	) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.post(
+				`http://localhost:5000/users/book-call`,
+				formData,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const getBookings = createAsyncThunk(
+	'users/getBookings',
+	async (_, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.get(
+				`http://localhost:5000/users/bookings`,
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
+
+export const confirmBooking = createAsyncThunk(
+	'users/confirmBooking',
+	async (bookingId: string, { rejectWithValue, getState }) => {
+		const {
+			users: { token }
+		} = getState() as RootState;
+		try {
+			const { data }: UserResponse = await axios.post(
+				`http://localhost:5000/users/bookings/confirm`,
+				{ bookingId },
+				{
+					headers: {
+						'Authorization': `Bearer ${token}`
+					}
+				}
+			);
+			return data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			);
+		}
+	}
+);
 
 const initialState: UserState = {
 	loading: false,
@@ -932,12 +1053,61 @@ const usersSlice = createSlice({
 		builder.addCase(getProposalById.pending, (state, action) => {
 			state.loading = true;
 		});
-
 		builder.addCase(getProposalById.fulfilled, (state, action) => {
 			state.loading = false;
 			state.proposal = action.payload.proposal;
 		});
 		builder.addCase(getProposalById.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(sendEmail.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(sendEmail.fulfilled, (state, action) => {
+			state.loading = false;
+			state.success = 'Email sent';
+		});
+		builder.addCase(sendEmail.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(bookCall.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(bookCall.fulfilled, (state, action) => {
+			state.loading = false;
+			state.bookings = action.payload.bookings;
+			state.alert = {
+				title: 'Success',
+				message:
+					'Thank you for booking a call, you will recieve a confirmation email as soon as possible.',
+				titleColor: 'green'
+			};
+		});
+		builder.addCase(bookCall.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(getBookings.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(getBookings.fulfilled, (state, action) => {
+			state.loading = false;
+			state.bookings = action.payload.bookings;
+		});
+		builder.addCase(getBookings.rejected, (state, action) => {
+			state.error = { message: action.payload as string };
+			state.loading = false;
+		});
+		builder.addCase(confirmBooking.pending, (state, action) => {
+			state.loading = true;
+		});
+		builder.addCase(confirmBooking.fulfilled, (state, action) => {
+			state.loading = false;
+			state.success = 'Booking confirmed';
+		});
+		builder.addCase(confirmBooking.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
 			state.loading = false;
 		});

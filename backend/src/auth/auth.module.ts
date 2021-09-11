@@ -10,6 +10,7 @@ import { UserSchema } from '../users/schemas/user.schema';
 import { JwtStrategy } from './strategies/jwt-auth.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { ProposalSchema } from 'src/users/schemas/proposal.schema';
+import { BookingSchema } from 'src/users/schemas/booking.schema';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ProposalSchema } from 'src/users/schemas/proposal.schema';
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Proposal', schema: ProposalSchema },
+      { name: 'Booking', schema: BookingSchema },
     ]),
     PassportModule,
     JwtModule.register({

@@ -1,3 +1,4 @@
+import { BookCallDto } from './dto/book-call.dto';
 import { AddUserDto } from './dto/add-user.dto';
 import { UsersService } from './users.service';
 import {
@@ -17,6 +18,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { SendVerifyUserDto } from './dto/send-verify-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { AddProposalDto } from './dto/add-proposal.dto';
+import { SendEmailDto } from './dto/send-email.dto';
 
 @Controller('users')
 export class UsersController {
@@ -142,5 +144,24 @@ export class UsersController {
   @Get('/proposals/:pid')
   async getProposalById() {
     return await this.usersService.getProposalById();
+  }
+
+  @Post('/send-email')
+  async sendEmail(@Body(ValidationPipe) sendEmailDto: SendEmailDto) {
+    return await this.usersService.sendEmail(sendEmailDto);
+  }
+  @Post('/book-call')
+  async bookCall(@Body(ValidationPipe) bookCallDto: BookCallDto) {
+    return await this.usersService.bookCall(bookCallDto);
+  }
+
+  @Get('/bookings')
+  async getBookings() {
+    return await this.usersService.getBookings();
+  }
+
+  @Post('bookings/confirm')
+  async confirmBooking(@Body() { bookingId }: { bookingId: string }) {
+    return await this.usersService.confirmBooking(bookingId);
   }
 }

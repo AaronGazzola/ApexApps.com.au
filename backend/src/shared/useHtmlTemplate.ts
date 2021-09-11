@@ -8,6 +8,17 @@ const useHtmlTemplate = ({
   actionLink,
   buttonText,
   mailList,
+  fromEmail,
+  toEmail,
+  fromName,
+  projectTitle,
+  projectDescription,
+  contactEmail,
+  emailComments,
+  contactMethod,
+  phone,
+  zoomName,
+  callTime,
 }) => {
   const header = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
   <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -242,6 +253,38 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
           `If you did not request to update your email address, please ignore this email.`,
           'after',
         )}
+        ${footer}`,
+      ];
+    case 'CONTACT':
+      return [
+        process.env.ADMIN_EMAIL,
+        `Contact email from ${fromName}`,
+        `${header}
+        ${heading(`New email from ${fromName}`)}
+        ${paragraph(`Project name: ${projectTitle}`)}
+        ${paragraph(`Project description: ${projectDescription}`)}
+        ${paragraph(`Comments: ${emailComments}`)}
+        ${paragraph(`User email: ${fromEmail}`)}
+        ${paragraph(`Contact email: ${contactEmail}`)}
+        ${paragraph(`User name: ${fromName}`)}
+        ${footer}`,
+      ];
+    case 'BOOKING':
+      return [
+        process.env.ADMIN_EMAIL,
+        `Call booking for ${fromName}`,
+        `${header}
+        ${heading(`Call booking for ${fromName}`)}
+        ${paragraph(`Call time: ${callTime}`)}
+        ${paragraph(`Contact method: ${contactMethod}`)}
+        ${paragraph(`Phone number: ${phone}`)}
+        ${paragraph(`Zoom name: ${zoomName}`)}
+        ${paragraph(`Project name: ${projectTitle}`)}
+        ${paragraph(`Project description: ${projectDescription}`)}
+        ${paragraph(`User email: ${fromEmail}`)}
+        ${paragraph(`Contact email: ${contactEmail}`)}
+        ${paragraph(`User name: ${fromName}`)}
+        ${button}
         ${footer}`,
       ];
     default:

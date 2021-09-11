@@ -23,7 +23,7 @@ const DrawerLink = (props: DrawerLinkProps) => {
 				className={`group flex justify-between p-1.5 pl-6 hover:bg-blue-darkest cursor-pointer ${
 					pathIsActive ? 'bg-blue-darkest text-white' : 'text-blue-darkest'
 				}`}
-				onClick={breakpoint === 'xs' ? () => setDrawerIsOpen(false) : () => {}}
+				onClick={() => setDrawerIsOpen(false)}
 				style={{ WebkitBackfaceVisibility: 'hidden' }}
 			>
 				<p

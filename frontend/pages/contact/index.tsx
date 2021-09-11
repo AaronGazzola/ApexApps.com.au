@@ -6,10 +6,18 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import {
+	bookCall,
+	getBookings,
+	sendEmail
+} from '../../redux/users/users.slice';
 
 const index = () => {
-	const { user, loading } = useAppSelector(state => state.users);
+	const dispatch = useAppDispatch();
+	const { user, loading, bookings, alert } = useAppSelector(
+		state => state.users
+	);
 	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
 	const [lastBookingTodayHasPast, setLastBookingTodayHasPast] = useState(false);
 	const [step, setStep] = useState(1);
@@ -53,6 +61,9 @@ const index = () => {
 			isTouched: false,
 			value: ''
 		},
+		emailComments: {
+			value: ''
+		},
 		callTime: ''
 	} as { [index: string]: any });
 	const {
@@ -65,8 +76,17 @@ const index = () => {
 		contactEmail,
 		phone,
 		zoomName,
-		callTime
+		callTime,
+		emailComments
 	} = formState;
+
+	const formIsValid =
+		projectDescription.isValid &&
+		name.isValid &&
+		email.isValid &&
+		((contactMethod.value === 'email' && contactEmail.isValid) ||
+			(contactMethod.value === 'phone' && phone.isValid && callTime) ||
+			(contactMethod.value === 'zoom' && zoomName.isValid && callTime));
 
 	const changeHandler = (
 		e: React.FormEvent<
@@ -147,6 +167,26 @@ const index = () => {
 	};
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
+		const formData = {
+			name: name.value,
+			email: email.value,
+			contactEmail: email.value,
+			projectTitle: projectTitle.value,
+			projectDescription: projectDescription.value
+		};
+		if (contactMethod.value === 'email') {
+			dispatch(sendEmail({ ...formData, emailComments: emailComments.value }));
+		} else {
+			dispatch(
+				bookCall({
+					...formData,
+					contactMethod: contactMethod.value,
+					phone: phone.value,
+					zoomName: zoomName.value,
+					callTime
+				})
+			);
+		}
 	};
 
 	useEffect(() => {
@@ -213,6 +253,25 @@ const index = () => {
 		);
 		setLastBookingTodayHasPast(lastBookingTodayHasPast);
 	}, []);
+
+	useEffect(() => {
+		dispatch(getBookings());
+	}, []);
+
+	useEffect(() => {
+		if (alert) setStep(1);
+	}, [alert]);
+
+	useEffect(() => {
+		if (bookings?.length) {
+			const bookingsUnix = bookings.map(booking =>
+				moment(booking.callTime).unix()
+			);
+			setBookingTimes(prev =>
+				prev.filter(bookingTime => !bookingsUnix.includes(bookingTime.unix()))
+			);
+		}
+	}, [bookings]);
 
 	return (
 		<>
@@ -509,6 +568,22 @@ const index = () => {
 							/>
 						)}
 						<Collapse
+							in={contactMethod.value === 'email'}
+							timeout='auto'
+							collapsedSize={0}
+							style={{ width: '100%' }}
+						>
+							<Input
+								type='textarea'
+								placeholder='Comments'
+								value={emailComments.value}
+								label='Comments'
+								id='emailComments'
+								onChange={changeHandler}
+								containerClasses=''
+							/>
+						</Collapse>
+						<Collapse
 							in={contactMethod.value !== 'email'}
 							timeout='auto'
 							collapsedSize={0}
@@ -546,6 +621,7 @@ const index = () => {
 												if (time.date() === moment().add(key, 'd').date()) {
 													return (
 														<button
+															type='button'
 															key={`${key} ${time.format('HH:mm DD')}`}
 															className={`rounded-md border-none px-2 py-1 m-0 hover:bg-green hover:text-white hover:font-medium group
 															${callTime === time.format('HH:mm DD-MM-YYY ZZ') ? 'bg-green text-white' : ''}`}
@@ -584,20 +660,15 @@ const index = () => {
 							<Button
 								variant='contained'
 								color='green'
-								disabled={
-									!projectDescription.isValid ||
-									!name.isValid ||
-									!email.isValid ||
-									(contactMethod.value === 'email' && !contactEmail.isValid) ||
-									(contactMethod.value === 'phone' &&
-										(!phone.isValid || !callTime)) ||
-									(contactMethod.value === 'zoom' &&
-										(!zoomName.isValid || !callTime))
+								disabled={!formIsValid}
+								label={
+									contactMethod.value === 'email' ? 'Send email' : 'Book call'
 								}
-								label={contactMethod === 'call' ? 'Book call' : 'Send Email'}
-								type='button'
+								type='submit'
 								size='large'
 								buttonClasses='px-8 py-2'
+								loading={loading}
+								fullWidth
 							/>
 						</div>
 					</Collapse>

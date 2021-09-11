@@ -1,3 +1,5 @@
+import { SendEmailDto } from './dto/send-email.dto';
+import { BookCallDto } from './dto/book-call.dto';
 import { AddProposalDto } from './dto/add-proposal.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import * as crypto from 'crypto';
@@ -15,12 +17,14 @@ import { Request } from 'express';
 import * as moment from 'moment';
 import ErrorResponse from 'src/shared/errorResponse';
 import { Proposal } from './interfaces/proposal.interface';
+import { Booking } from './interfaces/booking.interface';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     @InjectModel('Proposal') private proposalModel: Model<Proposal>,
+    @InjectModel('Booking') private bookingModel: Model<Booking>,
     private jwtService: JwtService,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
@@ -555,6 +559,162 @@ export class UsersService {
     return {
       success: true,
       proposals,
+    };
+  }
+
+  async sendEmail(sendEmailDto: SendEmailDto) {
+    const {
+      name,
+      email,
+      contactEmail,
+      projectTitle,
+      projectDescription,
+      emailComments,
+    } = sendEmailDto;
+
+    const baseUrl = `${this.req.protocol}://${
+      process.env.NODE_ENV === 'production'
+        ? this.req.get('host')
+        : 'localhost:3000'
+    }`;
+
+    await sendEmail({
+      type: 'CONTACT',
+      baseUrl,
+      fromEmail: email,
+      contactEmail,
+      fromName: name,
+      reason: ``,
+      projectTitle,
+      projectDescription,
+      emailComments,
+    });
+    return {
+      success: true,
+    };
+  }
+
+  async bookCall(bookCallDto: BookCallDto) {
+    const {
+      name,
+      email,
+      contactEmail,
+      projectTitle,
+      projectDescription,
+      contactMethod,
+      phone,
+      zoomName,
+      callTime,
+    } = bookCallDto;
+
+    const foundBookingByTime = await this.bookingModel.findOne({
+      callTime: moment(callTime, 'HH:mm DD-MM-YYY ZZ').toDate(),
+    });
+
+    if (foundBookingByTime)
+      throw new ErrorResponse(
+        'Booking time unavailable, please select another time',
+        400,
+      );
+
+    const foundBookingByEmail = await this.bookingModel.find({
+      $or: [
+        { email },
+        { contactEmail },
+        { email: contactEmail },
+        { contactEmail: email },
+      ],
+    });
+
+    const futureBooking = foundBookingByEmail.find(
+      (booking) => booking.callTime > moment().toDate(),
+    );
+
+    if (futureBooking)
+      throw new ErrorResponse(
+        'You have already submitted a call booking request. You will recieve a confirmation email as soon as possible.',
+        400,
+      );
+
+    const booking = await this.bookingModel.create({
+      name,
+      email,
+      contactEmail,
+      projectTitle,
+      projectDescription,
+      contactMethod,
+      phone,
+      zoomName,
+      callTime: moment(callTime, 'HH:mm DD-MM-YYY ZZ').toDate(),
+    });
+    const baseUrl = `${this.req.protocol}://${
+      process.env.NODE_ENV === 'production'
+        ? this.req.get('host')
+        : 'localhost:3000'
+    }`;
+    const actionLink = `${baseUrl}/confirm-booking/${booking._id}`;
+
+    await sendEmail({
+      type: 'BOOKING',
+      baseUrl,
+      fromEmail: email,
+      contactEmail,
+      fromName: name,
+      reason: ``,
+      projectTitle,
+      projectDescription,
+      buttonText: 'Confirm booking',
+      actionLink,
+      contactMethod,
+      phone,
+      zoomName,
+      callTime: moment(callTime, 'HH:mm DD-MM-YYY ZZ').format('h:mma D-MMM-YY'),
+    });
+
+    const bookings = await this.bookingModel.find({
+      callTime: {
+        $gte: moment().toDate(),
+        $lte: moment().add(3, 'd').toDate(),
+      },
+    });
+
+    return {
+      success: true,
+      bookings,
+    };
+  }
+
+  async getBookings() {
+    const bookings = await this.bookingModel.find({
+      callTime: {
+        $gte: moment().toDate(),
+        $lte: moment().add(3, 'd').toDate(),
+      },
+    });
+
+    return {
+      success: true,
+      bookings,
+    };
+  }
+
+  async confirmBooking(bookingId: string) {
+    let booking;
+    try {
+      booking = await this.bookingModel.findById(bookingId);
+    } catch (err) {
+      throw new ErrorResponse('Invalid booking Id, please try again', 401);
+    }
+
+    if (!booking)
+      throw new ErrorResponse('Invalid booking Id, please try again', 401);
+
+    // confirm booking
+    booking.confirmed = true;
+    await booking.save();
+
+    return {
+      success: true,
     };
   }
 }

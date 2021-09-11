@@ -103,7 +103,7 @@ const UserFeedback = () => {
 						? alert?.title
 						: 'Alert'}
 				</h2>
-				<p className={`font-medium text-gray-dark my-3`}>
+				<p className={`font-medium text-gray-dark my-3 px-2`}>
 					{error?.message === 'Unauthorized' && onTour
 						? 'Contact Aaron to request access'
 						: error?.message
