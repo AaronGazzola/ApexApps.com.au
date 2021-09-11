@@ -583,7 +583,7 @@ export class UsersService {
       baseUrl,
       fromEmail: email,
       contactEmail,
-      fromName: name,
+      name,
       reason: ``,
       projectTitle,
       projectDescription,
@@ -620,9 +620,10 @@ export class UsersService {
     const foundBookingByEmail = await this.bookingModel.find({
       $or: [
         { email },
-        { contactEmail },
-        { email: contactEmail },
-        { contactEmail: email },
+        { zoomName },
+        { phone },
+        { email: zoomName },
+        { zoomName: email },
       ],
     });
 
@@ -659,7 +660,7 @@ export class UsersService {
       baseUrl,
       fromEmail: email,
       contactEmail,
-      fromName: name,
+      name,
       reason: ``,
       projectTitle,
       projectDescription,
@@ -712,6 +713,26 @@ export class UsersService {
     // confirm booking
     booking.confirmed = true;
     await booking.save();
+
+    const baseUrl = `${this.req.protocol}://${
+      process.env.NODE_ENV === 'production'
+        ? this.req.get('host')
+        : 'localhost:3000'
+    }`;
+
+    await sendEmail({
+      type: 'CONFIRM_BOOKING',
+      baseUrl,
+      toEmail: booking.contactEmail,
+      name: booking.name,
+      reason: `You have recieved this email to confirm a call booking made at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+      projectTitle: booking.projectTitle,
+      projectDescription: booking.projectDescription,
+      contactMethod: booking.contactMethod,
+      phone: booking.phone,
+      zoomName: booking.zoomName,
+      callTime: moment(booking.callTime).format('h:mma D-MMM-YY'),
+    });
 
     return {
       success: true,

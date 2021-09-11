@@ -19,6 +19,7 @@ const index = () => {
 		state => state.users
 	);
 	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
+	const [bookingIsValid, setBookingIsValid] = useState(true);
 	const [lastBookingTodayHasPast, setLastBookingTodayHasPast] = useState(false);
 	const [step, setStep] = useState(1);
 	const [formState, setFormState] = useState({
@@ -81,7 +82,6 @@ const index = () => {
 	} = formState;
 
 	const formIsValid =
-		projectDescription.isValid &&
 		name.isValid &&
 		email.isValid &&
 		((contactMethod.value === 'email' && contactEmail.isValid) ||
@@ -160,6 +160,7 @@ const index = () => {
 	};
 
 	const handleSelectTime = (callTime: string) => {
+		setBookingIsValid(true);
 		setFormState({
 			...formState,
 			callTime
@@ -167,6 +168,10 @@ const index = () => {
 	};
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
+		if (!formIsValid) {
+			setBookingIsValid(false);
+			return;
+		}
 		const formData = {
 			name: name.value,
 			email: email.value,
@@ -412,30 +417,18 @@ const index = () => {
 							type='textarea'
 							placeholder='Project description'
 							value={projectDescription.value}
-							validation
-							isValid={projectDescription.isValid}
-							helperText={
-								projectDescription.isTouched && !projectDescription.isValid
-									? 'Please enter a description of your web app'
-									: ''
-							}
 							label='Project description'
 							id='projectDescription'
 							onChange={changeHandler}
-							touchHandler={touchHandler}
-							isTouched={projectDescription.isTouched}
 							containerClasses='mb-2'
 						/>
 						<div className='flex justify-end w-full'>
 							<Button
 								variant='contained'
 								color='green'
-								disabled={!projectDescription.isValid}
 								label='Next'
 								type='button'
-								onClick={() => {
-									if (projectDescription.isValid) setStep(3);
-								}}
+								onClick={() => setStep(3)}
 								buttonClasses='px-6 py-1'
 							/>
 						</div>
@@ -589,7 +582,11 @@ const index = () => {
 							collapsedSize={0}
 							style={{ width: '100%' }}
 						>
-							<p className='text-sm text-center w-full mb-4 italic text-gray-dark'>
+							<p
+								className={`text-sm text-center w-full mb-4 italic ${
+									bookingIsValid ? 'text-gray-dark' : 'text-red font-medium'
+								}`}
+							>
 								Select a time and date for our call:
 							</p>
 							<div className='flex w-full justify-around relative'>

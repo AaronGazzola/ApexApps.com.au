@@ -286,89 +286,83 @@ const index = () => {
 					</>
 				)}
 			</div>
-			<div className='box w-72 sm:w-80'>
-				{loading ? (
-					<>
-						<div className='skeleton w-36 h-7 mt-1 mb-3'></div>
-						<div className='skeleton w-52 h-7 m-1'></div>
-						<div className='skeleton w-52 h-7 m-1'></div>
-						<div className='skeleton w-52 h-7 m-1'></div>
-					</>
-				) : (
-					<>
-						<h2 className='title-sm mb-3'>Project Estimate</h2>
-						<p className='font-semibold text-gray-dark text-sm mb-1'>
-							Start Between
+			{loading ? (
+				<div className='box w-72 sm:w-80'>
+					<div className='skeleton w-36 h-7 mt-1 mb-3'></div>
+					<div className='skeleton w-52 h-7 m-1'></div>
+					<div className='skeleton w-52 h-7 m-1'></div>
+					<div className='skeleton w-52 h-7 m-1'></div>
+				</div>
+			) : project?.estimate?.costFrom || user?.isAdmin ? (
+				<div className='box w-72 sm:w-80'>
+					<h2 className='title-sm mb-3'>Project Estimate</h2>
+					<p className='font-semibold text-gray-dark text-sm mb-1'>
+						Start Between
+					</p>
+					<div className='relative flex w-full mb-4' style={{ minHeight: 20 }}>
+						<p className=' w-1/2 pr-7 text-right'>
+							{moment(project?.estimate?.startFrom).format('D-MMM-YY')}
 						</p>
-						<div
-							className='relative flex w-full mb-4'
-							style={{ minHeight: 20 }}
-						>
-							<p className=' w-1/2 pr-7 text-right'>
-								{moment(project?.estimate?.startFrom).format('D-MMM-YY')}
-							</p>
-							<SVG
-								name='doubleArrow'
-								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-							/>
-							<p className=' w-1/2 pl-7'>
-								{moment(project?.estimate?.startTo).format('D-MMM-YY')}
-							</p>
-						</div>
-						<p className='font-semibold text-gray-dark text-sm mb-1'>
-							End Between
+						<SVG
+							name='doubleArrow'
+							classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+						/>
+						<p className=' w-1/2 pl-7'>
+							{moment(project?.estimate?.startTo).format('D-MMM-YY')}
 						</p>
-						<div
-							className='relative flex w-full mb-4'
-							style={{ minHeight: 20 }}
-						>
-							<p className='w-1/2 pr-7 text-right'>
-								{moment(project?.estimate?.endFrom).format('D-MMM-YY')}
-							</p>
-							<SVG
-								name='doubleArrow'
-								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-							/>
-							<p className='w-1/2 pl-7'>
-								{moment(project?.estimate?.endTo).format('D-MMM-YY')}
-							</p>
-						</div>
-						<p className='font-semibold text-gray-dark text-sm mb-1'>
-							Total cost between
+					</div>
+					<p className='font-semibold text-gray-dark text-sm mb-1'>
+						End Between
+					</p>
+					<div className='relative flex w-full mb-4' style={{ minHeight: 20 }}>
+						<p className='w-1/2 pr-7 text-right'>
+							{moment(project?.estimate?.endFrom).format('D-MMM-YY')}
 						</p>
-						<div className='relative flex w-full mb-2'>
-							<p className=' w-1/2 pr-7 text-right'>
-								${project?.estimate?.costFrom?.toLocaleString('en-US')}
-								<span className='text-xxs font-semibold'>
-									{project?.estimate?.currency}
-								</span>
-							</p>
-							<SVG
-								name='doubleArrow'
-								classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+						<SVG
+							name='doubleArrow'
+							classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+						/>
+						<p className='w-1/2 pl-7'>
+							{moment(project?.estimate?.endTo).format('D-MMM-YY')}
+						</p>
+					</div>
+					<p className='font-semibold text-gray-dark text-sm mb-1'>
+						Total cost between
+					</p>
+					<div className='relative flex w-full mb-2'>
+						<p className=' w-1/2 pr-7 text-right'>
+							${project?.estimate?.costFrom?.toLocaleString('en-US')}
+							<span className='text-xxs font-semibold'>
+								{project?.estimate?.currency}
+							</span>
+						</p>
+						<SVG
+							name='doubleArrow'
+							classes='fill-current text-gray-light transform -rotate-45 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+						/>
+						<p className=' w-1/2 pl-7'>
+							${project?.estimate?.costTo?.toLocaleString('en-US')}
+							<span className='text-xxs font-semibold'>
+								{project?.estimate?.currency}
+							</span>
+						</p>
+					</div>
+					{user?.isAdmin && (
+						<div className='flex justify-end w-full mt-2'>
+							<Button
+								label='Edit estimate'
+								color='yellow'
+								variant='simple'
+								size='small'
+								buttonClasses='mt-1 border py-0.5 px-1.5'
+								onClick={() => openModalhandler('editEstimate')}
 							/>
-							<p className=' w-1/2 pl-7'>
-								${project?.estimate?.costTo?.toLocaleString('en-US')}
-								<span className='text-xxs font-semibold'>
-									{project?.estimate?.currency}
-								</span>
-							</p>
 						</div>
-						{user?.isAdmin && (
-							<div className='flex justify-end w-full mt-2'>
-								<Button
-									label='Edit estimate'
-									color='yellow'
-									variant='simple'
-									size='small'
-									buttonClasses='mt-1 border py-0.5 px-1.5'
-									onClick={() => openModalhandler('editEstimate')}
-								/>
-							</div>
-						)}
-					</>
-				)}
-			</div>
+					)}
+				</div>
+			) : (
+				<></>
+			)}
 			{user?.isAdmin && (
 				<Button
 					type='file'

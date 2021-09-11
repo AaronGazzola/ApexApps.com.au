@@ -10,7 +10,7 @@ const useHtmlTemplate = ({
   mailList,
   fromEmail,
   toEmail,
-  fromName,
+  name,
   projectTitle,
   projectDescription,
   contactEmail,
@@ -258,23 +258,23 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
     case 'CONTACT':
       return [
         process.env.ADMIN_EMAIL,
-        `Contact email from ${fromName}`,
+        `Contact email from ${name}`,
         `${header}
-        ${heading(`New email from ${fromName}`)}
+        ${heading(`New email from ${name}`)}
         ${paragraph(`Project name: ${projectTitle}`)}
         ${paragraph(`Project description: ${projectDescription}`)}
         ${paragraph(`Comments: ${emailComments}`)}
         ${paragraph(`User email: ${fromEmail}`)}
         ${paragraph(`Contact email: ${contactEmail}`)}
-        ${paragraph(`User name: ${fromName}`)}
+        ${paragraph(`User name: ${name}`)}
         ${footer}`,
       ];
     case 'BOOKING':
       return [
         process.env.ADMIN_EMAIL,
-        `Call booking for ${fromName}`,
+        `Call booking for ${name}`,
         `${header}
-        ${heading(`Call booking for ${fromName}`)}
+        ${heading(`Call booking for ${name}`)}
         ${paragraph(`Call time: ${callTime}`)}
         ${paragraph(`Contact method: ${contactMethod}`)}
         ${paragraph(`Phone number: ${phone}`)}
@@ -283,8 +283,29 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         ${paragraph(`Project description: ${projectDescription}`)}
         ${paragraph(`User email: ${fromEmail}`)}
         ${paragraph(`Contact email: ${contactEmail}`)}
-        ${paragraph(`User name: ${fromName}`)}
+        ${paragraph(`User name: ${name}`)}
         ${button}
+        ${footer}`,
+      ];
+    case 'CONFIRM_BOOKING':
+      return [
+        toEmail,
+        `Apex Apps call confirmation`,
+        `${header}
+        ${heading(
+          `${contactMethod[0].toUpperCase()}${contactMethod.slice(
+            1,
+          )} call confirmed for ${callTime.slice(0, -10)}`,
+        )}
+        ${paragraph(`Thank you for booking a call at Apex Apps.`)}
+        ${paragraph('', 'after')}
+        ${paragraph(
+          `I'll give you call you by ${contactMethod} on ${
+            contactMethod === 'phone' ? phone : zoomName
+          } at ${callTime}.`,
+        )}
+          ${paragraph('', 'after')}
+        ${paragraph(`I look forward to discussing your project!`)}
         ${footer}`,
       ];
     default:

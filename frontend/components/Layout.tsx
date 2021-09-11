@@ -47,6 +47,8 @@ const Layout = (props: LayoutProps) => {
 	const { projects, project } = useAppSelector(state => state.projects);
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 
+	const [onMount, setOnMount] = useState(true);
+
 	const tourBannerHeight = 40;
 
 	const logout = () => {
@@ -74,29 +76,28 @@ const Layout = (props: LayoutProps) => {
 	};
 
 	useEffect(() => {
-		if (isAuth) {
+		if (onMount && !onTour) dispatch(getUser());
+		if (isAuth && !onMount) {
 			if (user && !user?.isAdmin && !user.client)
 				dispatch(setClient(user.clientName));
 
 			if (user?.isAdmin) dispatch(getUsers());
-		} else if (!isAuth) {
-			if (onAuthRoute()) router.push('/login');
-			logout();
+		} else if (!isAuth && !onMount) {
+			if (onAuthRoute()) {
+				router.push('/login');
+				logout();
+			}
 		}
+		setOnMount(false);
 	}, [isAuth, noUser]);
 
+	// on navigate, if no stored user,
 	useEffect(() => {
-		// if first page load, check for user
-		if (!onTour) dispatch(getUser());
-	}, []);
-
-	// on navigate, logout and redirect if not auth
-	useEffect(() => {
-		if (!onTour && !isAuth && !user?.isVerified) {
+		if ((noUser || (user && !isAuth)) && onAuthRoute()) {
 			logout();
 			router.push('/login');
 		}
-	}, [router.pathname]);
+	}, [router.pathname, noUser]);
 
 	// when users are updated, get user and users
 	useEffect(() => {
@@ -117,11 +118,6 @@ const Layout = (props: LayoutProps) => {
 			dispatch(setProject(projects[0]._id));
 		}
 	}, [projects]);
-
-	// on navigation, logout onTour user if not on AuthRoute
-	useEffect(() => {
-		if (!onAuthRoute() && onTour) logout();
-	}, [router.pathname]);
 
 	return (
 		<>

@@ -70,6 +70,7 @@ export const getUser = createAsyncThunk(
 		if (localUserData) localToken = JSON.parse(localUserData).token;
 
 		const token = localToken ? localToken : stateToken ? stateToken : '';
+
 		if (!token) return;
 		try {
 			const { data }: UserResponse = await axios.get(
