@@ -245,10 +245,12 @@ const index = () => {
 		for (let i = 0; i < 3; i++) {
 			bookingHours.forEach(hour => {
 				// if booking time is more that one hour in the future, add to end of array
-				if (melbourneTime.hour(hour).unix() > moment().add(2, 'h').unix())
+				if (melbourneTime.hour(hour).unix() > moment().add(1, 'h').unix()) {
 					melbourneBookingTimes.push(
-						melbourneTime.format('HH:mm DD-MM-YYY ZZ')
+						melbourneTime.hour(hour).minute(0).format('HH:mm DD-MM-YYY ZZ'),
+						melbourneTime.hour(hour).minute(30).format('HH:mm DD-MM-YYY ZZ')
 					);
+				}
 			});
 			// once all times are added, increment day by one
 			melbourneTime.add(1, 'd');
@@ -277,6 +279,7 @@ const index = () => {
 			);
 		}
 	}, [bookings]);
+	console.log(bookings);
 
 	return (
 		<>
