@@ -49,10 +49,13 @@ export default function Home() {
 	return (
 		<>
 			<h1 className='title'>Apex Apps</h1>
-			<div className='flex items-center w-72 mb-6 flex-wrap-reverse justify-center sm:w-auto'>
+			<div
+				className='flex items-center w-ful mb-6 flex-wrap-reverse justify-center sm:w-auto px-2'
+				style={{ maxWidth: breakpoint === 'xs' ? 450 : '' }}
+			>
 				<div className='mr-0 sm:mr-4 flex flex-col items-center'>
 					<div
-						className='relative w-72 sm:w-80 p-4 flex flex-col items-center'
+						className='relative w-full sm:w-80 p-4 flex flex-col'
 						style={{ height: 112 }}
 					>
 						<p className='text-sm font-medium z-30'>
@@ -73,7 +76,7 @@ export default function Home() {
 								<div className='absolute right-0.5 top-1/2 transform rotate-45 rounded-tr-md w-11 h-11 translate-x-1/2 -translate-y-1/2 bg-white z-20'></div>
 							</>
 						)}
-						<div className='absolute box top-0 left-0 w-72 sm:w-80 h-min z-10'>
+						<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
 							<p className='text-sm font-medium opacity-0'>
 								Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
 							</p>
@@ -102,7 +105,7 @@ export default function Home() {
 			<h2 className='title mt-4 sm:mt-2'>Portfolio</h2>
 			<div className='flex flex-col sm:flex-row items-center w-full mb-0 justify-center max-w-6xl mt-2'>
 				<div
-					className={`p-2 relative group cursor-pointer w-full sm:w-1/2 transform `}
+					className={`pb-2 sm:px-2 relative group cursor-pointer w-full sm:w-1/2 transform `}
 					onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
 				>
 					{playGif !== 1 && (
@@ -130,7 +133,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div
-					className={`p-2 relative group cursor-pointer w-full sm:w-1/2 transform `}
+					className={`py-2 sm:px-2 relative group cursor-pointer w-full sm:w-1/2 transform `}
 					onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
 				>
 					{playGif !== 2 && (
@@ -173,59 +176,58 @@ export default function Home() {
 					/>
 				}
 			/>
-			<div className='p-2 mt-6 w-full max-w-2xl'>
-				<div className='box w-full border-blue-darkest border'>
-					<h1 className='title'>Apex Apps Dashboard</h1>
-					<p className='px-4 pt-1'>
-						As a client at Apex Apps, you will gain access to a personalised
-						project dashboard. Track development progress, view your project
-						timeline and receive scheduled updates - all in one place.
-					</p>
-					<Button
-						label='Explore the dashboard'
-						type='link'
-						path='/tour'
-						variant='simple'
-						size='medium'
-						buttonClasses=' pl-3 pr-2 py-0.5 mt-2 mb-1'
-						color='green'
-						endIcon={
-							<SVG
-								name='map'
-								classes='fill-current text-green ml-1 mt-0.5 w-7 h-7'
+			<div className='box w-full max-w-2xl border-blue-darkest border mt-4'>
+				<h1 className='title'>Apex Apps Dashboard</h1>
+				<p className='px-4 pt-1'>
+					As a client at Apex Apps, you will gain access to a personalised
+					project dashboard. Track development progress, view your project
+					timeline and receive scheduled updates - all in one place.
+				</p>
+				<Button
+					label='Explore the dashboard'
+					type='link'
+					path='/tour'
+					variant='simple'
+					size='medium'
+					buttonClasses=' pl-3 pr-2 py-0.5 mt-2 mb-1'
+					color='green'
+					endIcon={
+						<SVG
+							name='map'
+							classes='fill-current text-green ml-1 mt-0.5 w-7 h-7'
+						/>
+					}
+				/>
+				<div
+					className={`p-2 relative group cursor-pointer w-full transform `}
+					onClick={() => setPlayGif(prev => (prev === 3 ? 0 : 3))}
+				>
+					{playGif !== 3 && (
+						<SVG
+							name='playFill'
+							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
+						/>
+					)}
+					<div className='rounded-2xl overflow-hidden w-full border'>
+						{playGif === 3 ? (
+							<Image
+								src='/assets/gifs/apexapps.com.au.gif'
+								layout='responsive'
+								width={1598}
+								height={895}
 							/>
-						}
-					/>
-					<div
-						className={`p-2 relative group cursor-pointer w-full transform `}
-						onClick={() => setPlayGif(prev => (prev === 3 ? 0 : 3))}
-					>
-						{playGif !== 3 && (
-							<SVG
-								name='playFill'
-								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
+						) : (
+							<Image
+								src='/assets/images/apex-screenshot.jpg'
+								layout='responsive'
+								width={1598}
+								height={895}
 							/>
 						)}
-						<div className='rounded-2xl overflow-hidden w-full border'>
-							{playGif === 3 ? (
-								<Image
-									src='/assets/gifs/apexapps.com.au.gif'
-									layout='responsive'
-									width={1598}
-									height={895}
-								/>
-							) : (
-								<Image
-									src='/assets/images/apex-screenshot.jpg'
-									layout='responsive'
-									width={1598}
-									height={895}
-								/>
-							)}
-						</div>
 					</div>
 				</div>
 			</div>
+
 			<h1 className='title mt-6'>Reviews</h1>
 			<div className='relative'>
 				<p className='absolute top-0 left-0 text-blue-light text-5xl tracking-tighter transform rotate-180 m-1.5'>
@@ -307,8 +309,8 @@ export default function Home() {
 				buttonClasses=' px-8 py-2 mt-6 text-2xl'
 				color='green'
 			/>
-			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl mt-10 px-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 '>
+			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-10 '>
+				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2 '>Let's chat!</h2>
 					<div className='box w-full'>
 						<p className='box-text sm:mt-2'>
@@ -327,8 +329,8 @@ export default function Home() {
 					<Discuss animate={animateDiscuss} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl mt-4 px-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 '>
+			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-4 '>
+				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2'>Project strategy</h2>
 					<div className='box w-full sm:mt-2'>
 						<p className='box-text'>
@@ -349,8 +351,8 @@ export default function Home() {
 					<Design animate={animateDesign} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl mt-4 px-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 '>
+			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-4 '>
+				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2'>Dedicated development</h2>
 					<div className='box w-full sm:mt-2'>
 						<p className='box-text'>
@@ -366,8 +368,8 @@ export default function Home() {
 					<Develop animate={animateDevelop} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl mt-4 px-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 sm:m-0 '>
+			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-4 '>
+				<div className='flex flex-col w-full sm:w-3/4 sm:m-0 '>
 					<h2 className='title-sm mt-2 mb-2'>Hello, world!</h2>
 					<div className='box w-full sm:mt-2'>
 						<p className='box-text'>

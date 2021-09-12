@@ -131,7 +131,7 @@ const Layout = (props: LayoutProps) => {
 			/>
 			<UserFeedback />
 			<main
-				className='relative flex flex-col items-center h-min overflow-x-hidden pt-3 sm:pt-4'
+				className='relative flex flex-col items-center h-min overflow-x-hidden pt-3 sm:pt-4 px-2'
 				style={{
 					minHeight: `calc((var(--vh) * 100) - ${
 						headerHeight + footerHeight + (onTour ? tourBannerHeight : 0)

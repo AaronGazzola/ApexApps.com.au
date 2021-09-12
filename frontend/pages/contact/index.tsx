@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
 	bookCall,
 	getBookings,
+	getUser,
 	sendEmail
 } from '../../redux/users/users.slice';
 
