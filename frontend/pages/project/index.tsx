@@ -149,7 +149,7 @@ const index = () => {
 								size='small'
 								startIcon={<div className='w-2'></div>}
 								endIcon={
-									<div className='ml-1 w-4 h-4'>
+									<div className='w-6 h-6 -mb-1'>
 										<SVG name='door' classes='w-full fill-current' />
 									</div>
 								}
@@ -165,7 +165,7 @@ const index = () => {
 								buttonClasses='ml-2 px-1 py-0.5'
 								startIcon={<div className='w-2'></div>}
 								endIcon={
-									<div className='ml-1 w-4 h-4'>
+									<div className='-mb-0.5 w-6 h-6'>
 										<SVG name='pencil' classes='w-full fill-current' />
 									</div>
 								}

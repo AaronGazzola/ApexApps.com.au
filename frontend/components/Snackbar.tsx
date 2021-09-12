@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, MouseEventHandler } from 'react';
+import React, { MouseEventHandler } from 'react';
 import SVG from './SVG';
 
 interface SnackbarProps {

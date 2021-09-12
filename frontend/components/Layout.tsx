@@ -93,10 +93,11 @@ const Layout = (props: LayoutProps) => {
 
 	// on navigate, if no stored user,
 	useEffect(() => {
-		if ((noUser || (user && !isAuth)) && onAuthRoute()) {
+		if ((noUser || (user && (!isAuth || !user.isVerified))) && onAuthRoute()) {
 			logout();
 			router.push('/login');
 		}
+		if (onTour && !onAuthRoute()) logout();
 	}, [router.pathname, noUser]);
 
 	// when users are updated, get user and users

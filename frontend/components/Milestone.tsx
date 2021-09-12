@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import Input from './Input';
@@ -221,7 +221,7 @@ const Milestone = (props: MilestoneProps) => {
 				</Modal>
 				<form
 					onSubmit={submitHandler}
-					className={` box w-72 sm:w-80 relative overflow-hidden px-3  mt-4 flex flex-col items-center
+					className={` box w-72 sm:w-96 relative overflow-hidden px-3  mt-4 flex flex-col items-center
             `}
 				>
 					<SVG
@@ -507,7 +507,7 @@ const Milestone = (props: MilestoneProps) => {
 		);
 	} else {
 		return (
-			<div className='box w-72 sm:w-80 relative' key={milestoneId}>
+			<div className='box w-72 sm:w-96 relative' key={milestoneId}>
 				{milestones && milestones?.length > 1 && (
 					<>
 						<div
