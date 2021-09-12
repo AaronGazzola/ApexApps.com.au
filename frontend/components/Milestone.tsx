@@ -221,7 +221,7 @@ const Milestone = (props: MilestoneProps) => {
 				</Modal>
 				<form
 					onSubmit={submitHandler}
-					className={` box w-72 sm:w-96 relative overflow-hidden px-3  mt-4 flex flex-col items-center
+					className={` box w-full max-w-sm relative overflow-hidden px-3  mt-4 flex flex-col items-center
             `}
 				>
 					<SVG
@@ -255,6 +255,7 @@ const Milestone = (props: MilestoneProps) => {
 						}
 					></div>
 					<Collapse
+						style={{ width: '100%' }}
 						in={openMilestone === milestoneId}
 						timeout='auto'
 						collapsedSize={30}
@@ -395,6 +396,7 @@ const Milestone = (props: MilestoneProps) => {
 													}
 												></div>
 												<Collapse
+													style={{ width: '100%' }}
 													in={openFeature === feature._id}
 													timeout='auto'
 													collapsedSize={30}
@@ -507,7 +509,7 @@ const Milestone = (props: MilestoneProps) => {
 		);
 	} else {
 		return (
-			<div className='box w-72 sm:w-96 relative' key={milestoneId}>
+			<div className='box w-full max-w-sm relative' key={milestoneId}>
 				{milestones && milestones?.length > 1 && (
 					<>
 						<div
@@ -569,6 +571,7 @@ const Milestone = (props: MilestoneProps) => {
 					</>
 				)}
 				<Collapse
+					style={{ width: '100%' }}
 					in={
 						milestones && milestones?.length > 1
 							? openMilestone === milestoneId
@@ -576,7 +579,6 @@ const Milestone = (props: MilestoneProps) => {
 					}
 					timeout='auto'
 					collapsedSize={0}
-					style={{ width: '100%' }}
 				>
 					<div className='flex flex-col w-full mt-4'>
 						<div className='flex justify-between'>
@@ -702,6 +704,7 @@ const Milestone = (props: MilestoneProps) => {
 								/>
 							</div>
 							<Collapse
+								style={{ width: '100%' }}
 								in={openFeature === feature._id}
 								timeout='auto'
 								collapsedSize={0}

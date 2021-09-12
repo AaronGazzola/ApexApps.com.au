@@ -22,22 +22,48 @@ const index = () => {
 		<>
 			<Meta title='Proposal | Apex Apps' />
 			<h1 className='title'>Project Proposal</h1>
-			<div className='flex items-center w-72 mb-6 flex-wrap-reverse justify-center sm:w-auto'>
+			<div
+				className='flex items-center w-ful mb-6 flex-wrap-reverse justify-center sm:w-auto px-2'
+				style={{ maxWidth: breakpoint === 'xs' ? 450 : '' }}
+			>
 				<div className='mr-0 sm:mr-4 flex flex-col items-center'>
-					<div className='box w-72 sm:w-80 h-min'>
-						<p className='text-sm font-medium'>
+					<div
+						className='relative w-full sm:w-80 p-4 flex flex-col'
+						style={{ height: 112 }}
+					>
+						<p className='text-sm font-medium z-30'>
 							Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
 						</p>
-						<p className='text-sm font-medium'>
+						<p className='text-sm font-medium z-30'>
 							I create elegant and powerful web applications - accessable on any
 							device
 						</p>
+						{breakpoint === 'xs' ? (
+							<>
+								<div className='absolute top-0 left-1/2 transform rotate-45 rounded-tl-md w-11 h-11 shadow-lg -translate-y-1/2 -translate-x-1/2 bg-white'></div>
+								<div className='absolute left-1/2 top-0 transform rotate-45 rounded-tl-md w-11 h-11 -translate-y-1/2 -translate-x-1/2 bg-white z-20'></div>
+							</>
+						) : (
+							<>
+								<div className='absolute right-0 top-1/2 transform rotate-45 rounded-tr-md w-11 h-11 shadow-lg translate-x-1/2 -translate-y-1/2 bg-white'></div>
+								<div className='absolute right-0.5 top-1/2 transform rotate-45 rounded-tr-md w-11 h-11 translate-x-1/2 -translate-y-1/2 bg-white z-20'></div>
+							</>
+						)}
+						<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
+							<p className='text-sm font-medium opacity-0'>
+								Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+							</p>
+							<p className='text-sm font-medium opacity-0'>
+								I create elegant and powerful web applications - accessable on
+								any device
+							</p>
+						</div>
 					</div>
 					<Button
 						label='More about Apex Apps'
 						variant='simple'
 						color='green'
-						buttonClasses='border border-green px-1.5 py-0.5'
+						buttonClasses='border border-green px-1.5 py-0.5 mt-8 sm:mt-4'
 						size='small'
 						type='link'
 						path='/'
@@ -60,8 +86,8 @@ const index = () => {
 			</div>
 			{loading || !proposal ? (
 				<>
-					<div className='skeleton w-72 h-8 mb-4'></div>
-					<div className='box w-72 sm:max-w-lg sm:w-full'>
+					<div className='skeleton w-64 h-8 mb-4'></div>
+					<div className='box w-full sm:max-w-lg'>
 						<div className='skeleton w-60 h-7 mb-3'></div>
 						<div className='flex flex-col items-left w-full'>
 							<div className='skeleton w-11/12 h-4 mb-2 '></div>
@@ -71,7 +97,7 @@ const index = () => {
 							<div className='skeleton w-4/12 h-4 '></div>
 						</div>
 					</div>
-					<div className='box w-72 sm:max-w-lg sm:w-full'>
+					<div className='box w-full sm:max-w-lg'>
 						<div className='skeleton w-60 h-7 mb-3'></div>
 						<div className='flex flex-col items-left w-full'>
 							<div className='skeleton w-5/12 h-4 mb-2 '></div>

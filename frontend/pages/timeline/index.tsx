@@ -90,7 +90,7 @@ const index = () => {
 			<h1 className='title'>Timeline</h1>
 			{loading || !milestones ? (
 				<>
-					<div className='relative w-72 sm:w-96'>
+					<div className='relative w-full max-w-sm'>
 						<div
 							className={`w-1 absolute top-8 left-3 bottom-11 skeleton`}
 						></div>
@@ -115,7 +115,7 @@ const index = () => {
 							</div>
 						</div>
 					</div>
-					<div className='relative w-72 sm:w-96'>
+					<div className='relative w-full max-w-sm'>
 						<div
 							className={`w-1 absolute top-8 left-3 bottom-11 skeleton`}
 						></div>
@@ -139,8 +139,8 @@ const index = () => {
 					</div>
 				</>
 			) : milestones && !milestones.length ? (
-				<div className='box w-72 sm:w-96'>
-					<p>No milestones for timeline to display</p>
+				<div className='text-box'>
+					<p className='box-text'>No milestones for timeline to display</p>
 				</div>
 			) : (
 				<>
@@ -161,7 +161,7 @@ const index = () => {
 							);
 
 						return (
-							<div className='relative w-72 sm:w-96' key={milestone._id}>
+							<div className='relative w-full max-w-sm' key={milestone._id}>
 								<div
 									className={`w-1 absolute top-4 left-3 bottom-8 ${
 										milestoneState === 'Completed'

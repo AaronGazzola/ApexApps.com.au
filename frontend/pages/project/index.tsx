@@ -34,7 +34,8 @@ const index = () => {
 		client,
 		loading: usersLoading,
 		user,
-		users
+		users,
+		userView
 	} = useAppSelector(state => state.users);
 	const {
 		loading: projectsLoading,
@@ -120,7 +121,7 @@ const index = () => {
 				{renderModalContent(modalType)}
 			</Modal>
 			<h1 className='title'>Project</h1>
-			<div className='box w-72 sm:w-96'>
+			<div className='box w-full max-w-md'>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -171,7 +172,7 @@ const index = () => {
 								}
 							/>
 						</div>
-						{user?.isAdmin && (
+						{user?.isAdmin && !userView && (
 							<>
 								<Input
 									value={user?.client?.clientName}
@@ -219,7 +220,7 @@ const index = () => {
 							inputClasses=''
 							labelTop
 						/>
-						{user?.isAdmin && (
+						{user?.isAdmin && !userView && (
 							<div className='mt-2 flex justify-between w-full'>
 								<Button
 									label='Delete project'
@@ -242,7 +243,7 @@ const index = () => {
 					</>
 				)}
 			</div>
-			{user?.isAdmin && !client?.isVerified && (
+			{user?.isAdmin && !client?.isVerified && !userView && (
 				<div className='box w-72 sm:w-96'>
 					<h2 className='title-sm'>Client Signup Link</h2>
 					<p className='mt-2 text-gray-dark font-medium text-center'>
@@ -252,7 +253,7 @@ const index = () => {
 					</p>
 				</div>
 			)}
-			<div className='text-box'>
+			<div className='text-box' style={{ minWidth: 280 }}>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -365,7 +366,7 @@ const index = () => {
 			) : (
 				<></>
 			)}
-			{user?.isAdmin && (
+			{user?.isAdmin && !userView && (
 				<Button
 					type='file'
 					label='Upload contract PDF'

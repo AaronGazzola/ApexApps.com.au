@@ -245,7 +245,7 @@ const index = () => {
 						{renderModalContent(modalState.type)}
 					</Modal>
 					<form onSubmit={submitHandler} className='flex flex-col items-center'>
-						<div className='box w-72 sm:w-80'>
+						<div className='box w-full max-w-md'>
 							<div className='flex justify-center'>
 								<Input
 									type='checkbox'
@@ -312,25 +312,15 @@ const index = () => {
 								placeholder='Title'
 							/>
 						</div>
-						<Button
-							type='button'
-							size='large'
-							variant='simple'
-							color='green'
+
+						<SVG
 							onClick={() => addSectionHandler(0)}
-							endIcon={
-								<div className='w-6 h-6'>
-									<SVG
-										name='add'
-										classes='fill-current text-green w-full h-full'
-									/>
-								</div>
-							}
-							buttonClasses='mb-4'
+							name='add'
+							classes='fill-current text-green w-6 h-6'
 						/>
 						{sections.map((section: Section, index: number) => (
 							<React.Fragment key={index}>
-								<div className='box w-72 sm:w-80 relative'>
+								<div className='box w-full max-w-md relative'>
 									<SVG
 										name='close'
 										classes={`absolute left-3 top-4 fill-current text-red w-8 h-8 z-10 cursor-pointer`}
@@ -397,25 +387,14 @@ const index = () => {
 										placeholder='Button link'
 									/>
 								</div>
-								<Button
-									type='button'
-									size='large'
-									variant='simple'
-									color='green'
+								<SVG
 									onClick={() => addSectionHandler(index + 1)}
-									endIcon={
-										<div className='w-6 h-6'>
-											<SVG
-												name='add'
-												classes='fill-current text-green w-full h-full'
-											/>
-										</div>
-									}
-									buttonClasses='mb-4'
+									name='add'
+									classes='fill-current text-green w-6 h-6'
 								/>
 							</React.Fragment>
 						))}
-						<div className='box w-72 sm:w-80'>
+						<div className='box w-full max-w-md'>
 							<h2 className='title-sm'>Intro video</h2>
 							<Input
 								type='text'
@@ -442,10 +421,13 @@ const index = () => {
 				</>
 			) : (
 				<>
-					<div className='flex items-center w-72 mb-6 flex-wrap-reverse justify-center sm:w-auto'>
+					<div
+						className='flex items-center w-ful mb-6 flex-wrap-reverse justify-center sm:w-auto px-2'
+						style={{ maxWidth: breakpoint === 'xs' ? 450 : '' }}
+					>
 						<div className='mr-0 sm:mr-4 flex flex-col items-center'>
 							<div
-								className='relative w-72 sm:w-80 mb-10 sm:mb-4 p-4 flex flex-col items-center'
+								className='relative w-full sm:w-80 p-4 flex flex-col'
 								style={{ height: 112 }}
 							>
 								<p className='text-sm font-medium z-30'>
@@ -462,11 +444,11 @@ const index = () => {
 									</>
 								) : (
 									<>
-										<div className='absolute right-0 bottom-5 transform rotate-45 rounded-tr-md w-11 h-11 shadow-lg translate-x-1/2 bg-white'></div>
-										<div className='absolute right-0.5 bottom-5 transform rotate-45 rounded-tr-md w-11 h-11 translate-x-1/2 bg-white z-20'></div>
+										<div className='absolute right-0 top-1/2 transform rotate-45 rounded-tr-md w-11 h-11 shadow-lg translate-x-1/2 -translate-y-1/2 bg-white'></div>
+										<div className='absolute right-0.5 top-1/2 transform rotate-45 rounded-tr-md w-11 h-11 translate-x-1/2 -translate-y-1/2 bg-white z-20'></div>
 									</>
 								)}
-								<div className='absolute box top-0 left-0 w-72 sm:w-80 h-min z-10'>
+								<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
 									<p className='text-sm font-medium opacity-0'>
 										Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
 									</p>
@@ -480,7 +462,7 @@ const index = () => {
 								label='More about Apex Apps'
 								variant='simple'
 								color='green'
-								buttonClasses='border border-green px-1.5 py-0.5'
+								buttonClasses='border border-green px-1.5 py-0.5 mt-8 sm:mt-4'
 								size='small'
 								type='link'
 								path='/'
@@ -503,8 +485,8 @@ const index = () => {
 					</div>
 					{loading || !user?.client?.proposal ? (
 						<>
-							<div className='skeleton w-72 h-8 mb-4'></div>
-							<div className='box w-72 sm:max-w-lg sm:w-full'>
+							<div className='skeleton w-64 h-8 mb-4'></div>
+							<div className='box w-full sm:max-w-lg'>
 								<div className='skeleton w-60 h-7 mb-3'></div>
 								<div className='flex flex-col items-left w-full'>
 									<div className='skeleton w-11/12 h-4 mb-2 '></div>
@@ -514,7 +496,7 @@ const index = () => {
 									<div className='skeleton w-4/12 h-4 '></div>
 								</div>
 							</div>
-							<div className='box w-72 sm:max-w-lg sm:w-full'>
+							<div className='box w-full sm:max-w-lg'>
 								<div className='skeleton w-60 h-7 mb-3'></div>
 								<div className='flex flex-col items-left w-full'>
 									<div className='skeleton w-5/12 h-4 mb-2 '></div>

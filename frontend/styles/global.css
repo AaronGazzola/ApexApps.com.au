@@ -64,13 +64,13 @@
 		@apply bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center mb-4;
 	}
 	.text-box {
-		@apply bg-white rounded-2xl shadow-lg py-4 px-6 flex flex-col items-center mb-4 w-72 sm:max-w-lg sm:min-w-max;
+		@apply bg-white rounded-2xl shadow-lg py-4 px-6 flex flex-col items-center mb-4 w-max max-w-full sm:max-w-lg;
 	}
 	.box-title {
 		@apply text-2xl text-blue-darkest text-center mb-3 w-full sm:max-w-lg;
 	}
 	.box-text {
-		@apply w-full sm:max-w-lg;
+		@apply w-full break-words sm:max-w-lg;
 	}
 	.skeleton {
 		@apply animate-pulse bg-gray-300 rounded;
