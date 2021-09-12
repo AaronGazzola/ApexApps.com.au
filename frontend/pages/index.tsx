@@ -63,7 +63,7 @@ export default function Home() {
 						</p>
 						<p className='text-sm font-medium z-30'>
 							I create elegant and powerful web applications - accessable on any
-							device
+							device.
 						</p>
 						{breakpoint === 'xs' ? (
 							<>
@@ -82,7 +82,7 @@ export default function Home() {
 							</p>
 							<p className='text-sm font-medium opacity-0'>
 								I create elegant and powerful web applications - accessable on
-								any device
+								any device.
 							</p>
 						</div>
 					</div>

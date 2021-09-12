@@ -435,7 +435,7 @@ const index = () => {
 								</p>
 								<p className='text-sm font-medium z-30'>
 									I create elegant and powerful web applications - accessable on
-									any device
+									any device.
 								</p>
 								{breakpoint === 'xs' ? (
 									<>
@@ -454,7 +454,7 @@ const index = () => {
 									</p>
 									<p className='text-sm font-medium opacity-0'>
 										I create elegant and powerful web applications - accessable
-										on any device
+										on any device.
 									</p>
 								</div>
 							</div>
