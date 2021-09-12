@@ -279,7 +279,6 @@ const index = () => {
 			);
 		}
 	}, [bookings]);
-	console.log(bookings);
 
 	return (
 		<>
@@ -374,7 +373,11 @@ const index = () => {
 						</div>
 					</Collapse>
 				</div>
-				<div className='box w-72 sm:w-96 relative'>
+				<div
+					className={`box w-72 sm:w-96 relative ${
+						!name.isValid || !email.isValid ? 'bg-gray-200' : ''
+					}`}
+				>
 					<div
 						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
 								${step > 2 ? 'bg-green' : step === 1 ? 'bg-gray' : 'bg-blue-darkest'}`}
@@ -394,12 +397,20 @@ const index = () => {
 					`}
 					/>
 					<div
-						className='absolute top-0 left-0 w-full h-16 cursor-pointer'
+						className={`absolute top-0 left-0 w-full h-16 ${
+							name.isValid || email.isValid ? 'cursor-pointer' : ''
+						}`}
 						onClick={() => {
 							if (name.isValid && email.isValid) setStep(2);
 						}}
 					></div>
-					<h2 className='title-sm w-full px-6 cursor-pointer'>Your project</h2>
+					<h2
+						className={`title-sm w-full px-6 ${
+							name.isValid || email.isValid ? 'cursor-pointer' : ''
+						}`}
+					>
+						Your project
+					</h2>
 					<Collapse
 						in={step === 2}
 						timeout='auto'
@@ -437,7 +448,11 @@ const index = () => {
 						</div>
 					</Collapse>
 				</div>
-				<div className='box w-72 sm:w-96 relative'>
+				<div
+					className={`box w-72 sm:w-96 relative ${
+						!name.isValid || !email.isValid ? 'bg-gray-200' : ''
+					}`}
+				>
 					<div
 						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
 								${step !== 3 ? 'bg-gray' : 'bg-blue-darkest'}`}
@@ -453,13 +468,19 @@ const index = () => {
 					`}
 					/>
 					<div
-						className='absolute top-0 left-0 w-full h-16 cursor-pointer'
+						className={`absolute top-0 left-0 w-full h-16 ${
+							name.isValid || email.isValid ? 'cursor-pointer' : ''
+						}`}
 						onClick={() => {
 							if (name.isValid && email.isValid && projectDescription.isValid)
 								setStep(3);
 						}}
 					></div>
-					<h2 className='title-sm w-full px-6 cursor-pointer'>
+					<h2
+						className={`title-sm w-full px-6 ${
+							name.isValid || email.isValid ? 'cursor-pointer' : ''
+						}`}
+					>
 						Contact method
 					</h2>
 					<Collapse

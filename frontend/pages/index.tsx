@@ -149,7 +149,7 @@ export default function Home() {
 							/>
 						) : (
 							<Image
-								src='/assets/images/rainbow-screenshot.png'
+								src='/assets/images/rainbow-screenshot.jpg'
 								layout='responsive'
 								width={1598}
 								height={895}
@@ -176,13 +176,13 @@ export default function Home() {
 			<div className='p-2 mt-6 w-full max-w-2xl'>
 				<div className='box w-full border-blue-darkest border'>
 					<h1 className='title'>Apex Apps Dashboard</h1>
-					<p className='box-text'>
+					<p className='px-4 pt-1'>
 						As a client at Apex Apps, you will gain access to a personalised
 						project dashboard. Track development progress, view your project
-						timeline and receive scheduled updates.
+						timeline and receive scheduled updates - all in one place.
 					</p>
 					<Button
-						label='Take a tour of the dashboard'
+						label='Explore the dashboard'
 						type='link'
 						path='/tour'
 						variant='simple'
@@ -216,7 +216,7 @@ export default function Home() {
 								/>
 							) : (
 								<Image
-									src='/assets/images/apex-screenshot.png'
+									src='/assets/images/apex-screenshot.jpg'
 									layout='responsive'
 									width={1598}
 									height={895}
@@ -235,7 +235,7 @@ export default function Home() {
 					,,
 				</p>
 				<div className='box w-full pb-2'>
-					<p className='box-text'>
+					<p className='box-text p-1'>
 						Even though Aaron appeared to be a lot younger and not as the
 						experienced as the other Freelancers I feel so blessed that I chose
 						him. His professionalism, insight and communication skills was
@@ -261,7 +261,7 @@ export default function Home() {
 					,,
 				</p>
 				<div className='box w-full pb-2'>
-					<p className='box-text'>
+					<p className='box-text p-1'>
 						Got the work done quickly, efficiently and effectively!
 					</p>
 					<div className='flex justify-center items-center w-full'>
@@ -307,8 +307,8 @@ export default function Home() {
 				buttonClasses=' px-8 py-2 mt-6 text-2xl'
 				color='green'
 			/>
-			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl mt-10'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 sm:pl-6'>
+			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl mt-10 px-4'>
+				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2 '>Let's chat!</h2>
 					<div className='box w-full'>
 						<p className='box-text sm:mt-2'>
@@ -322,19 +322,19 @@ export default function Home() {
 				</div>
 				<div
 					ref={discussRef}
-					className='flex justify-center w-36 h-36 sm:w-4/12 sm:px-4'
+					className='flex justify-center w-36 h-36 sm:w-4/12 sm:pl-2'
 				>
 					<Discuss animate={animateDiscuss} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl mt-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 sm:pl-6'>
+			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl mt-4 px-4'>
+				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2'>Project strategy</h2>
 					<div className='box w-full sm:mt-2'>
 						<p className='box-text'>
-							Development is divided into distinct milestones, the plan and
-							progress of each milestone is tracked in the{' '}
-							<Link href='/contact'>
+							Development is planned in distinct milestones, with details and
+							progress tracked in your{' '}
+							<Link href='/tour'>
 								<a className='text-green font-semibold italic'>
 									project dashboard
 								</a>
@@ -344,13 +344,13 @@ export default function Home() {
 				</div>
 				<div
 					ref={designRef}
-					className='flex justify-center w-36 h-36 sm:w-4/12 sm:px-4'
+					className='flex justify-center w-36 h-36 sm:w-4/12 sm:pr-2'
 				>
 					<Design animate={animateDesign} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl mt-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 sm:pl-6'>
+			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl mt-4 px-4'>
+				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2'>Dedicated development</h2>
 					<div className='box w-full sm:mt-2'>
 						<p className='box-text'>
@@ -361,14 +361,14 @@ export default function Home() {
 				</div>
 				<div
 					ref={developRef}
-					className='flex justify-center w-36 h-36 sm:w-4/12 sm:px-4 sm:-mt-3'
+					className='flex justify-center w-36 h-36 sm:w-4/12 sm:pl-2 sm:-mt-3'
 				>
 					<Develop animate={animateDevelop} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl mt-4'>
-				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 sm:m-0 sm:pl-6'>
-					<h2 className='title-sm mt-2 mb-4 sm:-mb-2'>Hello, world!</h2>
+			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl mt-4 px-4'>
+				<div className='flex flex-col w-full px-4 sm:p-0 sm:w-3/4 sm:m-0 '>
+					<h2 className='title-sm mt-2 mb-2'>Hello, world!</h2>
 					<div className='box w-full sm:mt-2'>
 						<p className='box-text'>
 							You will have online access to your app at key stages of
@@ -378,7 +378,7 @@ export default function Home() {
 				</div>
 				<div
 					ref={deployRef}
-					className='flex justify-center w-36 h-36 sm:w-4/12 sm:px-4 '
+					className='flex justify-center w-36 h-36 sm:w-4/12 sm:pr-2 '
 				>
 					<Deploy animate={animateDeploy} />
 				</div>

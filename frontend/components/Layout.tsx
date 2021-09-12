@@ -137,10 +137,8 @@ const Layout = (props: LayoutProps) => {
 						headerHeight + footerHeight + (onTour ? tourBannerHeight : 0)
 					}px)`,
 					width: screenIsXL
-						? `calc(100vw - ${maxDrawerWidth * 2}px)`
-						: `calc(100vw - ${
-								minDrawerWidth * (breakpoint === 'xs' ? 1 : 2)
-						  }px)`,
+						? `calc(100% - ${maxDrawerWidth * 2}px)`
+						: `calc(100% - ${minDrawerWidth}px)`,
 					marginLeft: screenIsXL ? maxDrawerWidth : minDrawerWidth,
 					marginTop: headerHeight + (onTour ? tourBannerHeight : 0)
 				}}
