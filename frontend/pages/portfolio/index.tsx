@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import Button from '../../components/Button';
+import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 
 const index = () => {
 	const [playGif, setPlayGif] = useState(0);
 	return (
 		<>
+			<Meta title='Portfolio | Apex Apps' />
 			<h1 className='title'>Portfolio</h1>
 			<div className='box w-full max-w-2xl relative'>
 				<h2 className='title-sm text-xl font-medium sm:font-normal sm:text-2xl mb-0 sm:px-20 sm:mb-4'>
@@ -162,7 +164,7 @@ const index = () => {
 					{playGif !== 2 && (
 						<SVG
 							name='playFill'
-							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
+							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
 						/>
 					)}
 					<div className='rounded-2xl overflow-hidden w-full border'>

@@ -4,6 +4,7 @@ import Button from '../../components/Button';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { forgotPassword } from '../../redux/users/users.slice';
 import SVG from '../../components/SVG';
+import Meta from '../../components/Meta';
 
 const index = () => {
 	const dispatch = useAppDispatch();
@@ -62,6 +63,7 @@ const index = () => {
 
 	return (
 		<>
+			<Meta title='Forgot password | Apex Apps' />
 			<h1 className='title'>Forgot Password</h1>
 			<form onSubmit={submitHandler} className='box w-72 sm:w-80'>
 				<Input

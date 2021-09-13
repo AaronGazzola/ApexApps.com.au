@@ -122,7 +122,6 @@ const Layout = (props: LayoutProps) => {
 
 	return (
 		<>
-			<Meta />
 			<Header headerHeight={headerHeight} tourBannerHeight={tourBannerHeight} />
 			<Drawer
 				headerHeight={headerHeight}

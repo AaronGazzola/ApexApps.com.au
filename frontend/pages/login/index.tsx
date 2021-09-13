@@ -7,6 +7,7 @@ import SVG from '../../components/SVG';
 import { milestonesTour } from '../../redux/milestones/milestones.slice';
 import { projectsTour } from '../../redux/projects/projects.slice';
 import { useRouter } from 'next/router';
+import Meta from '../../components/Meta';
 
 const index = () => {
 	const router = useRouter();
@@ -90,6 +91,7 @@ const index = () => {
 
 	return (
 		<>
+			<Meta title='Log in | Apex Apps' />
 			<h1 className='title'>Log in</h1>
 			<form onSubmit={submitHandler} className='box w-72 sm:w-80'>
 				<Input

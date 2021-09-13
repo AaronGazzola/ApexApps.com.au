@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Button from '../../../components/Button';
 import Input from '../../../components/Input';
+import Meta from '../../../components/Meta';
 import SVG from '../../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { resetPassword } from '../../../redux/users/users.slice';
@@ -57,6 +58,7 @@ const index = () => {
 
 	return (
 		<>
+			<Meta title='Reset password | Apex Apps' />
 			<h1 className='title'>Reset Password</h1>
 			<form onSubmit={submitHandler} className='box w-72 sm:w-80'>
 				<Input
