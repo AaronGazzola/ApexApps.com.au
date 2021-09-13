@@ -161,7 +161,7 @@ const useHtmlTemplate = ({
     <tr class="row__row">
       <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #474545; font-size: 14px; margin: 0;"> This email was sent by Apex Apps, ABN: 81700757157. </p>
       <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #474545; font-size: 14px; margin: 0;">
-      Make sure you add <span class="clear-footer-link" style="color: #474545; text-decoration: none;">aaron@apexapps.dev</span> to your address book and safe list. </p>
+      Make sure you add <span class="clear-footer-link" style="color: #474545; text-decoration: none;">aaron@apexapps.com.au</span> to your address book and safe list. </p>
       <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #474545; font-size: 14px; margin: 0;">${reason}
         </p>
       <p class="footer-text footer-center text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; color: #474545; font-size: 14px; padding: 0; margin: 0; text-align: center;">

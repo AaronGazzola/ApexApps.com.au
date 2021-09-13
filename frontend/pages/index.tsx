@@ -313,8 +313,8 @@ export default function Home() {
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2 '>Let's chat!</h2>
 					<div className='box w-full'>
-						<p className='box-text sm:mt-2'>
-							Book a call or send an email via the{' '}
+						<p className='box-text'>
+							Book a call or send an email at the{' '}
 							<Link href='/contact'>
 								<a className='text-green font-semibold italic'>contact</a>
 							</Link>{' '}
@@ -329,18 +329,19 @@ export default function Home() {
 					<Discuss animate={animateDiscuss} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-4 '>
+			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-6 '>
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2'>Project strategy</h2>
-					<div className='box w-full sm:mt-2'>
+					<div className='box w-full'>
 						<p className='box-text'>
-							Development is planned in distinct milestones, with details and
+							Development is divided into separate milestones, with details and
 							progress tracked in your{' '}
 							<Link href='/tour'>
 								<a className='text-green font-semibold italic'>
 									project dashboard
 								</a>
 							</Link>
+							.
 						</p>
 					</div>
 				</div>
@@ -351,10 +352,10 @@ export default function Home() {
 					<Design animate={animateDesign} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-4 '>
+			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-6'>
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2'>Dedicated development</h2>
-					<div className='box w-full sm:mt-2'>
+					<div className='box w-full'>
 						<p className='box-text'>
 							Apex Apps develops one app at a time. As my one and only client,
 							your app will have my undivided attention.
@@ -368,10 +369,10 @@ export default function Home() {
 					<Develop animate={animateDevelop} />
 				</div>
 			</div>
-			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-4 '>
+			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-6 '>
 				<div className='flex flex-col w-full sm:w-3/4 sm:m-0 '>
 					<h2 className='title-sm mt-2 mb-2'>Hello, world!</h2>
-					<div className='box w-full sm:mt-2'>
+					<div className='box w-full'>
 						<p className='box-text'>
 							You will have online access to your app at key stages of
 							development, allowing for testing before deployment.

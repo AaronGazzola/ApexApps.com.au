@@ -1,7 +1,6 @@
 import { RootState } from './../store';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Project, ProjectsResponse, ProjectsState } from './projects.interface';
-import moment from 'moment';
+import { ProjectsResponse, ProjectsState } from './projects.interface';
 import axios from 'axios';
 
 const config = {
@@ -19,7 +18,11 @@ export const getProjects = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.get(
-				`http://localhost:5000/projects/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -46,7 +49,11 @@ export const setProject = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.post(
-				`http://localhost:5000/projects/set-active`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/set-active`,
 				{ id },
 				{
 					headers: {
@@ -75,7 +82,11 @@ export const addProject = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.post(
-				`http://localhost:5000/projects/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/`,
 				{ title },
 				{
 					headers: {
@@ -107,7 +118,11 @@ export const editProject = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.put(
-				`http://localhost:5000/projects/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/`,
 				{ title, description },
 				{
 					headers: {
@@ -136,7 +151,11 @@ export const deleteProject = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.delete(
-				`http://localhost:5000/projects/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/`,
 				{
 					headers: {
 						...config.headers,
@@ -167,7 +186,11 @@ export const uploadContract = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.post(
-				`http://localhost:5000/projects/contract`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/contract`,
 				formData,
 				{
 					headers: {
@@ -213,7 +236,11 @@ export const editEstimate = createAsyncThunk(
 
 		try {
 			const { data }: ProjectsResponse = await axios.put(
-				`http://localhost:5000/projects/estimate`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/projects/estimate`,
 				{
 					startFrom,
 					startTo,

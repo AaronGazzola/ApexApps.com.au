@@ -22,7 +22,11 @@ export const getMilestones = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.get(
-				`http://localhost:5000/milestones/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -49,7 +53,11 @@ export const addMilestone = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.post(
-				`http://localhost:5000/milestones/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/`,
 				{ index },
 				{
 					headers: {
@@ -80,7 +88,11 @@ export const addFeature = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.post(
-				`http://localhost:5000/milestones/feature`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/feature`,
 				{ index, milestoneId },
 				{
 					headers: {
@@ -111,7 +123,11 @@ export const addStep = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.post(
-				`http://localhost:5000/milestones/step`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/step`,
 				{ index, featureId },
 				{
 					headers: {
@@ -139,7 +155,11 @@ export const editMilestone = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.put(
-				`http://localhost:5000/milestones/`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/`,
 				milestone,
 				{
 					headers: {
@@ -167,7 +187,11 @@ export const deleteMilestone = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.delete(
-				`http://localhost:5000/milestones/${milestoneId}`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/${milestoneId}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -194,7 +218,11 @@ export const deleteFeature = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.delete(
-				`http://localhost:5000/milestones/feature/${featureId}`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/feature/${featureId}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -221,7 +249,11 @@ export const deleteStep = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.delete(
-				`http://localhost:5000/milestones/step/${stepId}`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/step/${stepId}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -265,7 +297,11 @@ export const addUpdate = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.post(
-				`http://localhost:5000/milestones/update`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/update`,
 				{ id, date, notes, buttonLink, buttonLabel, publish },
 				{
 					headers: {
@@ -311,7 +347,11 @@ export const editUpdate = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.put(
-				`http://localhost:5000/milestones/update`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/update`,
 				{ id, date, notes, buttonLink, buttonLabel, publish },
 				{
 					headers: {
@@ -339,7 +379,11 @@ export const deleteUpdate = createAsyncThunk(
 
 		try {
 			const { data }: MilestonesResponse = await axios.delete(
-				`http://localhost:5000/milestones/update/${updateId}`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/milestones/update/${updateId}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`

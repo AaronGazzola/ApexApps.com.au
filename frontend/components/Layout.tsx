@@ -80,7 +80,6 @@ const Layout = (props: LayoutProps) => {
 		if (isAuth && !onMount) {
 			if (user && !user?.isAdmin && !user.client)
 				dispatch(setClient(user.clientName));
-
 			if (user?.isAdmin) dispatch(getUsers());
 		} else if (!isAuth && !onMount) {
 			if (onAuthRoute()) {

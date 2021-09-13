@@ -125,7 +125,7 @@ export class UsersService {
         actionLink,
         user,
         baseUrl,
-        reason: `You have recieved this email because a request was made to update the email address associated with your account at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+        reason: `You have recieved this email because a request was made to update the email address associated with your account at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
         buttonText: 'Update Email',
       });
     }
@@ -194,7 +194,7 @@ export class UsersService {
       actionLink,
       user,
       baseUrl,
-      reason: `You have recieved this email because your email address was used to create an account AuthGuard <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+      reason: `You have recieved this email because your email address was used to create an account AuthGuard <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
       buttonText: 'Verify Email',
     });
 
@@ -331,7 +331,7 @@ export class UsersService {
       actionLink,
       user,
       baseUrl,
-      reason: `You have recieved this email because your email address was used to create an account AuthGuard <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+      reason: `You have recieved this email because your email address was used to create an account AuthGuard <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
       buttonText: 'Reset password',
     });
 
@@ -736,7 +736,7 @@ export class UsersService {
       baseUrl,
       toEmail: booking.contactEmail,
       name: booking.name,
-      reason: `You have recieved this email to confirm a call booking made at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.dev</span>, this is not a promotional email.`,
+      reason: `You have recieved this email to confirm a call booking made at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
       projectTitle: booking.projectTitle,
       projectDescription: booking.projectDescription,
       contactMethod: booking.contactMethod,

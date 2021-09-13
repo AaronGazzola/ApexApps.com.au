@@ -22,7 +22,11 @@ export const login = createAsyncThunk(
 	async (userData: LoginData, { rejectWithValue }) => {
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/auth/login',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/auth/login`,
 				userData,
 				config
 			);
@@ -42,7 +46,11 @@ export const signup = createAsyncThunk(
 	async (userData: SignupData, { rejectWithValue }) => {
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/auth/signup',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/auth/signup`,
 				userData,
 				config
 			);
@@ -74,7 +82,11 @@ export const getUser = createAsyncThunk(
 		if (!token) return;
 		try {
 			const { data }: UserResponse = await axios.get(
-				'http://localhost:5000/auth/me',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/auth/me`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -101,7 +113,11 @@ export const updateUser = createAsyncThunk(
 
 		try {
 			const { data }: UserResponse = await axios.put(
-				'http://localhost:5000/users/',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/`,
 				formData,
 				{
 					headers: {
@@ -129,7 +145,11 @@ export const cancelEmailUpdate = createAsyncThunk(
 
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/cancel-email-update',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/cancel-email-update`,
 				_,
 				{
 					headers: {
@@ -157,7 +177,11 @@ export const addUser = createAsyncThunk(
 
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/`,
 				{ name },
 				{
 					headers: {
@@ -185,7 +209,11 @@ export const updateClient = createAsyncThunk(
 
 		try {
 			const { data }: UserResponse = await axios.put(
-				'http://localhost:5000/users/client',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/client`,
 				{ clientName: name },
 				{
 					headers: {
@@ -213,7 +241,11 @@ export const getUsers = createAsyncThunk(
 
 		try {
 			const { data }: UserResponse = await axios.get(
-				'http://localhost:5000/users/',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -237,7 +269,11 @@ export const sendVerifyUser = createAsyncThunk(
 		try {
 			const { data }: { data: { email: string; success: boolean } } =
 				await axios.post(
-					'http://localhost:5000/users/send-verify-user',
+					`${
+						process.env.NODE_ENV === 'production'
+							? process.env.BASE_URL
+							: 'http://localhost:5000'
+					}/users/send-verify-user`,
 					{ email },
 					config
 				);
@@ -258,7 +294,11 @@ export const findUserById = createAsyncThunk(
 		try {
 			const { data }: { data: { success: boolean; foundUser?: User } } =
 				await axios.post(
-					'http://localhost:5000/users/find-by-id',
+					`${
+						process.env.NODE_ENV === 'production'
+							? process.env.BASE_URL
+							: 'http://localhost:5000'
+					}/users/find-by-id`,
 					{ id },
 					config
 				);
@@ -278,7 +318,11 @@ export const verifyUser = createAsyncThunk(
 	async (token: string, { rejectWithValue }) => {
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/verify-user',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/verify-user`,
 				{ token },
 				config
 			);
@@ -298,7 +342,11 @@ export const verifyEmail = createAsyncThunk(
 	async (token: string, { rejectWithValue }) => {
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/verify-email',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/verify-email`,
 				{ token },
 				config
 			);
@@ -319,7 +367,11 @@ export const forgotPassword = createAsyncThunk(
 		try {
 			const { data }: { data: { email: string; success: boolean } } =
 				await axios.post(
-					'http://localhost:5000/users/forgot-password',
+					`${
+						process.env.NODE_ENV === 'production'
+							? process.env.BASE_URL
+							: 'http://localhost:5000'
+					}/users/forgot-password`,
 					{ email },
 					config
 				);
@@ -342,7 +394,11 @@ export const resetPassword = createAsyncThunk(
 	) => {
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/reset-password',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/reset-password`,
 				{ token, password },
 				config
 			);
@@ -365,7 +421,11 @@ export const setClient = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/set-client',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/set-client`,
 				{ clientName },
 				{
 					headers: {
@@ -393,7 +453,11 @@ export const addProposal = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/proposals',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals`,
 				proposal,
 				{
 					headers: {
@@ -424,7 +488,11 @@ export const editProposal = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.put(
-				'http://localhost:5000/users/proposals',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals`,
 				{ proposal, proposalId },
 				{
 					headers: {
@@ -452,7 +520,11 @@ export const setProposal = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.post(
-				'http://localhost:5000/users/proposals/set',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals/set`,
 				{ proposalId },
 				{
 					headers: {
@@ -480,7 +552,11 @@ export const getProposals = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.get(
-				'http://localhost:5000/users/proposals',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -503,7 +579,11 @@ export const getProposalById = createAsyncThunk(
 	async (proposalId: string, { rejectWithValue }) => {
 		try {
 			const { data }: UserResponse = await axios.get(
-				`http://localhost:5000/users/proposals/${proposalId}`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals/${proposalId}`,
 				config
 			);
 			return data;
@@ -525,7 +605,11 @@ export const getClientProposal = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.get(
-				'http://localhost:5000/users/proposals/client',
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals/client`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -551,7 +635,11 @@ export const deleteProposal = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.delete(
-				`http://localhost:5000/users/proposals/${proposalId}`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/proposals/${proposalId}`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -587,7 +675,11 @@ export const sendEmail = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.post(
-				`http://localhost:5000/users/send-email`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/send-email`,
 				formData,
 				{
 					headers: {
@@ -627,7 +719,11 @@ export const bookCall = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.post(
-				`http://localhost:5000/users/book-call`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/book-call`,
 				formData,
 				{
 					headers: {
@@ -654,7 +750,11 @@ export const getBookings = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.get(
-				`http://localhost:5000/users/bookings`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/bookings`,
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`
@@ -680,7 +780,11 @@ export const confirmBooking = createAsyncThunk(
 		} = getState() as RootState;
 		try {
 			const { data }: UserResponse = await axios.post(
-				`http://localhost:5000/users/bookings/confirm`,
+				`${
+					process.env.NODE_ENV === 'production'
+						? process.env.BASE_URL
+						: 'http://localhost:5000'
+				}/users/bookings/confirm`,
 				{ bookingId },
 				{
 					headers: {
