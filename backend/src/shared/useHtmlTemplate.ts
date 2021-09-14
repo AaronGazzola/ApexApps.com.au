@@ -113,7 +113,8 @@ const useHtmlTemplate = ({
                             <div class="row">
                               <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
                                 <tr class="row__row"> <a class="logo-link a" large="12" href="${baseUrl}" style="width: min-content; color: #336699; text-decoration: none;"><span class="a__text" style="color: #336699; text-decoration: none;">
-              <img class="logo img__block" src="http://localhost:3000/assets/images/logo_text.png" alt="" border="0" style="display: block; max-width: 100%; white-space: pre; text-align: center; margin-left: 15px; font-size: 30px; color: #336699;"/>
+              <img class="logo img__block" src="${baseUrl}/assets/images/logo_text.png" alt="
+Apex Apps" border="0" style="display: block; max-width: 100%; white-space: pre; text-align: center; margin-left: 15px; font-size: 30px; color: #336699;"/>
             </span></a> </tr>
                               </table>
                             </div>
@@ -242,7 +243,7 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
     case 'UPDATE_EMAIL':
       return [
         user.newEmail,
-        `Update email request`,
+        `Email Update request`,
         `${header}
         ${heading(`Hi ${user.userName},`)}
         ${paragraph(

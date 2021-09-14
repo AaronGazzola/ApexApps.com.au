@@ -123,7 +123,7 @@ export class UsersService {
       await sendEmail({
         type: 'UPDATE_EMAIL',
         actionLink,
-        user,
+        user: currentUser,
         baseUrl,
         reason: `You have recieved this email because a request was made to update the email address associated with your account at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
         buttonText: 'Update Email',
