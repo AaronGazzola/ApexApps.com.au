@@ -702,29 +702,25 @@ const index = () => {
 					</Collapse>
 				</div>
 			</form>
-			<div className='flex justify-center mt-4'>
+
+			<a
+				href='mailto: aaron@apexapps.com.au'
+				rel='noopener noreferrer'
+				className='flex justify-center mt-4'
+			>
 				<SVG name='mail' classes='fill-current text-green mr-2' />
-				<a
-					href='mailto: aaron@apexapps.com.au'
-					rel='noopener noreferrer'
-					className=''
-				>
-					<p className='font-medium italic text-green'>Aaron@ApexApps.com.au</p>
-				</a>
-			</div>
-			<div className='flex justify-center mt-2'>
+				<p className='font-medium italic text-green'>Aaron@ApexApps.com.au</p>
+			</a>
+
+			<a
+				rel='noopener noreferrer'
+				target='_blank'
+				href='https://github.com/AaronGazzola'
+				className='flex justify-center mt-2'
+			>
 				<SVG name='github' classes='fill-current text-green mr-2' />
-				<a
-					rel='noopener noreferrer'
-					target='_blank'
-					href='https://github.com/AaronGazzola'
-					className=''
-				>
-					<p className='font-medium italic text-green'>
-						github.com/AaronGazzola
-					</p>
-				</a>
-			</div>
+				<p className='font-medium italic text-green'>github.com/AaronGazzola</p>
+			</a>
 		</>
 	);
 };
