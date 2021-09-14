@@ -817,6 +817,7 @@ const usersSlice = createSlice({
 			state.isAuth = false;
 			state.noUser = false;
 			state.user = undefined;
+			state.client = undefined;
 			localStorage.removeItem('userData');
 			state.onTour = false;
 			state.token = '';
@@ -843,6 +844,7 @@ const usersSlice = createSlice({
 		userTour(state) {
 			state.isAuth = true;
 			state.onTour = true;
+			state.success = 'Welcome!';
 			state.client = {
 				userName: 'Jane Doe',
 				clientName: 'tourClient',

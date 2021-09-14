@@ -345,7 +345,7 @@ const index = () => {
 														<p
 															className={`break-word w-full ${
 																!update.publish
-																	? 'italic text-center text-sm'
+																	? 'italic text-center text-sm font-medium'
 																	: ''
 															}`}
 														>

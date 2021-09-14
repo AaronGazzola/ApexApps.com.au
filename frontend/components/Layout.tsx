@@ -92,17 +92,13 @@ const Layout = (props: LayoutProps) => {
 
 	// on navigate, if no stored user,
 	useEffect(() => {
-		if ((noUser || (user && (!isAuth || !user.isVerified))) && onAuthRoute()) {
-			logout();
-			router.push('/login');
-		}
 		if (onTour && !onAuthRoute()) logout();
 	}, [router.pathname, noUser]);
 
 	// when users are updated, get user and users
 	useEffect(() => {
 		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
-		if (usersSuccess) dispatch(getUser());
+		if (usersSuccess && !onTour) dispatch(getUser());
 		if (usersSuccess?.startsWith('Welcome')) router.push('/project');
 	}, [usersSuccess]);
 
