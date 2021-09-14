@@ -42,13 +42,7 @@ const index = () => {
 		project,
 		projects
 	} = useAppSelector(state => state.projects);
-	const loading =
-		usersLoading ||
-		projectsLoading ||
-		!user ||
-		!client ||
-		!project ||
-		!projects?.length;
+	const loading = usersLoading || projectsLoading || !user || !client;
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [modalType, setModalType] = useState('');
@@ -247,7 +241,7 @@ const index = () => {
 				<div className='box w-72 sm:w-96'>
 					<h2 className='title-sm'>Client Signup Link</h2>
 					<p className='mt-2 text-gray-dark font-medium text-center'>
-						ApexApps.dev/signup/
+						ApexApps.com.au/signup/
 						<br />
 						{client?._id}
 					</p>
