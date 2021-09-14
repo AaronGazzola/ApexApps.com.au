@@ -436,6 +436,7 @@ const index = () => {
 							id='projectDescription'
 							onChange={changeHandler}
 							containerClasses='mb-2'
+							validation={false}
 						/>
 						<div className='flex justify-end w-full'>
 							<Button
@@ -608,9 +609,7 @@ const index = () => {
 							style={{ width: '100%' }}
 						>
 							<p
-								className={`text-sm text-center w-full mb-4 italic ${
-									bookingIsValid ? 'text-gray-dark' : 'text-red font-medium'
-								}`}
+								className={`text-sm text-center w-full mb-4 italictext-gray-dark`}
 							>
 								Select a time and date for our call:
 							</p>
@@ -678,7 +677,14 @@ const index = () => {
 								})}
 							</div>
 						</Collapse>
-						<div className='flex justify-center w-full mt-6'>
+						<div className='flex flex-col items-center w-full mt-6'>
+							{!bookingIsValid && contactMethod.value !== 'email' && (
+								<p
+									className={`text-sm text-center w-full mb-2 italic text-red font-medium`}
+								>
+									Select a time and date for our call
+								</p>
+							)}
 							<Button
 								variant='contained'
 								color='green'
