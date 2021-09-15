@@ -162,7 +162,7 @@ export default function Home() {
 				</div>
 			</div>
 			<Button
-				label='View full portfolio'
+				label='View portfolio'
 				type='link'
 				path='/portfolio'
 				variant='simple'
