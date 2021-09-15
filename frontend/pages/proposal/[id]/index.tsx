@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getProposalById } from '../../../redux/users/users.slice';
 
-const index = () => {
+const Index = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ const index = () => {
 
 	useEffect(() => {
 		if (proposalId) dispatch(getProposalById(proposalId));
-	}, [proposalId]);
+	}, [proposalId, dispatch]);
 
 	return (
 		<>
@@ -32,7 +32,7 @@ const index = () => {
 						style={{ height: 112 }}
 					>
 						<p className='text-sm font-medium z-30'>
-							Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+							Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 						</p>
 						<p className='text-sm font-medium z-30'>
 							I create elegant and powerful web applications - accessable on any
@@ -51,7 +51,7 @@ const index = () => {
 						)}
 						<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
 							<p className='text-sm font-medium opacity-0'>
-								Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+								Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 							</p>
 							<p className='text-sm font-medium opacity-0'>
 								I create elegant and powerful web applications - accessable on
@@ -186,4 +186,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

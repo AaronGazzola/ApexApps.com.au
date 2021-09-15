@@ -5,7 +5,7 @@ import { milestonesTour } from '../../redux/milestones/milestones.slice';
 import { projectsTour } from '../../redux/projects/projects.slice';
 import { userTour } from '../../redux/users/users.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	useEffect(() => {
@@ -13,8 +13,8 @@ const index = () => {
 		dispatch(milestonesTour());
 		dispatch(projectsTour());
 		router.push('/project');
-	}, []);
+	}, [dispatch, router]);
 	return <></>;
 };
 
-export default index;
+export default Index;

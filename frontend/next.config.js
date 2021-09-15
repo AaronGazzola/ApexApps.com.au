@@ -1,3 +1,6 @@
 module.exports = {
-	reactStrictMode: false
+	reactStrictMode: false,
+	env: {
+		BASE_URL: 'https://www.apexapps.com.au'
+	}
 };

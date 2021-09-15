@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { confirmBooking } from '../../../redux/users/users.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { success, error, alert } = useAppSelector(state => state.users);
 	const router = useRouter();
@@ -12,11 +12,11 @@ const index = () => {
 
 	useEffect(() => {
 		if (idQuery) dispatch(confirmBooking(idQuery));
-	}, [idQuery]);
+	}, [idQuery, dispatch]);
 
 	useEffect(() => {
 		if (success === 'Booking confirmed') router.push('/project');
-	}, [success]);
+	}, [success, router]);
 
 	return (
 		<>
@@ -33,4 +33,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 interface ButtonProps {
-	label?: string;
+	label?: string | React.ReactNode;
 	color: string;
 	variant: 'simple' | 'contained';
 	type?: 'submit' | 'button' | 'reset' | 'link' | 'file';

@@ -10,7 +10,7 @@ import {
 	clearProjects,
 	projectsLogout
 } from '../redux/projects/projects.slice';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import {
@@ -33,11 +33,11 @@ const UserFeedback = () => {
 	const success = users.success || projects.success || milestones.success;
 	const alert = users.alert || projects.alert;
 
-	const clearState = () => {
+	const clearState = useCallback(() => {
 		dispatch(clearUsers());
 		dispatch(clearProjects());
 		dispatch(clearMilestones());
-	};
+	}, [dispatch]);
 	const logout = () => {
 		dispatch(usersLogout());
 		dispatch(milestonesLogout());
@@ -60,7 +60,7 @@ const UserFeedback = () => {
 			// Unbind the event listener on clean up
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [success]);
+	}, [success, clearState]);
 
 	// clear users after timeout
 	useEffect(() => {
@@ -73,7 +73,7 @@ const UserFeedback = () => {
 		return () => {
 			clearTimeout(timer);
 		};
-	}, [success]);
+	}, [success, alert, clearState, error]);
 
 	return (
 		<>

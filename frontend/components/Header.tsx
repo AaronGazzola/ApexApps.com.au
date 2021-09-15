@@ -47,7 +47,7 @@ const Header = (props: HeaderProps) => {
 				</div>
 			</header>
 			{onTour && (
-				<Link href='/contact'>
+				<Link href='/contact' passHref>
 					<div
 						className='absolute left-0 w-full bg-yellow-100 flex justify-center items-center pl-9 cursor-pointer'
 						style={{ top: headerHeight, height: tourBannerHeight }}

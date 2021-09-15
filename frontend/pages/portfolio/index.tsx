@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import Meta from '../../components/Meta';
 import SVG from '../../components/SVG';
 
-const index = () => {
+const Index = () => {
 	const [playGif, setPlayGif] = useState(0);
 	return (
 		<>
@@ -82,6 +82,7 @@ const index = () => {
 					<div className='rounded-2xl overflow-hidden w-full border'>
 						{playGif === 1 ? (
 							<Image
+								alt='Animated gif of rainbowofemotions.app web app'
 								src='/assets/gifs/rainbowofemotions.app.gif'
 								layout='responsive'
 								width={1598}
@@ -89,6 +90,7 @@ const index = () => {
 							/>
 						) : (
 							<Image
+								alt='Screenshot of rainbowofemotions.app web app'
 								src='/assets/images/rainbow-screenshot.jpg'
 								layout='responsive'
 								width={1598}
@@ -170,6 +172,7 @@ const index = () => {
 					<div className='rounded-2xl overflow-hidden w-full border'>
 						{playGif === 2 ? (
 							<Image
+								alt='Animated gif of origami.cool web app'
 								src='/assets/gifs/origami.cool.gif'
 								layout='responsive'
 								width={1598}
@@ -177,6 +180,7 @@ const index = () => {
 							/>
 						) : (
 							<Image
+								alt='Screenshot of origami.cool web app'
 								src='/assets/images/origami-screenshot.jpg'
 								layout='responsive'
 								width={1598}
@@ -190,4 +194,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

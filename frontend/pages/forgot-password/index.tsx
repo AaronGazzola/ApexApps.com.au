@@ -6,7 +6,7 @@ import { forgotPassword } from '../../redux/users/users.slice';
 import SVG from '../../components/SVG';
 import Meta from '../../components/Meta';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { loading } = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
@@ -116,4 +116,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

@@ -22,29 +22,28 @@ export default function Home() {
 	const deployRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
+		const isInWindow = (
+			ref: React.RefObject<HTMLDivElement>,
+			spaceAround = 0
+		) => {
+			if (!ref?.current?.offsetTop || !ref?.current?.offsetHeight) return;
+			return (
+				ref?.current?.offsetTop + 150 > window.scrollY - spaceAround &&
+				ref?.current?.offsetTop + ref?.current?.offsetHeight + 150 <
+					window.scrollY + window.innerHeight + spaceAround
+			);
+		};
+
+		const scrollHandler = () => {
+			const spaceAround = breakpoint === 'xs' ? 150 : 100;
+			setAnimateDiscuss(!!isInWindow(discussRef, spaceAround));
+			setAnimateDesign(!!isInWindow(designRef, spaceAround));
+			setAnimateDevelop(!!isInWindow(developRef, spaceAround));
+			setAnimateDeploy(!!isInWindow(deployRef, spaceAround));
+		};
 		window.addEventListener('scroll', scrollHandler);
 		return () => window.removeEventListener('scroll', scrollHandler);
-	}, []);
-
-	const isInWindow = (
-		ref: React.RefObject<HTMLDivElement>,
-		spaceAround = 0
-	) => {
-		if (!ref?.current?.offsetTop || !ref?.current?.offsetHeight) return;
-		return (
-			ref?.current?.offsetTop + 150 > window.scrollY - spaceAround &&
-			ref?.current?.offsetTop + ref?.current?.offsetHeight + 150 <
-				window.scrollY + window.innerHeight + spaceAround
-		);
-	};
-
-	const scrollHandler = () => {
-		const spaceAround = breakpoint === 'xs' ? 150 : 100;
-		setAnimateDiscuss(!!isInWindow(discussRef, spaceAround));
-		setAnimateDesign(!!isInWindow(designRef, spaceAround));
-		setAnimateDevelop(!!isInWindow(developRef, spaceAround));
-		setAnimateDeploy(!!isInWindow(deployRef, spaceAround));
-	};
+	}, [breakpoint]);
 
 	return (
 		<>
@@ -59,7 +58,7 @@ export default function Home() {
 						style={{ height: 112 }}
 					>
 						<p className='text-sm font-medium z-30'>
-							Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+							Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 						</p>
 						<p className='text-sm font-medium z-30'>
 							I create elegant and powerful web applications - accessable on any
@@ -78,7 +77,7 @@ export default function Home() {
 						)}
 						<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
 							<p className='text-sm font-medium opacity-0'>
-								Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+								Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 							</p>
 							<p className='text-sm font-medium opacity-0'>
 								I create elegant and powerful web applications - accessable on
@@ -95,10 +94,10 @@ export default function Home() {
 					}}
 				>
 					<Image
+						alt='Profile image of Aaron Gazzola from Apex Apps'
 						src='/assets/images/profile-dark.jpg'
 						width={breakpoint === 'xs' ? 160 : 180}
 						height={breakpoint === 'xs' ? 160 : 180}
-						alt='Aaron Gazzola'
 					/>
 				</div>
 			</div>
@@ -117,6 +116,7 @@ export default function Home() {
 					<div className='rounded-2xl shadow-lg overflow-hidden w-full border'>
 						{playGif === 1 ? (
 							<Image
+								alt='animated gif of origami.cool web app'
 								src='/assets/gifs/origami.cool.gif'
 								layout='responsive'
 								width={1598}
@@ -124,6 +124,7 @@ export default function Home() {
 							/>
 						) : (
 							<Image
+								alt='screenshot of origami.cool web app'
 								src='/assets/images/origami-screenshot.jpg'
 								layout='responsive'
 								width={1598}
@@ -145,6 +146,7 @@ export default function Home() {
 					<div className='rounded-2xl shadow-lg overflow-hidden w-full border'>
 						{playGif === 2 ? (
 							<Image
+								alt='animated gif of rainbowofemotions.app web app'
 								src='/assets/gifs/rainbowofemotions.app.gif'
 								layout='responsive'
 								width={1598}
@@ -152,6 +154,7 @@ export default function Home() {
 							/>
 						) : (
 							<Image
+								alt='screenshot of rainbowofemotions.app web app'
 								src='/assets/images/rainbow-screenshot.jpg'
 								layout='responsive'
 								width={1598}
@@ -211,6 +214,7 @@ export default function Home() {
 					<div className='rounded-2xl overflow-hidden w-full border'>
 						{playGif === 3 ? (
 							<Image
+								alt='animated gif of Apex Apps project dashboard'
 								src='/assets/gifs/apexapps.com.au.gif'
 								layout='responsive'
 								width={1598}
@@ -218,6 +222,7 @@ export default function Home() {
 							/>
 						) : (
 							<Image
+								alt='scrennshot of Apex Apps project dashboard'
 								src='/assets/images/apex-screenshot.jpg'
 								layout='responsive'
 								width={1598}
@@ -293,6 +298,7 @@ export default function Home() {
 				<p className='font-medium text-sm text-blue-darkest'>5 Star Rated</p>
 				<div className='w-16 mt-1'>
 					<Image
+						alt='upwork.com logo'
 						src='/assets/svg/upwork-logo.svg'
 						width={512}
 						height={153}
@@ -301,7 +307,7 @@ export default function Home() {
 				</div>
 			</div>
 			<Button
-				label="Let's chat!"
+				label={<>Let&apos;s chat!</>}
 				type='link'
 				path='/contact'
 				variant='contained'
@@ -311,7 +317,7 @@ export default function Home() {
 			/>
 			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-10 '>
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
-					<h2 className='title-sm mb-2 '>Let's chat!</h2>
+					<h2 className='title-sm mb-2 '>Let&apos;s chat!</h2>
 					<div className='box w-full'>
 						<p className='box-text'>
 							Book a call or send an email at the{' '}
@@ -387,7 +393,7 @@ export default function Home() {
 				</div>
 			</div>
 			<Button
-				label="Let's chat!"
+				label={<>Let&apos;s chat!</>}
 				type='link'
 				path='/contact'
 				variant='contained'

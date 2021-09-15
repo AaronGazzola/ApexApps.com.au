@@ -32,7 +32,7 @@ const Logo = (props: LogoProps) => {
 	}
 
 	return (
-		<Link href={isAuth ? '/project' : '/'}>
+		<Link href={isAuth ? '/project' : '/'} passHref>
 			<div className='my-0.5 flex flex-col content-center cursor-pointer'>
 				<Image
 					src='/assets/svg/logo_50.svg'

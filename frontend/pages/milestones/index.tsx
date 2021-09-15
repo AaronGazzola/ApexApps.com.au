@@ -9,7 +9,7 @@ import {
 	getMilestones
 } from '../../redux/milestones/milestones.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { milestones, loading: milestonesLoading } = useAppSelector(
 		state => state.milestones
@@ -25,7 +25,7 @@ const index = () => {
 
 	useEffect(() => {
 		if (isAuth && !onTour) dispatch(getMilestones());
-	}, [isAuth]);
+	}, [isAuth, onTour, dispatch]);
 
 	return (
 		<>
@@ -101,4 +101,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

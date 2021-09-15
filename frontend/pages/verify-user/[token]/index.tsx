@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { verifyUser } from '../../../redux/users/users.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { success, error, alert } = useAppSelector(state => state.users);
 	const router = useRouter();
@@ -12,11 +12,11 @@ const index = () => {
 
 	useEffect(() => {
 		if (tokenQuery) dispatch(verifyUser(tokenQuery));
-	}, [tokenQuery]);
+	}, [tokenQuery, dispatch]);
 
 	useEffect(() => {
 		if (success === 'Account verified') router.push('/project');
-	}, [success]);
+	}, [success, router]);
 
 	return (
 		<>
@@ -33,4 +33,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

@@ -7,7 +7,7 @@ import SVG from '../../../components/SVG';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { resetPassword } from '../../../redux/users/users.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { success, error, alert, loading } = useAppSelector(
 		state => state.users
@@ -54,7 +54,7 @@ const index = () => {
 
 	useEffect(() => {
 		if (success === 'Password reset') router.push('/project');
-	}, [success]);
+	}, [success, router]);
 
 	return (
 		<>
@@ -103,4 +103,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

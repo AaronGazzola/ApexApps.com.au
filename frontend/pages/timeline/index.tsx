@@ -15,7 +15,7 @@ import UpdateModal from '../../components/UpdateModal';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Collapse } from '@material-ui/core';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { milestones, loading, openUpdate } = useAppSelector(
 		state => state.milestones
@@ -68,7 +68,7 @@ const index = () => {
 
 	useEffect(() => {
 		if (isAuth && !onTour) dispatch(getMilestones());
-	}, [isAuth]);
+	}, [isAuth, dispatch, onTour]);
 
 	let sortedMilestones: Milestone[] = [];
 	if (milestones?.length) {
@@ -428,4 +428,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

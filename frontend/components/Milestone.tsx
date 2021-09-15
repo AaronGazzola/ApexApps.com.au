@@ -197,18 +197,18 @@ const Milestone = (props: MilestoneProps) => {
 			x => x === `title${feature?._id}`
 		);
 		if (!foundFeature)
-			setState({
-				...state,
+			setState(prev => ({
+				...prev,
 				[`title${feature?._id}`]: feature?.title,
 				[`featureState${feature?._id}`]: feature?.state
-			});
+			}));
 		const foundStep = Object.keys(state).find(x => x === `step${step?._id}`);
 		if (!foundStep)
-			setState({
-				...state,
+			setState(prev => ({
+				...prev,
 				[`step${step?._id}`]: step?.content
-			});
-	}, [feature, step]);
+			}));
+	}, [feature, step, state]);
 
 	if (user?.isAdmin && !userView) {
 		return (

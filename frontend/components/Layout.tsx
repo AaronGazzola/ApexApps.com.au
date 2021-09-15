@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Meta from './Meta';
 import Header from './Header';
 import setScreenDimensions from '../hooks/setScreenDimensions';
@@ -51,13 +51,13 @@ const Layout = (props: LayoutProps) => {
 
 	const tourBannerHeight = 40;
 
-	const logout = () => {
+	const logout = useCallback(() => {
 		dispatch(usersLogout());
 		dispatch(projectsLogout());
 		dispatch(milestonesLogout());
-	};
+	}, [dispatch]);
 
-	const onAuthRoute = () => {
+	const onAuthRoute = useCallback(() => {
 		if (router.pathname.startsWith('/signup')) return false;
 		switch (router.pathname) {
 			case '/':
@@ -73,7 +73,7 @@ const Layout = (props: LayoutProps) => {
 			default:
 				break;
 		}
-	};
+	}, [router]);
 
 	useEffect(() => {
 		if (onMount && !onTour) dispatch(getUser());
@@ -88,24 +88,34 @@ const Layout = (props: LayoutProps) => {
 			}
 		}
 		setOnMount(false);
-	}, [isAuth, noUser]);
+	}, [
+		isAuth,
+		noUser,
+		dispatch,
+		logout,
+		onAuthRoute,
+		onMount,
+		onTour,
+		router,
+		user
+	]);
 
 	// on navigate, if no stored user,
 	useEffect(() => {
 		if (onTour && !onAuthRoute()) logout();
-	}, [router.pathname, noUser]);
+	}, [router.pathname, noUser, logout, onAuthRoute, onTour]);
 
 	// when users are updated, get user and users
 	useEffect(() => {
 		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
 		if (usersSuccess && !onTour) dispatch(getUser());
 		if (usersSuccess?.startsWith('Welcome')) router.push('/project');
-	}, [usersSuccess]);
+	}, [usersSuccess, dispatch, onTour, router, user?.isAdmin]);
 
 	// when client changes, get projects
 	useEffect(() => {
 		if (client && !onTour) dispatch(getProjects());
-	}, [client]);
+	}, [client, dispatch, onTour]);
 
 	// when projects change, if project is not found on projects, set project to first in array
 	useEffect(() => {
@@ -113,7 +123,7 @@ const Layout = (props: LayoutProps) => {
 		if (!projectFound && projects?.length) {
 			dispatch(setProject(projects[0]._id));
 		}
-	}, [projects]);
+	}, [projects, dispatch, project?._id]);
 
 	return (
 		<>

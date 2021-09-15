@@ -14,13 +14,13 @@ import {
 	sendEmail
 } from '../../redux/users/users.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const { user, loading, bookings, alert } = useAppSelector(
 		state => state.users
 	);
 	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
-	const [bookingIsValid, setBookingIsValid] = useState(true);
+
 	const [lastBookingTodayHasPast, setLastBookingTodayHasPast] = useState(false);
 	const [step, setStep] = useState(1);
 	const [formState, setFormState] = useState({
@@ -108,6 +108,7 @@ const index = () => {
 					: phone.value;
 		if (id.includes('mail')) isValid = /^\S+@\S+\.\S+$/.test(value);
 		if (id === 'phone') isValid = value.length >= 5;
+
 		if (id === 'email' && useContactEmail) {
 			setFormState({
 				...formState,
@@ -136,16 +137,42 @@ const index = () => {
 					value
 				},
 				useContactEmail:
-					id === 'contactEmail' ? value === email.value : useContactEmail
+					id === 'contactEmail' || id === 'zoomName'
+						? value === email.value
+						: useContactEmail
 			});
 		}
 	};
 
 	const changeCheckedHandler = (e: React.FormEvent<HTMLInputElement>) => {
-		setFormState({
-			...formState,
-			useContactEmail: e.currentTarget.checked
-		});
+		const checked = e.currentTarget.checked;
+		if (checked) {
+			setFormState(prev => ({
+				...formState,
+				useContactEmail: checked,
+				contactEmail: {
+					...prev.email
+				},
+				zoomName: {
+					...prev.email
+				}
+			}));
+		} else {
+			setFormState(prev => ({
+				...formState,
+				contactEmail: {
+					...prev.contactEmail,
+					isValid: false,
+					value: ''
+				},
+				zoomName: {
+					...prev.zoomName,
+					isValid: false,
+					value: ''
+				},
+				useContactEmail: checked
+			}));
+		}
 	};
 	const touchHandler = (
 		e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -161,7 +188,6 @@ const index = () => {
 	};
 
 	const handleSelectTime = (callTime: string) => {
-		setBookingIsValid(true);
 		setFormState({
 			...formState,
 			callTime
@@ -169,10 +195,6 @@ const index = () => {
 	};
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		if (!formIsValid) {
-			setBookingIsValid(false);
-			return;
-		}
 		const formData = {
 			name: name.value,
 			email: email.value,
@@ -197,38 +219,26 @@ const index = () => {
 
 	useEffect(() => {
 		if (user)
-			setFormState({
-				...formState,
+			setFormState(prev => ({
+				...prev,
 				name: {
-					...name,
+					...prev.name,
 					value: user.userName,
 					isValid: true
 				},
 				email: {
-					...email,
+					...prev.email,
 					value: user.email,
 					isValid: true
 				},
-				contactEmail: contactEmail
-					? { ...email, value: user.email, isValid: true }
-					: contactEmail
-			});
-	}, [user]);
-
-	useEffect(() => {
-		const setEmail =
-			useContactEmail && email.value && email.value !== contactEmail.value;
-		const emailState = {
-			...contactEmail,
-			isValid: setEmail,
-			value: setEmail ? email.value : ''
-		};
-		setFormState({
-			...formState,
-			contactEmail: emailState,
-			zoomName: emailState
-		});
-	}, [useContactEmail]);
+				contactEmail: prev.useContactEmail
+					? { ...prev.email, value: user.email, isValid: true }
+					: prev.contactEmail,
+				zoomName: prev.useContactEmail
+					? { ...prev.email, value: user.email, isValid: true }
+					: prev.zoomName
+			}));
+	}, [user, dispatch]);
 
 	useEffect(() => {
 		// set Melbourne time
@@ -264,7 +274,7 @@ const index = () => {
 
 	useEffect(() => {
 		dispatch(getBookings());
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (alert) setStep(1);
@@ -474,8 +484,7 @@ const index = () => {
 							name.isValid || email.isValid ? 'cursor-pointer' : ''
 						}`}
 						onClick={() => {
-							if (name.isValid && email.isValid && projectDescription.isValid)
-								setStep(3);
+							if (name.isValid && email.isValid) setStep(3);
 						}}
 					></div>
 					<h2
@@ -678,13 +687,6 @@ const index = () => {
 							</div>
 						</Collapse>
 						<div className='flex flex-col items-center w-full mt-6'>
-							{!bookingIsValid && contactMethod.value !== 'email' && (
-								<p
-									className={`text-sm text-center w-full mb-2 italic text-red font-medium`}
-								>
-									Select a time and date for our call
-								</p>
-							)}
 							<Button
 								variant='contained'
 								color='green'
@@ -725,4 +727,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

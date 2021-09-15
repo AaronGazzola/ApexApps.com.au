@@ -27,7 +27,7 @@ import {
 import { useRouter } from 'next/router';
 import { milestonesLogout } from '../../redux/milestones/milestones.slice';
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const {
@@ -394,4 +394,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

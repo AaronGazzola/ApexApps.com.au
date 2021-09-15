@@ -24,7 +24,7 @@ interface Section {
 	buttonLink: string;
 }
 
-const index = () => {
+const Index = () => {
 	const dispatch = useAppDispatch();
 	const {
 		user,
@@ -194,24 +194,24 @@ const index = () => {
 	useEffect(() => {
 		if (user?.isAdmin) dispatch(getProposals());
 		if (user?.client?.proposal && !onTour) {
-			setState({
-				...state,
+			setState(prev => ({
+				...prev,
 				currentClient: true
-			});
+			}));
 		}
-	}, [isAuth]);
+	}, [isAuth, onTour, user?.client?.proposal, user?.isAdmin, dispatch]);
 
 	//if proposal changes, set state to proposal content
 	useEffect(() => {
 		if (proposal)
-			setState({
-				...state,
+			setState(prev => ({
+				...prev,
 				title: proposal.title || '',
 				videoLink: proposal.videoLink || '',
 				sections: proposal.sections || '',
 				currentClient: proposal?._id === user?.client?.proposal?._id
-			});
-	}, [proposal]);
+			}));
+	}, [proposal, user?.client?.proposal]);
 
 	// when change current client
 	// set proposal to client proposal, or new proposal
@@ -225,12 +225,18 @@ const index = () => {
 		} else if (user?.isAdmin && !currentClient) {
 			dispatch(resetProposal());
 		}
-	}, [currentClient]);
+	}, [
+		currentClient,
+		dispatch,
+		proposal?._id,
+		user?.client?.proposal,
+		user?.isAdmin
+	]);
 
 	// if proposal deleted, reset state
 	useEffect(() => {
 		if (usersSuccess === 'Proposal deleted') dispatch(resetProposal());
-	}, [usersSuccess]);
+	}, [usersSuccess, dispatch]);
 
 	return (
 		<>
@@ -431,7 +437,7 @@ const index = () => {
 								style={{ height: 112 }}
 							>
 								<p className='text-sm font-medium z-30'>
-									Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+									Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 								</p>
 								<p className='text-sm font-medium z-30'>
 									I create elegant and powerful web applications - accessable on
@@ -450,7 +456,8 @@ const index = () => {
 								)}
 								<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
 									<p className='text-sm font-medium opacity-0'>
-										Hi, I'm Aaron Gazzola, A Full-Stack Javascript Developer.
+										Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript
+										Developer.
 									</p>
 									<p className='text-sm font-medium opacity-0'>
 										I create elegant and powerful web applications - accessable
@@ -589,4 +596,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

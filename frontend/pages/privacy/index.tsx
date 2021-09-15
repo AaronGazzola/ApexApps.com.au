@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Button from '../../components/Button';
 import Meta from '../../components/Meta';
 
-const index = () => {
+const Index = () => {
 	return (
 		<>
 			<Meta title='Privacy policy | Apex Apps' />
@@ -42,8 +42,9 @@ const index = () => {
 					<li className='mb-2'>
 						<p className='box-text'>
 							<span className='font-medium'>Company</span> (referred to as
-							either "the Company", "We", "Us" or "Our" in this Agreement)
-							refers to Apex Apps, Nilma, Victoria, Australia.
+							either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or
+							&quot;Our&quot; in this Agreement) refers to Apex Apps, Nilma,
+							Victoria, Australia.
 						</p>
 					</li>
 					<li className='mb-2'>
@@ -154,7 +155,7 @@ const index = () => {
 					Usage Data is collected automatically when using the Service.
 				</p>
 				<p className='box-text'>
-					Usage Data may include information such as Your Device's Internet
+					Usage Data may include information such as Your Device&apos;s Internet
 					Protocol address (e.g. IP address), browser type, browser version, the
 					pages of our Service that You visit, the time and date of Your visit,
 					the time spent on those pages, unique device identifiers and other
@@ -210,7 +211,7 @@ const index = () => {
 						<p className='box-text'>
 							<span className='font-medium'>To contact You:</span> To contact
 							You by email, telephone calls, SMS, or other equivalent forms of
-							electronic communication, such as a mobile application's push
+							electronic communication, such as a mobile application&apos;s push
 							notifications regarding updates or informative communications
 							related to the functionalities, products or contracted services,
 							including the security updates, when necessary or reasonable for
@@ -332,13 +333,13 @@ const index = () => {
 				</h3>
 				<p className='box-text'>
 					Your information, including Personal Data, is processed at the
-					Company's operating offices and in any other places where the parties
-					involved in the processing are located. It means that this information
-					may be transferred to — and maintained on — computers located outside
-					of Your state, province, country or other governmental jurisdiction
-					where the data protection laws may differ than those from Your
-					jurisdiction. Your consent to this Privacy Policy followed by Your
-					submission of such information represents Your agreement to that
+					Company&apos;s operating offices and in any other places where the
+					parties involved in the processing are located. It means that this
+					information may be transferred to — and maintained on — computers
+					located outside of Your state, province, country or other governmental
+					jurisdiction where the data protection laws may differ than those from
+					Your jurisdiction. Your consent to this Privacy Policy followed by
+					Your submission of such information represents Your agreement to that
 					transfer. The Company will take all steps reasonably necessary to
 					ensure that Your data is treated securely and in accordance with this
 					Privacy Policy and no transfer of Your Personal Data will take place
@@ -401,7 +402,7 @@ const index = () => {
 					acceptable means to protect Your Personal Data, We cannot guarantee
 					its absolute security.
 				</p>
-				<h3 className='title-sm text-lg font-medium'>Children's Privacy</h3>
+				<h3 className='title-sm text-lg font-medium'>Children&apos; Privacy</h3>
 				<p className='box-text'>
 					Our Service does not address anyone under the age of 13. We do not
 					knowingly collect personally identifiable information from anyone
@@ -411,8 +412,8 @@ const index = () => {
 					under the age of 13 without verification of parental consent, We take
 					steps to remove that information from Our servers. If We need to rely
 					on consent as a legal basis for processing Your information and Your
-					country requires consent from a parent, We may require Your parent's
-					consent before We collect and use that information.
+					country requires consent from a parent, We may require Your
+					parent&apos;s consent before We collect and use that information.
 				</p>
 				<h3 className='title-sm text-lg font-medium'>
 					Links to Other Websites
@@ -420,10 +421,10 @@ const index = () => {
 				<p className='box-text'>
 					Our Service may contain links to other websites that are not operated
 					by Us. If You click on a third party link, You will be directed to
-					that third party's site. We spanly advise You to review the Privacy
-					Policy of every site You visit. We have no control over and assume no
-					responsibility for the content, privacy policies or practices of any
-					third party sites or services.
+					that third party&apos;s site. We spanly advise You to review the
+					Privacy Policy of every site You visit. We have no control over and
+					assume no responsibility for the content, privacy policies or
+					practices of any third party sites or services.
 				</p>
 				<h3 className='title-sm text-lg font-medium'>
 					Changes to this Privacy Policy
@@ -432,10 +433,10 @@ const index = () => {
 					We may update Our Privacy Policy from time to time. We will notify You
 					of any changes by posting the new Privacy Policy on this page. We will
 					let You know via email and/or a prominent notice on Our Service, prior
-					to the change becoming effective and update the "Last updated" date at
-					the top of this Privacy Policy. You are advised to review this Privacy
-					Policy periodically for any changes. Changes to this Privacy Policy
-					are effective when they are posted on this page.
+					to the change becoming effective and update the &quot;Last
+					updated&quot; date at the top of this Privacy Policy. You are advised
+					to review this Privacy Policy periodically for any changes. Changes to
+					this Privacy Policy are effective when they are posted on this page.
 				</p>
 			</div>
 			<div className='text-box min-w-xl'>
@@ -449,4 +450,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

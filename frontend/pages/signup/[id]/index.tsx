@@ -12,7 +12,7 @@ import SVG from '../../../components/SVG';
 import { useRouter } from 'next/router';
 import Meta from '../../../components/Meta';
 
-const index = () => {
+const Index = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const userId = typeof id === 'string' ? id : '';
@@ -110,14 +110,22 @@ const index = () => {
 			dispatch(sendVerifyUser(email.value));
 		// If id in url is invalid, redirect to /login
 		if (usersError) router.push('/login');
-	}, [usersAlert, usersError]);
+	}, [
+		usersAlert,
+		usersError,
+		dispatch,
+		email.value,
+		isAuth,
+		router,
+		user?.email
+	]);
 
 	// Get user using id in url
 	useEffect(() => {
 		if (userId) {
 			dispatch(findUserById(userId));
 		}
-	}, [userId]);
+	}, [userId, dispatch]);
 
 	return (
 		<>
@@ -232,4 +240,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

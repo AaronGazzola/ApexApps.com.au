@@ -18,7 +18,7 @@ const DrawerLink = (props: DrawerLinkProps) => {
 	const { breakpoint } = useAppSelector(state => state.utils);
 	const { isAuth } = useAppSelector(state => state.users);
 	return (
-		<Link href={!isAuth ? '/login' : path}>
+		<Link href={!isAuth ? '/login' : path} passHref>
 			<div
 				className={`group flex justify-between p-1.5 pl-6 hover:bg-blue-darkest cursor-pointer ${
 					pathIsActive ? 'bg-blue-darkest text-white' : 'text-blue-darkest'

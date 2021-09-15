@@ -9,7 +9,7 @@ import { projectsTour } from '../../redux/projects/projects.slice';
 import { useRouter } from 'next/router';
 import Meta from '../../components/Meta';
 
-const index = () => {
+const Index = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { loading } = useAppSelector(state => state.users);
@@ -192,4 +192,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Button from '../../components/Button';
 import Meta from '../../components/Meta';
 
-const index = () => {
+const Index = () => {
 	return (
 		<>
 			<Meta title='Terms and conditions | Apex Apps' />
@@ -32,8 +32,8 @@ const index = () => {
 			<div className='text-box max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Development process</h2>
 				<p className='box-text'>
-					Apex Apps (the "Developer") provides web application design and
-					development. Each development project is divided into discrete
+					Apex Apps (the &quot;Developer&quot;) provides web application design
+					and development. Each development project is divided into discrete
 					sections, referred to as Milestones. Development is completed to the
 					satisfaction of the requirements outlined in each Milestone.
 				</p>
@@ -139,4 +139,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;
