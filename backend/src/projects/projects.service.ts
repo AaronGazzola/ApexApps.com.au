@@ -210,7 +210,9 @@ export class ProjectsService {
     const fileName = `contract-${projectId}.pdf`;
 
     const filePath = path.join(
-      process.env.NODE_PATH,
+      process.env.NODE_ENV === 'production'
+        ? process.env.NODE_PATH_PROD
+        : process.env.NODE_PATH_DEV,
       process.env.UPLOAD_PATH,
       fileName,
     );

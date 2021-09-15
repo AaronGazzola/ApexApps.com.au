@@ -14,8 +14,8 @@ export class UserSeed {
   })
   async create() {
     await this.authService.seedUser({
-      userName: 'Admin User',
-      email: 'admin@example.com',
+      userName: 'Aaron Gazzola',
+      email: 'aaron@apexapps.com.au',
       password: process.env.USER_PASSWORD,
       isAdmin: true,
       isVerified: true,
