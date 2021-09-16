@@ -103,20 +103,28 @@ export default function Home() {
 					/>
 				</div>
 			</div>
-			<h2 className='title mt-4 sm:mt-2'>Portfolio</h2>
 			<div className='flex flex-col sm:flex-row items-center w-full mb-0 justify-center max-w-6xl mt-2'>
-				<div
-					className={`pb-2 sm:px-2 relative group cursor-pointer w-full sm:w-1/2 transform `}
-					onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
-				>
-					{playGif !== 1 && (
-						<SVG
-							name='playFill'
-							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
-						/>
-					)}
-					<div className='rounded-2xl shadow-lg overflow-hidden w-full border'>
-						{playGif === 1 ? (
+				<div className='w-full sm:w-1/2 pb-2 sm:px-2'>
+					<div
+						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+						style={{ paddingTop: '56%' }}
+						onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
+					>
+						{playGif !== 1 ? (
+							<SVG
+								name='playFill'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+							/>
+						) : (
+							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute '>
+								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+							</div>
+						)}
+						<div
+							className={`w-full absolute top-0 left-0 ${
+								playGif === 1 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='animated gif of origami.cool web app'
 								src='/assets/gifs/origami.cool.gif'
@@ -124,7 +132,12 @@ export default function Home() {
 								width={1598}
 								height={895}
 							/>
-						) : (
+						</div>
+						<div
+							className={`w-full absolute top-0 left-0 z-10 ${
+								playGif !== 1 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='screenshot of origami.cool web app'
 								src='/assets/images/origami-screenshot.jpg'
@@ -132,21 +145,30 @@ export default function Home() {
 								width={1598}
 								height={895}
 							/>
-						)}
+						</div>
 					</div>
 				</div>
-				<div
-					className={`py-2 sm:px-2 relative group cursor-pointer w-full sm:w-1/2 transform `}
-					onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
-				>
-					{playGif !== 2 && (
-						<SVG
-							name='playFill'
-							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
-						/>
-					)}
-					<div className='rounded-2xl shadow-lg overflow-hidden w-full border'>
-						{playGif === 2 ? (
+				<div className='w-full sm:w-1/2 pb-2 sm:px-2'>
+					<div
+						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+						style={{ paddingTop: '56%' }}
+						onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
+					>
+						{playGif !== 2 ? (
+							<SVG
+								name='playFill'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+							/>
+						) : (
+							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute '>
+								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+							</div>
+						)}
+						<div
+							className={`w-full absolute top-0 left-0 ${
+								playGif === 2 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='animated gif of rainbowofemotions.app web app'
 								src='/assets/gifs/rainbowofemotions.app.gif'
@@ -154,7 +176,12 @@ export default function Home() {
 								width={1598}
 								height={895}
 							/>
-						) : (
+						</div>
+						<div
+							className={`w-full absolute top-0 left-0 z-10 ${
+								playGif !== 2 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='screenshot of rainbowofemotions.app web app'
 								src='/assets/images/rainbow-screenshot.jpg'
@@ -162,7 +189,7 @@ export default function Home() {
 								width={1598}
 								height={895}
 							/>
-						)}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -203,18 +230,27 @@ export default function Home() {
 						/>
 					}
 				/>
-				<div
-					className={`p-2 relative group cursor-pointer w-full transform `}
-					onClick={() => setPlayGif(prev => (prev === 3 ? 0 : 3))}
-				>
-					{playGif !== 3 && (
-						<SVG
-							name='playFill'
-							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
-						/>
-					)}
-					<div className='rounded-2xl overflow-hidden w-full border'>
-						{playGif === 3 ? (
+				<div className='w-full p-2 cursor-pointer'>
+					<div
+						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+						style={{ paddingTop: '56%' }}
+						onClick={() => setPlayGif(prev => (prev === 3 ? 0 : 3))}
+					>
+						{playGif !== 3 ? (
+							<SVG
+								name='playFill'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+							/>
+						) : (
+							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute '>
+								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+							</div>
+						)}
+						<div
+							className={`w-full absolute top-0 left-0 ${
+								playGif === 3 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='animated gif of Apex Apps project dashboard'
 								src='/assets/gifs/apexapps.com.au.gif'
@@ -222,7 +258,12 @@ export default function Home() {
 								width={1598}
 								height={895}
 							/>
-						) : (
+						</div>
+						<div
+							className={`w-full absolute top-0 left-0 z-10 ${
+								playGif !== 3 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='scrennshot of Apex Apps project dashboard'
 								src='/assets/images/apex-screenshot.jpg'
@@ -230,7 +271,7 @@ export default function Home() {
 								width={1598}
 								height={895}
 							/>
-						)}
+						</div>
 					</div>
 				</div>
 			</div>
