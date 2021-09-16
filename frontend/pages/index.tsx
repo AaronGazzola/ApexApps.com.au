@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Design from '../components/Design';
 import Develop from '../components/Develop';
 import Deploy from '../components/Deploy';
+import Meta from '../components/Meta';
 
 export default function Home() {
 	const { breakpoint } = useAppSelector(state => state.utils);
@@ -47,6 +48,7 @@ export default function Home() {
 
 	return (
 		<>
+			<Meta />
 			<h1 className='title'>Apex Apps</h1>
 			<div
 				className='flex items-center w-ful mb-6 flex-wrap-reverse justify-center sm:w-auto px-2'
