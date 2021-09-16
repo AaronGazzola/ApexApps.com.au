@@ -130,7 +130,6 @@ const Layout = (props: LayoutProps) => {
 			dispatch(clearUsersTrigger());
 		}
 	}, [projects, dispatch, project?._id, trigger]);
-
 	return (
 		<>
 			<Header headerHeight={headerHeight} tourBannerHeight={tourBannerHeight} />
