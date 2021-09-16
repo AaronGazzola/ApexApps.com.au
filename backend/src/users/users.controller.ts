@@ -20,7 +20,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { AddProposalDto } from './dto/add-proposal.dto';
 import { SendEmailDto } from './dto/send-email.dto';
 
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 

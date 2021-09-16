@@ -19,7 +19,7 @@ import { EditProjectDto } from './dto/edit-project.dto';
 import { EditEstimateDto } from './dto/edit-estimate.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('projects')
+@Controller('api/projects')
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
 

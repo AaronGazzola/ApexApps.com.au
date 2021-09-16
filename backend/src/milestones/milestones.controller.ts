@@ -14,7 +14,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Milestone } from './interfaces/milestone.interface';
 import { UpdateDto } from './dto/update.dto';
 
-@Controller('milestones')
+@Controller('api/milestones')
 export class MilestonesController {
   constructor(private milestonesService: MilestonesService) {}
 

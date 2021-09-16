@@ -20,8 +20,8 @@ export const getProjects = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/`,
 				{
 					headers: {
@@ -30,7 +30,7 @@ export const getProjects = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -51,8 +51,8 @@ export const setProject = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/set-active`,
 				{ id },
 				{
@@ -63,7 +63,7 @@ export const setProject = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -84,8 +84,8 @@ export const addProject = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/`,
 				{ title },
 				{
@@ -96,7 +96,7 @@ export const addProject = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -120,8 +120,8 @@ export const editProject = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/`,
 				{ title, description },
 				{
@@ -132,7 +132,7 @@ export const editProject = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -153,8 +153,8 @@ export const deleteProject = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.delete(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/`,
 				{
 					headers: {
@@ -164,7 +164,7 @@ export const deleteProject = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -188,8 +188,8 @@ export const uploadContract = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/contract`,
 				formData,
 				{
@@ -200,7 +200,7 @@ export const uploadContract = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -238,8 +238,8 @@ export const editEstimate = createAsyncThunk(
 			const { data }: ProjectsResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/projects/estimate`,
 				{
 					startFrom,
@@ -257,7 +257,7 @@ export const editEstimate = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message

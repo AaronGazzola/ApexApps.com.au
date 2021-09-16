@@ -24,14 +24,14 @@ export const login = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/auth/login`,
 				userData,
 				config
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -48,14 +48,14 @@ export const signup = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/auth/signup`,
 				userData,
 				config
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -86,8 +86,8 @@ export const getUser = createAsyncThunk(
 			const { data }: UserResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/auth/me`,
 				{
 					headers: {
@@ -96,7 +96,7 @@ export const getUser = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -117,8 +117,8 @@ export const updateUser = createAsyncThunk(
 			const { data }: UserResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/`,
 				formData,
 				{
@@ -128,7 +128,7 @@ export const updateUser = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -149,8 +149,8 @@ export const cancelEmailUpdate = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/cancel-email-update`,
 				_,
 				{
@@ -160,7 +160,7 @@ export const cancelEmailUpdate = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -181,8 +181,8 @@ export const addUser = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/`,
 				{ name },
 				{
@@ -192,7 +192,7 @@ export const addUser = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -213,8 +213,8 @@ export const updateClient = createAsyncThunk(
 			const { data }: UserResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/client`,
 				{ clientName: name },
 				{
@@ -224,7 +224,7 @@ export const updateClient = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -245,8 +245,8 @@ export const getUsers = createAsyncThunk(
 			const { data }: UserResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/`,
 				{
 					headers: {
@@ -255,7 +255,7 @@ export const getUsers = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -280,7 +280,7 @@ export const sendVerifyUser = createAsyncThunk(
 					config
 				);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -305,7 +305,7 @@ export const findUserById = createAsyncThunk(
 					config
 				);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -322,14 +322,14 @@ export const verifyUser = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/verify-user`,
 				{ token },
 				config
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -346,14 +346,14 @@ export const verifyEmail = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/verify-email`,
 				{ token },
 				config
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -378,7 +378,7 @@ export const forgotPassword = createAsyncThunk(
 					config
 				);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -398,14 +398,14 @@ export const resetPassword = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/reset-password`,
 				{ token, password },
 				config
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -425,8 +425,8 @@ export const setClient = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/set-client`,
 				{ clientName },
 				{
@@ -437,7 +437,7 @@ export const setClient = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -457,8 +457,8 @@ export const addProposal = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals`,
 				proposal,
 				{
@@ -469,7 +469,7 @@ export const addProposal = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -492,8 +492,8 @@ export const editProposal = createAsyncThunk(
 			const { data }: UserResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals`,
 				{ proposal, proposalId },
 				{
@@ -504,7 +504,7 @@ export const editProposal = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -524,8 +524,8 @@ export const setProposal = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals/set`,
 				{ proposalId },
 				{
@@ -536,7 +536,7 @@ export const setProposal = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -556,8 +556,8 @@ export const getProposals = createAsyncThunk(
 			const { data }: UserResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals`,
 				{
 					headers: {
@@ -566,7 +566,7 @@ export const getProposals = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -583,13 +583,13 @@ export const getProposalById = createAsyncThunk(
 			const { data }: UserResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals/${proposalId}`,
 				config
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -609,8 +609,8 @@ export const getClientProposal = createAsyncThunk(
 			const { data }: UserResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals/client`,
 				{
 					headers: {
@@ -619,7 +619,7 @@ export const getClientProposal = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -639,8 +639,8 @@ export const deleteProposal = createAsyncThunk(
 			const { data }: UserResponse = await axios.delete(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/proposals/${proposalId}`,
 				{
 					headers: {
@@ -649,7 +649,7 @@ export const deleteProposal = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -679,8 +679,8 @@ export const sendEmail = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/send-email`,
 				formData,
 				{
@@ -690,7 +690,7 @@ export const sendEmail = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -723,8 +723,8 @@ export const bookCall = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/book-call`,
 				formData,
 				{
@@ -734,7 +734,7 @@ export const bookCall = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -754,8 +754,8 @@ export const getBookings = createAsyncThunk(
 			const { data }: UserResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/bookings`,
 				{
 					headers: {
@@ -764,7 +764,7 @@ export const getBookings = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -784,8 +784,8 @@ export const confirmBooking = createAsyncThunk(
 			const { data }: UserResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/users/bookings/confirm`,
 				{ bookingId },
 				{
@@ -795,7 +795,7 @@ export const confirmBooking = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message

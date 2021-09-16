@@ -24,8 +24,8 @@ export const getMilestones = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.get(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/`,
 				{
 					headers: {
@@ -34,7 +34,7 @@ export const getMilestones = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -55,8 +55,8 @@ export const addMilestone = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/`,
 				{ index },
 				{
@@ -66,7 +66,7 @@ export const addMilestone = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -90,8 +90,8 @@ export const addFeature = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/feature`,
 				{ index, milestoneId },
 				{
@@ -101,7 +101,7 @@ export const addFeature = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -125,8 +125,8 @@ export const addStep = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/step`,
 				{ index, featureId },
 				{
@@ -136,7 +136,7 @@ export const addStep = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -157,8 +157,8 @@ export const editMilestone = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/`,
 				milestone,
 				{
@@ -168,7 +168,7 @@ export const editMilestone = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -189,8 +189,8 @@ export const deleteMilestone = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.delete(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/${milestoneId}`,
 				{
 					headers: {
@@ -199,7 +199,7 @@ export const deleteMilestone = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -220,8 +220,8 @@ export const deleteFeature = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.delete(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/feature/${featureId}`,
 				{
 					headers: {
@@ -230,7 +230,7 @@ export const deleteFeature = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -251,8 +251,8 @@ export const deleteStep = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.delete(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/step/${stepId}`,
 				{
 					headers: {
@@ -261,7 +261,7 @@ export const deleteStep = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -299,8 +299,8 @@ export const addUpdate = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.post(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/update`,
 				{ id, date, notes, buttonLink, buttonLabel, publish },
 				{
@@ -311,7 +311,7 @@ export const addUpdate = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -349,8 +349,8 @@ export const editUpdate = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.put(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/update`,
 				{ id, date, notes, buttonLink, buttonLabel, publish },
 				{
@@ -360,7 +360,7 @@ export const editUpdate = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -381,8 +381,8 @@ export const deleteUpdate = createAsyncThunk(
 			const { data }: MilestonesResponse = await axios.delete(
 				`${
 					process.env.NODE_ENV === 'production'
-						? process.env.BASE_URL
-						: 'http://localhost:5000'
+						? process.env.BASE_URL + '/api'
+						: 'http://localhost:5000/api'
 				}/milestones/update/${updateId}`,
 				{
 					headers: {
@@ -391,7 +391,7 @@ export const deleteUpdate = createAsyncThunk(
 				}
 			);
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(
 				error.response && error.response.data.message
 					? error.response.data.message
