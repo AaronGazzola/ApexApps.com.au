@@ -20,6 +20,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import EstimateModal from '../../components/EstimateModal';
 import {
 	deleteProject,
+	getProjects,
 	projectsLogout,
 	setProject,
 	uploadContract
@@ -42,13 +43,14 @@ const Index = () => {
 		project,
 		projects
 	} = useAppSelector(state => state.projects);
-	const loading = usersLoading || projectsLoading || !user || !client;
+	const loading = usersLoading || projectsLoading || !user;
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [modalType, setModalType] = useState('');
 
 	const setClientHandler = (e: BaseSyntheticEvent) => {
 		dispatch(setClient(e.target.value));
+		dispatch(getProjects());
 	};
 
 	const setProjectHandler = (e: BaseSyntheticEvent) => {
@@ -288,7 +290,7 @@ const Index = () => {
 					<div className='skeleton w-52 h-7 m-1'></div>
 					<div className='skeleton w-52 h-7 m-1'></div>
 				</div>
-			) : project?.estimate?.costFrom || user?.isAdmin ? (
+			) : project?.estimate?.costFrom || (user?.isAdmin && !userView) ? (
 				<div className='box w-72 sm:w-80 relative'>
 					<h2 className='title-sm mb-3'>Project Estimate</h2>
 					<p className='font-bold text-gray-dark text-sm mb-1'>Start Between</p>

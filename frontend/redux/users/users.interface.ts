@@ -69,6 +69,8 @@ export type UserState = {
 		titleColor?: string;
 		buttonColor?: string;
 	};
+	redirect?: string;
+	trigger?: string;
 };
 
 export interface LoginData {

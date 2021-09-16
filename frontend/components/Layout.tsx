@@ -10,10 +10,13 @@ import {
 	getUser,
 	getUsers,
 	usersLogout,
-	setClient
+	setClient,
+	clearUsersTrigger,
+	clearUsersRedirect
 } from '../redux/users/users.slice';
 import UserFeedback from './UserFeedback';
 import {
+	clearProjectsTrigger,
 	getProjects,
 	projectsLogout,
 	setProject
@@ -42,10 +45,18 @@ const Layout = (props: LayoutProps) => {
 		success: usersSuccess,
 		client,
 		onTour,
-		noUser
+		noUser,
+		users,
+		redirect,
+		trigger: usersTrigger
 	} = useAppSelector(state => state.users);
-	const { projects, project } = useAppSelector(state => state.projects);
+	const {
+		projects,
+		project,
+		trigger: projectsTrigger
+	} = useAppSelector(state => state.projects);
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
+	const trigger = usersTrigger || projectsTrigger;
 
 	const [onMount, setOnMount] = useState(true);
 
@@ -76,54 +87,49 @@ const Layout = (props: LayoutProps) => {
 	}, [router]);
 
 	useEffect(() => {
-		if (onMount && !onTour) dispatch(getUser());
-		if (isAuth && !onMount) {
+		if (!onTour) dispatch(getUser());
+	}, [onTour]);
+
+	useEffect(() => {
+		if (isAuth) {
 			if (user && !user?.isAdmin && !user.client)
 				dispatch(setClient(user.clientName));
-			if (user?.isAdmin) dispatch(getUsers());
-		} else if (!isAuth && !onMount) {
-			if (onAuthRoute()) {
+			if (user?.isAdmin && !users?.length) dispatch(getUsers());
+		} else {
+			if (onAuthRoute() && noUser) {
 				router.push('/login');
 				logout();
 			}
 		}
-		setOnMount(false);
-	}, [
-		isAuth,
-		noUser,
-		dispatch,
-		logout,
-		onAuthRoute,
-		onMount,
-		onTour,
-		router,
-		user
-	]);
+	}, [isAuth, user, dispatch, logout, router, onAuthRoute, noUser]);
 
-	// on navigate, if no stored user,
 	useEffect(() => {
 		if (onTour && !onAuthRoute()) logout();
-	}, [router.pathname, noUser, logout, onAuthRoute, onTour]);
+	}, [router.pathname, logout, onAuthRoute, onTour]);
 
-	// when users are updated, get user and users
 	useEffect(() => {
-		if (usersSuccess && user?.isAdmin) dispatch(getUsers());
-		if (usersSuccess && !onTour) dispatch(getUser());
-		if (usersSuccess?.startsWith('Welcome')) router.push('/project');
-	}, [usersSuccess, dispatch, onTour, router, user?.isAdmin]);
-
-	// when client changes, get projects
-	useEffect(() => {
-		if (client && !onTour) dispatch(getProjects());
-	}, [client, dispatch, onTour]);
-
-	// when projects change, if project is not found on projects, set project to first in array
-	useEffect(() => {
-		const projectFound = projects?.find(x => x._id === project?._id);
-		if (!projectFound && projects?.length) {
-			dispatch(setProject(projects[0]._id));
+		if (redirect) {
+			router.push(redirect);
+			dispatch(clearUsersRedirect());
 		}
-	}, [projects, dispatch, project?._id]);
+	}, [redirect, router, dispatch]);
+
+	useEffect(() => {
+		if (trigger === 'getProjects') {
+			dispatch(getProjects());
+			dispatch(clearUsersTrigger());
+		}
+		if (trigger === 'setProject') {
+			const projectFound = projects?.find(x => x._id === project?._id);
+			if (!projectFound && projects?.length)
+				dispatch(setProject(projects[0]._id));
+			dispatch(clearProjectsTrigger());
+		}
+		if (trigger === 'getUsers') {
+			dispatch(getUsers());
+			dispatch(clearUsersTrigger());
+		}
+	}, [projects, dispatch, project?._id, trigger]);
 
 	return (
 		<>

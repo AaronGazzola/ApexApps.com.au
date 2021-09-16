@@ -275,6 +275,9 @@ const projectsSlice = createSlice({
 	name: 'projects',
 	initialState,
 	reducers: {
+		clearProjectsTrigger(state) {
+			state.trigger = undefined;
+		},
 		clearProjects(state) {
 			state.error = null;
 			state.success = '';
@@ -328,6 +331,7 @@ const projectsSlice = createSlice({
 		builder.addCase(getProjects.fulfilled, (state, action) => {
 			state.loading = false;
 			state.projects = action.payload.projects;
+			state.trigger = 'setProject';
 		});
 		builder.addCase(getProjects.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -411,6 +415,10 @@ const projectsSlice = createSlice({
 	}
 });
 
-export const { clearProjects, projectsTour, projectsLogout } =
-	projectsSlice.actions;
+export const {
+	clearProjects,
+	projectsTour,
+	projectsLogout,
+	clearProjectsTrigger
+} = projectsSlice.actions;
 export default projectsSlice.reducer;

@@ -28,6 +28,7 @@ export interface ProjectsState {
 	project?: Project;
 	projects?: Project[];
 	loading: boolean;
+	trigger?: string;
 	error?: null | {
 		title?: string;
 		message: string;

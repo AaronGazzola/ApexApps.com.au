@@ -79,8 +79,6 @@ export const getUser = createAsyncThunk(
 
 		const token = localToken ? localToken : stateToken ? stateToken : '';
 
-		console.log(process.env.NODE_ENV, process.env.BASE_URL);
-
 		if (!token) return;
 		try {
 			const { data }: UserResponse = await axios.get(
@@ -815,6 +813,12 @@ const usersSlice = createSlice({
 	name: 'users',
 	initialState,
 	reducers: {
+		clearUsersRedirect(state) {
+			state.redirect = undefined;
+		},
+		clearUsersTrigger(state) {
+			state.trigger = undefined;
+		},
 		usersLogout(state) {
 			state.isAuth = false;
 			state.noUser = false;
@@ -886,6 +890,7 @@ const usersSlice = createSlice({
 			state.isAuth = !!action.payload.token;
 			state.token = action.payload.token;
 			state.loading = false;
+			state.redirect = '/project';
 			state.success = `Welcome ${action.payload.user?.userName}!`;
 			localStorage.setItem(
 				'userData',
@@ -1012,6 +1017,7 @@ const usersSlice = createSlice({
 			state.success = 'Client updated';
 			state.client = action.payload.client;
 			state.user = action.payload.user;
+			state.trigger = 'getUsers';
 		});
 		builder.addCase(updateClient.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -1103,6 +1109,7 @@ const usersSlice = createSlice({
 			state.loading = false;
 			state.user = action.payload.user;
 			state.client = action.payload.client;
+			state.trigger = 'getProjects';
 		});
 		builder.addCase(setClient.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -1266,6 +1273,8 @@ export const {
 	clearUsers,
 	resetProposal,
 	userTour,
-	toggleUserView
+	toggleUserView,
+	clearUsersRedirect,
+	clearUsersTrigger
 } = usersSlice.actions;
 export default usersSlice.reducer;
