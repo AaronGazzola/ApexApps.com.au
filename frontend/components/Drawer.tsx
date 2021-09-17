@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { toggleUserView } from '../redux/users/users.slice';
+import { clearUsersTrigger, toggleUserView } from '../redux/users/users.slice';
 import DrawerLink from './DrawerLink';
 import Logo from './Logo';
 import SVG from './SVG';
@@ -35,7 +35,7 @@ const Drawer = (props: drawerProps) => {
 	const router = useRouter();
 	const { headerHeight, minDrawerWidth, screenIsXL } = props;
 	const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false);
-	const { isAuth, onTour, user, userView } = useAppSelector(
+	const { isAuth, onTour, user, userView, trigger } = useAppSelector(
 		state => state.users
 	);
 	const { breakpoint } = useAppSelector(state => state.utils);
@@ -55,9 +55,20 @@ const Drawer = (props: drawerProps) => {
 			}
 		];
 
+	// open drawer for one second
 	useEffect(() => {
-		if (onTour) setDrawerIsOpen(true);
-	}, [onTour, isAuth]);
+		let timer: ReturnType<typeof setTimeout>;
+		if (trigger === 'showDrawer') {
+			setDrawerIsOpen(true);
+			timer = setTimeout(() => {
+				setDrawerIsOpen(false);
+				dispatch(clearUsersTrigger());
+			}, 1000);
+		}
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [trigger, dispatch]);
 
 	// close drawer when click outside
 	useEffect(() => {
@@ -182,6 +193,10 @@ const Drawer = (props: drawerProps) => {
 					/>
 				</div>
 			)}
+			<div
+				className='w-full h-full'
+				onClick={() => setDrawerIsOpen(prev => !prev)}
+			></div>
 		</div>
 	);
 };

@@ -848,6 +848,7 @@ const usersSlice = createSlice({
 			};
 		},
 		userTour(state) {
+			state.trigger = 'showDrawer';
 			state.isAuth = true;
 			state.onTour = true;
 			state.success = 'Welcome!';
@@ -1189,6 +1190,7 @@ const usersSlice = createSlice({
 			state.loading = false;
 			state.proposals = action.payload.proposals;
 			state.success = 'Proposal deleted';
+			state.trigger = 'resetProposal';
 		});
 		builder.addCase(deleteProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
