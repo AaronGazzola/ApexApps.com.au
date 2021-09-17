@@ -86,6 +86,7 @@ const Index = () => {
 		dispatch(userTour());
 		dispatch(milestonesTour());
 		dispatch(projectsTour());
+		router.push('/project');
 	};
 
 	return (

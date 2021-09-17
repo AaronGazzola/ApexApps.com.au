@@ -219,22 +219,6 @@ const Index = () => {
 					size='small'
 					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
 				/>
-				<Button
-					label='Take a tour'
-					path='#'
-					startIcon={<div className='w-5'></div>}
-					endIcon={
-						<div className='w-5 h-5'>
-							<SVG name='map' classes='fill-current w-full' />
-						</div>
-					}
-					type='link'
-					fullWidth
-					color='green-700'
-					variant='simple'
-					size='small'
-					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm'
-				/>
 			</form>
 		</>
 	);

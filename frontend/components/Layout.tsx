@@ -58,8 +58,6 @@ const Layout = (props: LayoutProps) => {
 	const screenIsXL: boolean = breakpoint === 'xl' || breakpoint === '2xl';
 	const trigger = usersTrigger || projectsTrigger;
 
-	const [onMount, setOnMount] = useState(true);
-
 	const tourBannerHeight = 40;
 
 	const logout = useCallback(() => {
@@ -104,7 +102,7 @@ const Layout = (props: LayoutProps) => {
 	}, [isAuth, user, dispatch, logout, router, onAuthRoute, noUser]);
 
 	useEffect(() => {
-		if (onTour && !onAuthRoute()) logout();
+		if (onTour && !onAuthRoute() && router.pathname !== '/login') logout();
 	}, [router.pathname, logout, onAuthRoute, onTour]);
 
 	useEffect(() => {
