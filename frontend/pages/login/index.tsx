@@ -93,7 +93,7 @@ const Index = () => {
 		<>
 			<Meta title='Log in | Apex Apps' />
 			<h1 className='title'>Log in</h1>
-			<form onSubmit={submitHandler} className='box w-72 sm:w-80'>
+			<form onSubmit={submitHandler} className='box w-full sm:max-w-sm'>
 				<Input
 					placeholder='Email'
 					type='text'

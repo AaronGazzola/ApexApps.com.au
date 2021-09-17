@@ -20,7 +20,9 @@ const Snackbar = (props: SnackbarProps) => {
 				boxShadow: '2px 2px 4px 3px rgba(0,0,0,.3)'
 			}}
 		>
-			<p className='font-medium text-lg'>{message ? message : 'Success!'}</p>
+			<p className='font-medium text-sm sm:text-lg text-center'>
+				{message ? message : 'Success!'}
+			</p>
 			<div className='w-7 ml-3'>
 				<SVG name='close' classes='fill-current w-full h-full' />
 			</div>

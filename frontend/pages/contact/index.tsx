@@ -16,7 +16,7 @@ import {
 
 const Index = () => {
 	const dispatch = useAppDispatch();
-	const { user, loading, bookings, alert } = useAppSelector(
+	const { user, loading, bookings, alert, noUser } = useAppSelector(
 		state => state.users
 	);
 	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
@@ -195,6 +195,7 @@ const Index = () => {
 	};
 	const submitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
+		if (!formIsValid) return;
 		const formData = {
 			name: name.value,
 			email: email.value,
@@ -248,9 +249,9 @@ const Index = () => {
 		let bookingHours = [7, 8, 9, 13, 14, 15, 18, 19, 20];
 
 		// if last booking for today is already passed, skip today
-		const lastBookingTodayHasPast =
+		const lastBookingHasPast =
 			melbourneTime.hour() > bookingHours[bookingHours.length - 1];
-		if (lastBookingTodayHasPast) melbourneTime.add(1, 'd');
+		if (lastBookingHasPast) melbourneTime.add(1, 'd');
 
 		let melbourneBookingTimes: string[] = [];
 		for (let i = 0; i < 3; i++) {
@@ -269,7 +270,7 @@ const Index = () => {
 		setBookingTimes(
 			melbourneBookingTimes.map(time => moment(time, 'HH:mm DD-MM-YYY ZZ'))
 		);
-		setLastBookingTodayHasPast(lastBookingTodayHasPast);
+		setLastBookingTodayHasPast(lastBookingHasPast);
 	}, []);
 
 	useEffect(() => {
@@ -295,8 +296,11 @@ const Index = () => {
 		<>
 			<Meta title='Contact Aaron | Apex Apps' />
 			<h1 className='title'>Contact</h1>
-			<form onSubmit={submitHandler} className='flex flex-col item-center'>
-				<div className='box w-72 sm:w-96 relative'>
+			<form
+				onSubmit={submitHandler}
+				className='flex flex-col item-center w-full items-center'
+			>
+				<div className='box w-full sm:max-w-lg relative'>
 					<div
 						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
 								${step > 1 ? 'bg-green' : 'bg-blue-darkest'}`}
@@ -326,7 +330,7 @@ const Index = () => {
 						collapsedSize={0}
 						style={{ width: '100%' }}
 					>
-						{loading ? (
+						{!noUser && !user?.userName ? (
 							<>
 								<div className='skeleton w-full h-10 mt-5 mb-8'></div>
 								<div className='skeleton w-full h-10 my-5'></div>
@@ -384,11 +388,7 @@ const Index = () => {
 						</div>
 					</Collapse>
 				</div>
-				<div
-					className={`box w-72 sm:w-96 relative ${
-						!name.isValid || !email.isValid ? 'bg-gray-200' : ''
-					}`}
-				>
+				<div className={`box w-full sm:max-w-lg relative`}>
 					<div
 						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
 								${step > 2 ? 'bg-green' : step === 1 ? 'bg-gray' : 'bg-blue-darkest'}`}
@@ -417,7 +417,7 @@ const Index = () => {
 					></div>
 					<h2
 						className={`title-sm w-full px-6 ${
-							name.isValid || email.isValid ? 'cursor-pointer' : ''
+							name.isValid || email.isValid ? 'cursor-pointer' : 'text-gray'
 						}`}
 					>
 						Your project
@@ -460,11 +460,7 @@ const Index = () => {
 						</div>
 					</Collapse>
 				</div>
-				<div
-					className={`box w-72 sm:w-96 relative ${
-						!name.isValid || !email.isValid ? 'bg-gray-200' : ''
-					}`}
-				>
+				<div className={`box w-full sm:max-w-lg relative`}>
 					<div
 						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
 								${step !== 3 ? 'bg-gray' : 'bg-blue-darkest'}`}
@@ -489,7 +485,7 @@ const Index = () => {
 					></div>
 					<h2
 						className={`title-sm w-full px-6 ${
-							name.isValid || email.isValid ? 'cursor-pointer' : ''
+							name.isValid || email.isValid ? 'cursor-pointer' : 'text-gray'
 						}`}
 					>
 						Contact method
@@ -648,7 +644,7 @@ const Index = () => {
 											</p>
 											{bookingTimes.map(time => {
 												// if booking time is on current date, display
-												if (time.date() === moment().add(key, 'd').date()) {
+												if (time.date() === moment().add(days, 'd').date()) {
 													return (
 														<button
 															type='button'
@@ -686,7 +682,7 @@ const Index = () => {
 								})}
 							</div>
 						</Collapse>
-						<div className='flex flex-col items-center w-full mt-6'>
+						<div className='flex flex-col items-center w-full mt-8'>
 							<Button
 								variant='contained'
 								color='green'

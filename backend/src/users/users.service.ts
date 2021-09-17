@@ -628,15 +628,7 @@ export class UsersService {
         400,
       );
 
-    const foundBookingByEmail = await this.bookingModel.find({
-      $or: [
-        { email },
-        { zoomName },
-        { phone },
-        { email: zoomName },
-        { zoomName: email },
-      ],
-    });
+    const foundBookingByEmail = await this.bookingModel.find({ email });
 
     const futureBooking = foundBookingByEmail.find(
       (booking) => booking.callTime > moment().toDate(),

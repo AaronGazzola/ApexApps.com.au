@@ -34,6 +34,7 @@ const Index = () => {
 		loading,
 		proposal,
 		proposals,
+		trigger,
 		success: usersSuccess
 	} = useAppSelector(state => state.users);
 	const { breakpoint } = useAppSelector(state => state.utils);
@@ -220,23 +221,17 @@ const Index = () => {
 			currentClient &&
 			user?.client?.proposal &&
 			proposal?._id !== user?.client?.proposal._id
-		) {
+		)
 			dispatch(getClientProposal());
-		} else if (user?.isAdmin && !currentClient) {
-			dispatch(resetProposal());
-		}
-	}, [
-		currentClient,
-		dispatch,
-		proposal?._id,
-		user?.client?.proposal,
-		user?.isAdmin
-	]);
+	}, [currentClient, dispatch, proposal?._id, user?.client?.proposal]);
 
-	// if proposal deleted, reset state
 	useEffect(() => {
-		if (usersSuccess === 'Proposal deleted') dispatch(resetProposal());
-	}, [usersSuccess, dispatch]);
+		if (user?.isAdmin && !currentClient) dispatch(resetProposal());
+	}, [user?.isAdmin, currentClient]);
+
+	useEffect(() => {
+		if (trigger === 'resetProposal') dispatch(resetProposal());
+	}, [trigger]);
 
 	return (
 		<>
@@ -404,13 +399,14 @@ const Index = () => {
 							<h2 className='title-sm'>Intro video</h2>
 							<Input
 								type='text'
-								label='Vido link'
+								label='Video link'
 								value={videoLink}
 								id={`videoLink`}
 								validation={false}
 								onChange={changeHandler}
 								containerClasses='mt-2'
 								placeholder='Video link'
+								helperText='Enter string following /embed/...'
 							/>
 						</div>
 						<Button
@@ -550,7 +546,7 @@ const Index = () => {
 								</div>
 							))}
 							{proposal?.videoLink && (
-								<div className='w-full sm:px-8'>
+								<div className='w-full sm:px-8 max-w-4xl'>
 									<div className='box full p-4'>
 										<h2 className='title-sm mb-2 sm:mb-4'>
 											Personal introduction

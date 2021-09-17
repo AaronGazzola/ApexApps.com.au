@@ -16,7 +16,7 @@ const Index = () => {
 				buttonClasses=' px-1.5 py-1'
 				color='green'
 			/>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm'>Business Information</h2>
 				<p className='box-text'>
 					<span className='font-medium'>Business Name:</span> Apex Apps
@@ -29,7 +29,7 @@ const Index = () => {
 					Gazzola
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Development process</h2>
 				<p className='box-text'>
 					Apex Apps (the &quot;Developer&quot;) provides web application design
@@ -38,7 +38,7 @@ const Index = () => {
 					satisfaction of the requirements outlined in each Milestone.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Milestones</h2>
 				<p className='box-text'>
 					The details of each milestone will be specified by the Developer and
@@ -49,14 +49,14 @@ const Index = () => {
 					languages.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Schedule</h2>
 				<p className='box-text'>
 					The start and end dates for development of each Milestone will be
 					agreed upon before development of the Milestone begins.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Payment</h2>
 				<p className='box-text'>
 					A fixed price for each Milestone will be agreed upon before
@@ -67,7 +67,7 @@ const Index = () => {
 					has approved completion of the milestone.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Revisions</h2>
 				<p className='box-text'>
 					The Developer is under no obligation to provide revisions to completed
@@ -76,7 +76,7 @@ const Index = () => {
 					be agreed upon by both parties.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Project dashboard</h2>
 				<p className='box-text'>
 					Each client is provided with access to a personalised project
@@ -89,7 +89,7 @@ const Index = () => {
 					<br />
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Source code storage</h2>
 				<p className='box-text'>
 					A private repository is created for each development project at
@@ -99,14 +99,14 @@ const Index = () => {
 				</p>
 			</div>
 
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Support</h2>
 				<p className='box-text'>
 					The Developer will not provide support for any deliverable once the
 					Client accepts it, unless otherwise agreed in writing.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Contact</h2>
 				<p className='box-text'>
 					The Developer will typically respond within one business day of
@@ -116,7 +116,7 @@ const Index = () => {
 					and after the development of each milestone.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm text-xl font-medium'>Branding</h2>
 				<p className='box-text'>
 					All web applications and websites produced by the Developer will
@@ -126,7 +126,7 @@ const Index = () => {
 				</p>
 			</div>
 
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<p className='title-sm text-xl font-medium'>Privacy policy</p>
 				<p className='box-text'>
 					Apex Apps is committed to protecting your privacy. You can{' '}

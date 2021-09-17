@@ -7,7 +7,7 @@ const Index = () => {
 		<>
 			<Meta title='Privacy policy | Apex Apps' />
 			<h1 className='title'>Privacy policy</h1>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<p className='box-text'>
 					This Privacy Policy describes Our policies and procedures on the
 					collection, use and disclosure of Your information when You use the
@@ -20,7 +20,7 @@ const Index = () => {
 					accordance with this Privacy Policy.
 				</p>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm'>Interpretation and Definitions</h2>
 				<h3 className='title-sm text-lg font-medium'>Interpretation</h3>
 				<p className='box-text'>
@@ -124,7 +124,7 @@ const Index = () => {
 					</li>
 				</ul>
 			</div>
-			<div className='text-box max-w-xl'>
+			<div className='text-box w-full max-w-xl'>
 				<h2 className='title-sm'>Collecting and Using Your Personal Data</h2>
 				<h3 className='title-sm text-lg font-medium'>
 					Types of Data Collected

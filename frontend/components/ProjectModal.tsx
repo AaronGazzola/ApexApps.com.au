@@ -53,10 +53,7 @@ const ProjectModal = (props: ProjectModalProps) => {
 
 	const formIsValid =
 		type === 'edit'
-			? // if either field is changed and both fields are valid
-			  (title.isChanged || description.isChanged) &&
-			  title.isValid &&
-			  description.isValid
+			? (title.isChanged || description.isChanged) && title.isValid
 			: title.isValid;
 
 	const touchHandler = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -74,7 +71,7 @@ const ProjectModal = (props: ProjectModalProps) => {
 		e.preventDefault();
 		if (title.isValid && type == 'add') {
 			dispatch(addProject(title.value));
-		} else if (title.isValid && description.isValid && 'edit') {
+		} else if (title.isValid && 'edit') {
 			dispatch(
 				editProject({
 					title: title.value,

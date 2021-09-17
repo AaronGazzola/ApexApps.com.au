@@ -301,8 +301,8 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         ${paragraph(`Thank you for booking a call at Apex Apps.`)}
         ${paragraph('', 'after')}
         ${paragraph(
-          `I'll give you call you by ${contactMethod} on ${
-            contactMethod === 'phone' ? phone : zoomName
+          `I'll give you call you by ${contactMethod} ${
+            contactMethod === 'phone' ? `on ${phone}` : `at ${zoomName}`
           } at ${callTime}.`,
         )}
           ${paragraph('', 'after')}

@@ -249,7 +249,7 @@ const Index = () => {
 					</p>
 				</div>
 			)}
-			<div className='text-box' style={{ minWidth: 280 }}>
+			<div className='text-box sm:px-6 w-full max-w-2xl'>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -262,7 +262,7 @@ const Index = () => {
 					<>
 						<h2 className='box-title break-words'>{project?.title}</h2>
 						<p
-							className={`box-text my-2 break-words ${
+							className={`w-full my-2 break-words ${
 								!project?.description ? 'italic text-gray-dark' : ''
 							}`}
 						>
@@ -284,14 +284,14 @@ const Index = () => {
 				)}
 			</div>
 			{loading ? (
-				<div className='box w-72 sm:w-80'>
+				<div className='box w-full max-w-xs'>
 					<div className='skeleton w-36 h-7 mt-1 mb-3'></div>
 					<div className='skeleton w-52 h-7 m-1'></div>
 					<div className='skeleton w-52 h-7 m-1'></div>
 					<div className='skeleton w-52 h-7 m-1'></div>
 				</div>
 			) : project?.estimate?.costFrom || (user?.isAdmin && !userView) ? (
-				<div className='box w-72 sm:w-80 relative'>
+				<div className='box w-full relative max-w-xs'>
 					<h2 className='title-sm mb-3'>Project Estimate</h2>
 					<p className='font-bold text-gray-dark text-sm mb-1'>Start Between</p>
 					<div className='relative flex w-full mb-4' style={{ minHeight: 20 }}>
