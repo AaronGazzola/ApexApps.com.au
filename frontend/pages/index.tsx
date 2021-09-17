@@ -103,6 +103,7 @@ export default function Home() {
 					/>
 				</div>
 			</div>
+			<h1 className='title'>Portfolio</h1>
 			<div className='flex flex-col sm:flex-row items-center w-full mb-0 justify-center max-w-6xl mt-2'>
 				<div className='w-full sm:w-1/2 pb-2 sm:px-2'>
 					<div
