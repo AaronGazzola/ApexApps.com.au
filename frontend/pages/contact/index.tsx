@@ -10,13 +10,12 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
 	bookCall,
 	getBookings,
-	getUser,
 	sendEmail
 } from '../../redux/users/users.slice';
 
 const Index = () => {
 	const dispatch = useAppDispatch();
-	const { user, loading, bookings, alert, noUser } = useAppSelector(
+	const { user, loading, bookings, alert, noUser, onTour } = useAppSelector(
 		state => state.users
 	);
 	const [bookingTimes, setBookingTimes] = useState([] as Moment[]);
@@ -219,7 +218,7 @@ const Index = () => {
 	};
 
 	useEffect(() => {
-		if (user)
+		if (user && !onTour)
 			setFormState(prev => ({
 				...prev,
 				name: {
