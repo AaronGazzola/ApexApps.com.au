@@ -213,8 +213,8 @@ export default function Home() {
 					type='link'
 					path='/tour'
 					variant='simple'
-					size='medium'
-					buttonClasses=' pl-3 pr-2 py-0.5 mt-2 mb-1'
+					size='large'
+					buttonClasses=' pl-3 pr-2 py-0.5 mt-3 mb-2 border-2 border-green font-semibold'
 					color='green'
 					endIcon={
 						<SVG

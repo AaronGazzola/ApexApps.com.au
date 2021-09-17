@@ -102,7 +102,13 @@ const Layout = (props: LayoutProps) => {
 	}, [isAuth, user, dispatch, logout, router, onAuthRoute, noUser]);
 
 	useEffect(() => {
-		if (onTour && !onAuthRoute() && router.pathname !== '/login') logout();
+		if (
+			onTour &&
+			!onAuthRoute() &&
+			router.pathname !== '/login' &&
+			router.pathname !== '/tour'
+		)
+			logout();
 	}, [router.pathname, logout, onAuthRoute, onTour]);
 
 	useEffect(() => {
