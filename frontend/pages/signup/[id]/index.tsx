@@ -131,7 +131,7 @@ const Index = () => {
 		<>
 			<Meta title='Sign up | Apex Apps' />
 			<h1 className='title'>Sign Up</h1>
-			<form onSubmit={submitHandler} className='box w-full sm:max-w-sm'>
+			<form onSubmit={submitHandler} className='box w-full sm:max-w-xs'>
 				<Input
 					placeholder='Name'
 					type='text'
