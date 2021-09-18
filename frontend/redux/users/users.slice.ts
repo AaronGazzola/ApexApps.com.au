@@ -1265,6 +1265,7 @@ const usersSlice = createSlice({
 		builder.addCase(cancelEmailUpdate.fulfilled, (state, action) => {
 			state.loading = false;
 			state.success = 'Email update canceled';
+			state.user = action.payload.user;
 		});
 		builder.addCase(cancelEmailUpdate.rejected, (state, action) => {
 			state.error = { message: action.payload as string };

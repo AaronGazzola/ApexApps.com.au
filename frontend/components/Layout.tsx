@@ -92,6 +92,9 @@ const Layout = (props: LayoutProps) => {
 		if (isAuth) {
 			if (user && !user?.isAdmin && !user.client)
 				dispatch(setClient(user.clientName));
+			if (user?.isAdmin && !client && users?.length)
+				dispatch(setClient(users[0].clientName));
+			if (!projects?.length) dispatch(getProjects());
 			if (user?.isAdmin && !users?.length) dispatch(getUsers());
 		} else {
 			if (onAuthRoute() && noUser) {
@@ -107,7 +110,9 @@ const Layout = (props: LayoutProps) => {
 		router,
 		onAuthRoute,
 		noUser,
-		users?.length
+		users,
+		client,
+		projects?.length
 	]);
 
 	useEffect(() => {

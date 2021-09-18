@@ -11,7 +11,7 @@ const Index = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const dispatch = useAppDispatch();
-	const { user, loading, proposal } = useAppSelector(state => state.users);
+	const { loading, proposal } = useAppSelector(state => state.users);
 	const { breakpoint } = useAppSelector(state => state.utils);
 	const proposalId = typeof id === 'string' ? id : '';
 	const [playGif, setPlayGif] = useState(0);
@@ -85,7 +85,7 @@ const Index = () => {
 					/>
 				</div>
 			</div>
-			{loading || !user?.client?.proposal ? (
+			{loading ? (
 				<>
 					<div className='skeleton w-64 h-8 mb-4'></div>
 					<div className='box w-full sm:max-w-lg'>
@@ -144,6 +144,69 @@ const Index = () => {
 							)}
 						</div>
 					))}
+					<div className='box w-full max-w-2xl border-blue-darkest border mt-4'>
+						<h1 className='title'>Apex Apps Dashboard</h1>
+						<p className='px-4 pt-1'>
+							As a client at Apex Apps, you will gain access to a personalised
+							project dashboard. Track development progress, view your project
+							timeline and receive scheduled updates - all in one place.
+						</p>
+						<Button
+							label='Explore the dashboard'
+							type='link'
+							path='/tour'
+							variant='simple'
+							size='large'
+							buttonClasses=' pl-3 pr-2 py-0.5 mt-3 mb-2 border-2 border-green font-semibold'
+							color='green'
+							endIcon={
+								<SVG
+									name='map'
+									classes='fill-current text-green ml-1 mt-0.5 w-7 h-7'
+								/>
+							}
+						/>
+						<div className='w-full p-2 cursor-pointer'>
+							<div
+								className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+								style={{ paddingTop: '56%' }}
+								onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
+							>
+								{playGif !== 1 ? (
+									<SVG
+										name='playFill'
+										classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+									/>
+								) : (
+									<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+										<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+									</div>
+								)}
+								<div
+									className={`w-full absolute top-0 left-0 z-20 ${
+										playGif === 1 ? 'opacity-100' : 'opacity-0'
+									}`}
+								>
+									<Image
+										alt='animated gif of Apex Apps project dashboard'
+										src='/assets/gifs/apexapps.com.au.gif'
+										layout='responsive'
+										width={1598}
+										height={895}
+									/>
+								</div>
+								<div className={`w-full absolute top-0 left-0`}>
+									<Image
+										alt='scrennshot of Apex Apps project dashboard'
+										src='/assets/images/apex-screenshot.jpg'
+										layout='responsive'
+										width={1598}
+										height={895}
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
 					{proposal?.videoLink && (
 						<div className='w-full sm:px-8 max-w-4xl'>
 							<div className='box full p-4 relative'>
@@ -177,69 +240,6 @@ const Index = () => {
 					)}
 				</>
 			)}
-			<div className='box w-full max-w-2xl border-blue-darkest border mt-4'>
-				<h1 className='title'>Apex Apps Dashboard</h1>
-				<p className='px-4 pt-1'>
-					As a client at Apex Apps, you will gain access to a personalised
-					project dashboard. Track development progress, view your project
-					timeline and receive scheduled updates - all in one place.
-				</p>
-				<Button
-					label='Explore the dashboard'
-					type='link'
-					path='/tour'
-					variant='simple'
-					size='large'
-					buttonClasses=' pl-3 pr-2 py-0.5 mt-3 mb-2 border-2 border-green font-semibold'
-					color='green'
-					endIcon={
-						<SVG
-							name='map'
-							classes='fill-current text-green ml-1 mt-0.5 w-7 h-7'
-						/>
-					}
-				/>
-				<div className='w-full p-2 cursor-pointer'>
-					<div
-						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
-						style={{ paddingTop: '56%' }}
-						onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
-					>
-						{playGif !== 1 ? (
-							<SVG
-								name='playFill'
-								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
-							/>
-						) : (
-							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-							</div>
-						)}
-						<div
-							className={`w-full absolute top-0 left-0 z-20 ${
-								playGif === 1 ? 'opacity-100' : 'opacity-0'
-							}`}
-						>
-							<Image
-								alt='animated gif of Apex Apps project dashboard'
-								src='/assets/gifs/apexapps.com.au.gif'
-								layout='responsive'
-								width={1598}
-								height={895}
-							/>
-						</div>
-						<div className={`w-full absolute top-0 left-0`}>
-							<Image
-								alt='scrennshot of Apex Apps project dashboard'
-								src='/assets/images/apex-screenshot.jpg'
-								layout='responsive'
-								width={1598}
-								height={895}
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
 			<Button
 				label="Let's chat!"
 				size='large'

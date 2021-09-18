@@ -379,7 +379,11 @@ const Index = () => {
 			)}
 			{project?.contractUploaded && (
 				<a
-					href={`http://localhost:5000/projects/contract/${project?._id}`}
+					href={`${
+						process.env.NODE_ENV === 'development'
+							? 'http://localhost:5000/api/projects/contract/'
+							: `${process.env.BASE_URL}/api/projects/contract/`
+					}${project?._id}`}
 					rel='noreferrer noopener'
 					target='_blank'
 				>

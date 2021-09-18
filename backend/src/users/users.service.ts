@@ -169,6 +169,7 @@ export class UsersService {
 
     return {
       success: true,
+      user,
     };
   }
 
