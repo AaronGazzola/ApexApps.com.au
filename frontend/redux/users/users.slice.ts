@@ -823,6 +823,8 @@ const usersSlice = createSlice({
 			state.isAuth = false;
 			state.noUser = false;
 			state.user = undefined;
+			state.users = undefined;
+			state.proposal = undefined;
 			state.client = undefined;
 			localStorage.removeItem('userData');
 			state.onTour = false;
@@ -846,6 +848,7 @@ const usersSlice = createSlice({
 				],
 				videoLink: ''
 			};
+			state.trigger = 'setProposalState';
 		},
 		userTour(state) {
 			state.trigger = 'showDrawer';
@@ -995,6 +998,7 @@ const usersSlice = createSlice({
 			state.client = action.payload.client;
 			state.user = action.payload.user;
 			state.success = 'Client added';
+			state.trigger = 'getUsers';
 		});
 		builder.addCase(addUser.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -1193,6 +1197,7 @@ const usersSlice = createSlice({
 		builder.addCase(deleteProposal.fulfilled, (state, action) => {
 			state.loading = false;
 			state.proposals = action.payload.proposals;
+			state.proposal = undefined;
 			state.success = 'Proposal deleted';
 			state.trigger = 'resetProposal';
 		});

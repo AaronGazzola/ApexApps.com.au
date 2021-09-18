@@ -144,6 +144,37 @@ const Index = () => {
 							)}
 						</div>
 					))}
+					{proposal?.videoLink && (
+						<div className='w-full sm:px-8 max-w-4xl'>
+							<div className='box full p-4 relative'>
+								<h2 className='title-sm mb-2 sm:mb-4'>Personal introduction</h2>
+								<div
+									className='w-full relative'
+									style={{ paddingTop: '56.25%' }}
+								>
+									<div className='flex items-center justify-center absolute top-0 left-0 right-0 bottom-0'>
+										<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+									</div>
+									<iframe
+										className='absolute top-0 left-0 w-full h-full z-10'
+										width='560'
+										height='315'
+										src={
+											proposal?.videoLink?.startsWith(
+												'https://www.youtube.com/embed'
+											)
+												? proposal?.videoLink
+												: `https://www.youtube.com/embed/${proposal?.videoLink}`
+										}
+										title='Personal introduction video'
+										frameBorder='0'
+										allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+										allowFullScreen
+									></iframe>
+								</div>
+							</div>
+						</div>
+					)}
 					<div className='box w-full max-w-2xl border-blue-darkest border mt-4'>
 						<h1 className='title'>Apex Apps Dashboard</h1>
 						<p className='px-4 pt-1'>
@@ -207,37 +238,6 @@ const Index = () => {
 							</div>
 						</div>
 					</div>
-					{proposal?.videoLink && (
-						<div className='w-full sm:px-8 max-w-4xl'>
-							<div className='box full p-4 relative'>
-								<h2 className='title-sm mb-2 sm:mb-4'>Personal introduction</h2>
-								<div
-									className='w-full relative'
-									style={{ paddingTop: '56.25%' }}
-								>
-									<div className='flex items-center justify-center absolute top-0 left-0 right-0 bottom-0'>
-										<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-									</div>
-									<iframe
-										className='absolute top-0 left-0 w-full h-full z-10'
-										width='560'
-										height='315'
-										src={
-											proposal?.videoLink?.startsWith(
-												'https://www.youtube.com/embed'
-											)
-												? proposal?.videoLink
-												: `https://www.youtube.com/embed/${proposal?.videoLink}`
-										}
-										title='Personal introduction video'
-										frameBorder='0'
-										allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-										allowFullScreen
-									></iframe>
-								</div>
-							</div>
-						</div>
-					)}
 				</>
 			)}
 			<Button

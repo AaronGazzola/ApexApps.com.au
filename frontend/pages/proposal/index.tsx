@@ -103,19 +103,11 @@ const Index = () => {
 		let value = target.checked;
 		if (value) {
 			dispatch(getClientProposal());
+			setState(prev => ({ ...prev, currentClient: value }));
 		} else {
+			dispatch(resetProposal());
 			setState(prev => ({
 				...prev,
-				title: '',
-				videoLink: '',
-				sections: [
-					{
-						title: '',
-						content: '',
-						buttonLabel: '',
-						buttonLink: ''
-					}
-				],
 				currentClient: value
 			}));
 		}
@@ -206,43 +198,37 @@ const Index = () => {
 		}
 	};
 
-	// if admin, get all proposals
-	// if proposal exists on client, get this proposal
 	useEffect(() => {
 		if (user?.isAdmin && !proposals?.length) dispatch(getProposals());
 	}, [user?.isAdmin, dispatch, proposals?.length]);
 
-	//if proposal changes, set state to proposal content
 	useEffect(() => {
-		if (proposal && trigger === 'setProposalState') {
+		if (user && !user.isAdmin && !proposal) dispatch(getClientProposal());
+	}, [user, proposal, dispatch]);
+
+	useEffect(() => {
+		if (trigger === 'setProposalState') {
 			setState(prev => ({
 				...prev,
-				title: proposal.title || '',
-				videoLink: proposal.videoLink || '',
-				sections: proposal.sections || '',
-				currentClient: proposal?._id === user?.client?.proposal?._id
+				title: proposal?.title || '',
+				videoLink: proposal?.videoLink || '',
+				sections: proposal?.sections || [
+					{
+						title: '',
+						content: '',
+						buttonLabel: '',
+						buttonLink: ''
+					}
+				]
 			}));
 			dispatch(clearUsersTrigger());
 		}
-	}, [proposal, user?.client?.proposal, dispatch]);
-
-	// when change current client
-	// set proposal to client proposal, or new proposal
-	useEffect(() => {
-		if (
-			currentClient &&
-			user?.client?.proposal &&
-			proposal?._id !== user?.client?.proposal._id
-		)
-			dispatch(getClientProposal());
-	}, [currentClient, dispatch, proposal?._id, user?.client?.proposal]);
+	}, [proposal, user?.client?.proposal, dispatch, trigger]);
 
 	useEffect(() => {
-		if (user?.isAdmin && !currentClient) dispatch(resetProposal());
-	}, [user?.isAdmin, currentClient, dispatch]);
-
-	useEffect(() => {
-		if (trigger === 'resetProposal') dispatch(resetProposal());
+		if (trigger === 'resetProposal') {
+			dispatch(resetProposal());
+		}
 	}, [trigger, dispatch]);
 
 	return (
@@ -559,6 +545,39 @@ const Index = () => {
 									)}
 								</div>
 							))}
+							{proposal?.videoLink && (
+								<div className='w-full sm:px-8 max-w-4xl'>
+									<div className='box full p-4 relative'>
+										<h2 className='title-sm mb-2 sm:mb-4'>
+											Personal introduction
+										</h2>
+										<div
+											className='w-full relative'
+											style={{ paddingTop: '56.25%' }}
+										>
+											<div className='flex items-center justify-center absolute top-0 left-0 right-0 bottom-0'>
+												<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+											</div>
+											<iframe
+												className='absolute top-0 left-0 w-full h-full z-10'
+												width='560'
+												height='315'
+												src={
+													proposal?.videoLink?.startsWith(
+														'https://www.youtube.com/embed'
+													)
+														? proposal?.videoLink
+														: `https://www.youtube.com/embed/${proposal?.videoLink}`
+												}
+												title='Personal introduction video'
+												frameBorder='0'
+												allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+												allowFullScreen
+											></iframe>
+										</div>
+									</div>
+								</div>
+							)}
 							<div className='box w-full max-w-2xl border-blue-darkest border mt-4'>
 								<h1 className='title'>Apex Apps Dashboard</h1>
 								<p className='px-4 pt-1'>
@@ -623,39 +642,6 @@ const Index = () => {
 									</div>
 								</div>
 							</div>
-							{proposal?.videoLink && (
-								<div className='w-full sm:px-8 max-w-4xl'>
-									<div className='box full p-4 relative'>
-										<h2 className='title-sm mb-2 sm:mb-4'>
-											Personal introduction
-										</h2>
-										<div
-											className='w-full relative'
-											style={{ paddingTop: '56.25%' }}
-										>
-											<div className='flex items-center justify-center absolute top-0 left-0 right-0 bottom-0'>
-												<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-											</div>
-											<iframe
-												className='absolute top-0 left-0 w-full h-full z-10'
-												width='560'
-												height='315'
-												src={
-													proposal?.videoLink?.startsWith(
-														'https://www.youtube.com/embed'
-													)
-														? proposal?.videoLink
-														: `https://www.youtube.com/embed/${proposal?.videoLink}`
-												}
-												title='Personal introduction video'
-												frameBorder='0'
-												allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-												allowFullScreen
-											></iframe>
-										</div>
-									</div>
-								</div>
-							)}
 						</>
 					)}
 					<Button
