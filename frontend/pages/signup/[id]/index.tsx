@@ -112,14 +112,14 @@ const Index = () => {
 		dispatch(clearUsersTrigger());
 		// If id in url is invalid, redirect to /login
 		if (usersError) router.push('/login');
-	}, [usersError, dispatch, email.value, router]);
+	}, [usersError, dispatch, email.value, router, trigger]);
 
 	// Get user using id in url
 	useEffect(() => {
 		if (userId && !user) {
 			dispatch(findUserById(userId));
 		}
-	}, [userId, dispatch]);
+	}, [userId, dispatch, user]);
 
 	return (
 		<>
