@@ -238,7 +238,7 @@ const Index = () => {
 					? { ...prev.email, value: user.email, isValid: true }
 					: prev.zoomName
 			}));
-	}, [user, dispatch]);
+	}, [user, dispatch, onTour]);
 
 	useEffect(() => {
 		// set Melbourne time

@@ -86,7 +86,7 @@ const Layout = (props: LayoutProps) => {
 
 	useEffect(() => {
 		if (!onTour) dispatch(getUser());
-	}, [onTour]);
+	}, [onTour, dispatch]);
 
 	useEffect(() => {
 		if (isAuth) {
@@ -99,7 +99,16 @@ const Layout = (props: LayoutProps) => {
 				logout();
 			}
 		}
-	}, [isAuth, user, dispatch, logout, router, onAuthRoute, noUser]);
+	}, [
+		isAuth,
+		user,
+		dispatch,
+		logout,
+		router,
+		onAuthRoute,
+		noUser,
+		users?.length
+	]);
 
 	useEffect(() => {
 		if (

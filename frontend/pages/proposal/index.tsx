@@ -227,11 +227,11 @@ const Index = () => {
 
 	useEffect(() => {
 		if (user?.isAdmin && !currentClient) dispatch(resetProposal());
-	}, [user?.isAdmin, currentClient]);
+	}, [user?.isAdmin, currentClient, dispatch]);
 
 	useEffect(() => {
 		if (trigger === 'resetProposal') dispatch(resetProposal());
-	}, [trigger]);
+	}, [trigger, dispatch]);
 
 	return (
 		<>
