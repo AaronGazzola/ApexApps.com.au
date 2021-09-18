@@ -135,8 +135,8 @@ const Index = () => {
 				</a>
 				<p className='box-text mb-4'>
 					Origami.cool is an E-commerce web app for hand-folded origami models.
-					Adnim users can add and edit products, view and manage orders and
-					control user privelages.
+					Admin users can add and edit products, view and manage orders and
+					control user privileges.
 				</p>
 
 				<div className='flex flex-col items-center w-full mb-4'>
