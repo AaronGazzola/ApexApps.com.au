@@ -6,6 +6,7 @@ import Button from '../../components/Button';
 import SVG from '../../components/SVG';
 import {
 	addProposal,
+	clearUsersTrigger,
 	deleteProposal,
 	editProposal,
 	getClientProposal,
@@ -100,10 +101,24 @@ const Index = () => {
 	const changeCheckedHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		const target = e.currentTarget;
 		let value = target.checked;
-		setState({
-			...state,
-			[target.id]: value
-		});
+		if (value) {
+			dispatch(getClientProposal());
+		} else {
+			setState(prev => ({
+				...prev,
+				title: '',
+				videoLink: '',
+				sections: [
+					{
+						title: '',
+						content: '',
+						buttonLabel: '',
+						buttonLink: ''
+					}
+				],
+				currentClient: value
+			}));
+		}
 	};
 
 	const submitHandler = (e: SyntheticEvent) => {
@@ -194,18 +209,12 @@ const Index = () => {
 	// if admin, get all proposals
 	// if proposal exists on client, get this proposal
 	useEffect(() => {
-		if (user?.isAdmin) dispatch(getProposals());
-		if (user?.client?.proposal && !onTour) {
-			setState(prev => ({
-				...prev,
-				currentClient: true
-			}));
-		}
-	}, [isAuth, onTour, user?.client?.proposal, user?.isAdmin, dispatch]);
+		if (user?.isAdmin && !proposals?.length) dispatch(getProposals());
+	}, [user?.isAdmin, dispatch, proposals?.length]);
 
 	//if proposal changes, set state to proposal content
 	useEffect(() => {
-		if (proposal)
+		if (proposal && trigger === 'setProposalState') {
 			setState(prev => ({
 				...prev,
 				title: proposal.title || '',
@@ -213,7 +222,9 @@ const Index = () => {
 				sections: proposal.sections || '',
 				currentClient: proposal?._id === user?.client?.proposal?._id
 			}));
-	}, [proposal, user?.client?.proposal]);
+			dispatch(clearUsersTrigger());
+		}
+	}, [proposal, user?.client?.proposal, dispatch]);
 
 	// when change current client
 	// set proposal to client proposal, or new proposal

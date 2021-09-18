@@ -1167,6 +1167,7 @@ const usersSlice = createSlice({
 		builder.addCase(getClientProposal.fulfilled, (state, action) => {
 			state.loading = false;
 			state.proposal = action.payload.proposal;
+			state.trigger = 'setProposalState';
 		});
 		builder.addCase(getClientProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
@@ -1179,6 +1180,7 @@ const usersSlice = createSlice({
 		builder.addCase(setProposal.fulfilled, (state, action) => {
 			state.loading = false;
 			state.proposal = action.payload.proposal;
+			state.trigger = 'setProposalState';
 		});
 		builder.addCase(setProposal.rejected, (state, action) => {
 			state.error = { message: action.payload as string };
