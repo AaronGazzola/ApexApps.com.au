@@ -69,18 +69,27 @@ const Index = () => {
 						</ol>
 					</div>
 				</div>
-				<div
-					className={`relative group cursor-pointer w-full`}
-					onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
-				>
-					{playGif !== 1 && (
-						<SVG
-							name='playFill'
-							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
-						/>
-					)}
-					<div className='rounded-2xl overflow-hidden w-full border'>
-						{playGif === 1 ? (
+				<div className='w-full p-2 cursor-pointer'>
+					<div
+						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+						style={{ paddingTop: '56%' }}
+						onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
+					>
+						{playGif !== 1 ? (
+							<SVG
+								name='playFill'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+							/>
+						) : (
+							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+							</div>
+						)}
+						<div
+							className={`w-full absolute top-0 left-0 z-20 ${
+								playGif === 1 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='Animated gif of rainbowofemotions.app web app'
 								src='/assets/gifs/rainbowofemotions.app.gif'
@@ -88,7 +97,8 @@ const Index = () => {
 								width={1598}
 								height={895}
 							/>
-						) : (
+						</div>
+						<div className={`w-full absolute top-0 left-0`}>
 							<Image
 								alt='Screenshot of rainbowofemotions.app web app'
 								src='/assets/images/rainbow-screenshot.jpg'
@@ -96,7 +106,7 @@ const Index = () => {
 								width={1598}
 								height={895}
 							/>
-						)}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -159,18 +169,27 @@ const Index = () => {
 						</ol>
 					</div>
 				</div>
-				<div
-					className={`relative group cursor-pointer w-full`}
-					onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
-				>
-					{playGif !== 2 && (
-						<SVG
-							name='playFill'
-							classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100'
-						/>
-					)}
-					<div className='rounded-2xl overflow-hidden w-full border'>
-						{playGif === 2 ? (
+				<div className='w-full p-2 cursor-pointer'>
+					<div
+						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+						style={{ paddingTop: '56%' }}
+						onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
+					>
+						{playGif !== 1 ? (
+							<SVG
+								name='playFill'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+							/>
+						) : (
+							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+							</div>
+						)}
+						<div
+							className={`w-full absolute top-0 left-0 z-20 ${
+								playGif === 1 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
 							<Image
 								alt='Animated gif of origami.cool web app'
 								src='/assets/gifs/origami.cool.gif'
@@ -178,7 +197,8 @@ const Index = () => {
 								width={1598}
 								height={895}
 							/>
-						) : (
+						</div>
+						<div className={`w-full absolute top-0 left-0`}>
 							<Image
 								alt='Screenshot of origami.cool web app'
 								src='/assets/images/origami-screenshot.jpg'
@@ -186,7 +206,7 @@ const Index = () => {
 								width={1598}
 								height={895}
 							/>
-						)}
+						</div>
 					</div>
 				</div>
 			</div>

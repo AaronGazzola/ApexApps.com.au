@@ -12,6 +12,19 @@ const Meta = (props: MetaProps) => {
 		<Head>
 			<meta name='keywords' content={keywords} />
 			<meta name='description' content={description} />
+			<meta property='og:title' content={title} />
+			<meta property='og:description' content={description} />
+			<meta
+				property='og:image'
+				content={
+					process.env.NODE_ENV === 'development'
+						? 'http://localhost:3000/assets/images/fb_image_xl.png'
+						: 'https://www.apexapp.com.au/assets/images/fb_image_xl.png'
+				}
+			/>
+			<meta property='og:url' content='https://www.apexapps.com.au' />
+			<meta property='og:site_name' content='Apex Apps' />
+			<meta name='twitter:image:alt' content={title} />
 			<title>{title}</title>
 		</Head>
 	);
@@ -22,7 +35,7 @@ Meta.defaultProps = {
 	keywords:
 		'web development, javascript, Apex Apps, Aaron Gazzola, web app, app, fullstack, full stack, full-stack, freelance, contract, developer',
 	description:
-		'Web application development by Aaron Gazzola. Apex Apps provides full stack JavaScript web app development - owned and operated by Australian software engineer and entrepreneur: Aaron Gazzola BSc(Hons)'
+		'Web application development by Aaron Gazzola. Apex Apps provides full stack JavaScript web app development - owned and operated by Australian software engineer: Aaron Gazzola BSc(Hons)'
 };
 
 export default Meta;

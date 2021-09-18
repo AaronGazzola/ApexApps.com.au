@@ -17,7 +17,9 @@ export class AuthService {
   ) {}
 
   async signup(signupUserDto: SignupUserDto) {
-    const { userName, password, email, id } = signupUserDto;
+    const { userName, password, email: submittedEmail, id } = signupUserDto;
+
+    const email = submittedEmail.toLowerCase();
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -108,7 +110,8 @@ export class AuthService {
     }
   }
 
-  async validateUser(email: string, password: string): Promise<User> {
+  async validateUser(emailParam: string, password: string): Promise<User> {
+    const email = emailParam.toLowerCase();
     const user = await this.userModel.findOne({ email }).select('+password');
 
     if (!user) {
