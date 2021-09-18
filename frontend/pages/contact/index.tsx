@@ -248,10 +248,11 @@ const Index = () => {
 		let bookingHours = [7, 8, 9, 13, 14, 15, 18, 19, 20];
 
 		// if last booking for today is already passed, skip today
-		const lastBookingHasPast =
-			melbourneTime.hour() > bookingHours[bookingHours.length - 1];
-		if (lastBookingHasPast) melbourneTime.add(1, 'd');
 
+		const lastBookingHasPast =
+			melbourneTime.add(2, 'h').hour() > bookingHours[bookingHours.length - 1];
+
+		if (lastBookingHasPast) melbourneTime.add(1, 'd');
 		let melbourneBookingTimes: string[] = [];
 		for (let i = 0; i < 3; i++) {
 			bookingHours.forEach(hour => {
@@ -431,7 +432,7 @@ const Index = () => {
 							type='text'
 							placeholder='Project title'
 							value={projectTitle.value}
-							label='projectTitle'
+							label='Project title'
 							id='projectTitle'
 							onChange={changeHandler}
 							isTouched={projectTitle.isTouched}

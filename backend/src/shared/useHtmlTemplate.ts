@@ -221,7 +221,7 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         )}
         ${button}
         ${paragraph(
-          `If you did not request to reset your password, please ignore this email.`,
+          `If you did not signup at Apex Apps, please ignore this email.`,
           'after',
         )}
         ${footer}`,

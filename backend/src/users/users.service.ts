@@ -411,7 +411,7 @@ export class UsersService {
       videoLink,
     });
 
-    const proposals = await this.proposalModel.find({ withClient: false });
+    const proposals = await this.proposalModel.find();
 
     let returnUser = user;
     if (currentClient) {

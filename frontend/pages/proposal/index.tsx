@@ -27,17 +27,8 @@ interface Section {
 
 const Index = () => {
 	const dispatch = useAppDispatch();
-	const {
-		user,
-		userView,
-		onTour,
-		isAuth,
-		loading,
-		proposal,
-		proposals,
-		trigger,
-		success: usersSuccess
-	} = useAppSelector(state => state.users);
+	const { user, userView, loading, proposal, proposals, trigger } =
+		useAppSelector(state => state.users);
 	const { breakpoint } = useAppSelector(state => state.utils);
 
 	const initialState = {

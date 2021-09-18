@@ -42,7 +42,7 @@ const ProfileModal = () => {
 	const [passwordIsHidden, setPasswordIsHidden] = useState(true);
 	const [passwordIsOpen, setPasswordIsOpen] = useState(false);
 	const formIsValid = passwordIsOpen
-		? (name.isChanged || email.isChanged) &&
+		? (name.isChanged || email.isChanged || newPassword.isValid) &&
 		  name.isValid &&
 		  email.isValid &&
 		  currentPassword.isValid &&

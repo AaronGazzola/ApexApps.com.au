@@ -7,8 +7,6 @@
 	body {
 		font-family: 'Montserrat', sans-serif;
 	}
-}
-@layer base {
 	select {
 		appearance: none;
 		background-color: transparent;

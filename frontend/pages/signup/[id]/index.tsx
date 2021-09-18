@@ -51,7 +51,7 @@ const Index = () => {
 		const target = e.currentTarget;
 		const isValid =
 			target.id === 'name'
-				? target.value.length && target.value.length < 30
+				? target.value.length >= 2 && target.value.length <= 30
 				: target.id === 'email'
 				? /^\S+@\S+\.\S+$/.test(target.value)
 				: target.value.length >= 6 && target.value.length <= 20;
