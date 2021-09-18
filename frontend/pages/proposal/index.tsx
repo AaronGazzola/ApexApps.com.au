@@ -508,7 +508,7 @@ const Index = () => {
 							{proposal?.sections?.map((section, index) => (
 								<div className='text-box p-4' key={index}>
 									<h2 className='box-title'>{section.title}</h2>
-									<p className='box-text font-medium text-sm'>
+									<p className='box-text'>
 										{section.content.split('<br/>').map((paragraph, index) => (
 											<React.Fragment key={index}>
 												{paragraph}
@@ -528,7 +528,6 @@ const Index = () => {
 												type='button'
 												color='green'
 												variant='simple'
-												size='small'
 												buttonClasses='border border-green px-1.5 py-0.5 mt-4'
 												fullWidth
 											/>
