@@ -173,9 +173,9 @@ const Index = () => {
 					<div
 						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
 						style={{ paddingTop: '56%' }}
-						onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
+						onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
 					>
-						{playGif !== 1 ? (
+						{playGif !== 2 ? (
 							<SVG
 								name='playFill'
 								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
@@ -187,7 +187,7 @@ const Index = () => {
 						)}
 						<div
 							className={`w-full absolute top-0 left-0 z-20 ${
-								playGif === 1 ? 'opacity-100' : 'opacity-0'
+								playGif === 2 ? 'opacity-100' : 'opacity-0'
 							}`}
 						>
 							<Image
