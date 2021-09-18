@@ -103,6 +103,7 @@ const EsimateModal = () => {
 				id='costFrom'
 				fullWidth
 				validation={false}
+				inputClasses='no-spin'
 			/>
 			<Input
 				type='number'
@@ -113,6 +114,7 @@ const EsimateModal = () => {
 				id='costTo'
 				fullWidth
 				validation={false}
+				inputClasses='no-spin'
 			/>
 			<Input
 				type='select'

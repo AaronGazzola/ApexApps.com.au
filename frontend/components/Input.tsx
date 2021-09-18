@@ -166,8 +166,8 @@ const Input = (props: InputProps) => {
 					{type === 'textarea' ? (
 						<textarea
 							autoFocus={autoFocus}
-							className={`form-input${
-								labelTop ? '-label-top' : '-label-bottom'
+							className={`form-input ${
+								labelTop ? 'form-input-label-top' : 'form-input-label-bottom'
 							} w-full border rounded-md font-medium focus:outline-none p-2 px-3 text-gray-dark 
 						${
 							!isValid && isTouched && validation

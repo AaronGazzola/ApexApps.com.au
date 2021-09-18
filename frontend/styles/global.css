@@ -3,29 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.no-spin::-webkit-inner-spin-button,
-.no-spin::-webkit-outer-spin-button {
-	-webkit-appearance: none !important;
-	margin: 0 !important;
-}
-
-.no-spin {
-	-moz-appearance: textfield !important;
-}
-.form-input-label-top:placeholder-shown + .form-label {
-	opacity: 0;
-	visibility: hidden;
-	transform: translate(0.5rem, 2rem);
-}
-.form-input-label-bottom:placeholder-shown + .form-label {
-	opacity: 0;
-	visibility: hidden;
-	transform: translate(0.5rem, -2rem);
-}
-.form-input::placeholder {
-	letter-spacing: normal;
-}
-
 @layer base {
 	body {
 		font-family: 'Montserrat', sans-serif;
@@ -55,6 +32,28 @@
 	}
 	.checkbox:checked ~ .checkbox-control {
 		opacity: 1;
+	}
+	.no-spin::-webkit-inner-spin-button,
+	.no-spin::-webkit-outer-spin-button {
+		-webkit-appearance: none !important;
+		margin: 0 !important;
+	}
+
+	.no-spin {
+		-moz-appearance: textfield !important;
+	}
+	.form-input-label-top:placeholder-shown + .form-label {
+		opacity: 0;
+		visibility: hidden;
+		transform: translate(0.5rem, 2rem);
+	}
+	.form-input-label-bottom:placeholder-shown + .form-label {
+		opacity: 0;
+		visibility: hidden;
+		transform: translate(0.5rem, -2rem);
+	}
+	.form-input::placeholder {
+		letter-spacing: normal;
 	}
 }
 
