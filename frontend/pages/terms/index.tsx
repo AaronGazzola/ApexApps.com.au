@@ -130,9 +130,11 @@ const Index = () => {
 				<p className='title-sm text-xl font-medium'>Privacy policy</p>
 				<p className='box-text'>
 					Apex Apps is committed to protecting your privacy. You can{' '}
-					<a className='font-semibold italic text-green'>
-						<Link href='/privacy'>read the full Privacy Policy here</Link>
-					</a>
+					<Link href='/privacy'>
+						<a className='font-semibold italic text-green'>
+							read the full Privacy Policy here
+						</a>
+					</Link>
 				</p>
 			</div>
 		</>

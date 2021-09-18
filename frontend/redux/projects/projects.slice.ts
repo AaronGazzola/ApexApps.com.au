@@ -219,7 +219,8 @@ export const editEstimate = createAsyncThunk(
 			endFrom,
 			endTo,
 			costFrom,
-			costTo
+			costTo,
+			currency
 		}: {
 			startFrom: String;
 			startTo: String;
@@ -227,6 +228,7 @@ export const editEstimate = createAsyncThunk(
 			endTo: String;
 			costFrom: Number;
 			costTo: Number;
+			currency: String;
 		},
 		{ rejectWithValue, getState }
 	) => {
@@ -247,7 +249,8 @@ export const editEstimate = createAsyncThunk(
 					endFrom,
 					endTo,
 					costFrom,
-					costTo
+					costTo,
+					currency
 				},
 				{
 					headers: {

@@ -271,8 +271,8 @@ export const sendVerifyUser = createAsyncThunk(
 				await axios.post(
 					`${
 						process.env.NODE_ENV === 'production'
-							? process.env.BASE_URL
-							: 'http://localhost:5000'
+							? process.env.BASE_URL + '/api'
+							: 'http://localhost:5000/api'
 					}/users/send-verify-user`,
 					{ email },
 					config
@@ -296,8 +296,8 @@ export const findUserById = createAsyncThunk(
 				await axios.post(
 					`${
 						process.env.NODE_ENV === 'production'
-							? process.env.BASE_URL
-							: 'http://localhost:5000'
+							? process.env.BASE_URL + '/api'
+							: 'http://localhost:5000/api'
 					}/users/find-by-id`,
 					{ id },
 					config
@@ -369,8 +369,8 @@ export const forgotPassword = createAsyncThunk(
 				await axios.post(
 					`${
 						process.env.NODE_ENV === 'production'
-							? process.env.BASE_URL
-							: 'http://localhost:5000'
+							? process.env.BASE_URL + '/api'
+							: 'http://localhost:5000/api'
 					}/users/forgot-password`,
 					{ email },
 					config
@@ -916,6 +916,7 @@ const usersSlice = createSlice({
 			state.loading = false;
 			state.user = action.payload.user;
 			state.isAuth = false;
+			state.trigger = 'sendVerifyUser';
 			state.alert = {
 				title: 'Success',
 				message: 'Please check your email inbox to verify your account',
@@ -1029,6 +1030,7 @@ const usersSlice = createSlice({
 		});
 		builder.addCase(findUserById.fulfilled, (state, action) => {
 			state.loading = false;
+			state.user = action.payload.foundUser;
 		});
 		builder.addCase(findUserById.rejected, (state, action) => {
 			state.error = { message: action.payload as string };

@@ -3,6 +3,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import {
+	clearUsersTrigger,
 	findUserById,
 	login,
 	sendVerifyUser,
@@ -22,7 +23,8 @@ const Index = () => {
 		alert: usersAlert,
 		error: usersError,
 		user,
-		isAuth
+		isAuth,
+		trigger
 	} = useAppSelector(state => state.users);
 	const [formState, setFormState] = useState({
 		name: {
@@ -106,23 +108,15 @@ const Index = () => {
 
 	useEffect(() => {
 		// if signup is successful, send verification email
-		if (usersAlert?.title === 'Success' && !isAuth && user?.email)
-			dispatch(sendVerifyUser(email.value));
+		if (trigger === 'sendVerifyUser') dispatch(sendVerifyUser(email.value));
+		dispatch(clearUsersTrigger());
 		// If id in url is invalid, redirect to /login
 		if (usersError) router.push('/login');
-	}, [
-		usersAlert,
-		usersError,
-		dispatch,
-		email.value,
-		isAuth,
-		router,
-		user?.email
-	]);
+	}, [usersError, dispatch, email.value, router]);
 
 	// Get user using id in url
 	useEffect(() => {
-		if (userId) {
+		if (userId && !user) {
 			dispatch(findUserById(userId));
 		}
 	}, [userId, dispatch]);

@@ -144,7 +144,7 @@ export class ProjectsService {
   }
 
   async editEstimate(user: User, editEstimateDto: EditEstimateDto) {
-    const { startFrom, startTo, endFrom, endTo, costFrom, costTo } =
+    const { startFrom, startTo, endFrom, endTo, costFrom, costTo, currency } =
       editEstimateDto;
 
     if (!user.isAdmin)
@@ -158,6 +158,7 @@ export class ProjectsService {
     project.estimate.endTo = endTo;
     project.estimate.costFrom = costFrom;
     project.estimate.costTo = costTo;
+    project.estimate.currency = currency;
 
     await project.save();
 

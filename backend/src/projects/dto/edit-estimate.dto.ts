@@ -18,4 +18,7 @@ export class EditEstimateDto {
 
   @IsNumber()
   costTo: number;
+
+  @IsString()
+  currency: string;
 }

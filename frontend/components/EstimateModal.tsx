@@ -15,13 +15,18 @@ const EsimateModal = () => {
 		endFrom: estimate?.endFrom ? new Date(estimate?.endFrom) : new Date(),
 		endTo: estimate?.endTo ? new Date(estimate?.endTo) : new Date(),
 		costFrom: estimate?.costFrom ? Number(estimate?.costFrom) : 0,
-		costTo: estimate?.costTo ? Number(estimate?.costTo) : 0
+		costTo: estimate?.costTo ? Number(estimate?.costTo) : 0,
+		currency: 'USD'
 	} as { [index: string]: any });
-	const { startFrom, startTo, endFrom, endTo, costFrom, costTo } = state;
+	const { startFrom, startTo, endFrom, endTo, costFrom, costTo, currency } =
+		state;
 
 	const changeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		let value: string | Date = e.currentTarget.value;
-		if (!e.currentTarget.id.startsWith('cost'))
+		if (
+			!e.currentTarget.id.startsWith('cost') &&
+			e.currentTarget.id !== 'currency'
+		)
 			value = moment(e.currentTarget.value).toDate();
 		setState({
 			...state,
@@ -38,7 +43,8 @@ const EsimateModal = () => {
 				endFrom: moment(endFrom).toString(),
 				endTo: moment(endTo).toString(),
 				costFrom: Number(costFrom),
-				costTo: Number(costTo)
+				costTo: Number(costTo),
+				currency
 			})
 		);
 	};
@@ -105,6 +111,17 @@ const EsimateModal = () => {
 				label='Cost to'
 				onChange={changeHandler}
 				id='costTo'
+				fullWidth
+				validation={false}
+			/>
+			<Input
+				type='select'
+				options={['USD', 'AUD']}
+				placeholder='Currency'
+				value={currency}
+				label='Currency'
+				onChange={changeHandler}
+				id='currency'
 				fullWidth
 				validation={false}
 			/>

@@ -249,7 +249,7 @@ const Index = () => {
 					</p>
 				</div>
 			)}
-			<div className='text-box sm:px-6 w-full max-w-2xl'>
+			<div className='text-box sm:px-6'>
 				{loading ? (
 					<>
 						<div className='skeleton w-36 h-7 m-1'></div>
@@ -262,7 +262,7 @@ const Index = () => {
 					<>
 						<h2 className='box-title break-words'>{project?.title}</h2>
 						<p
-							className={`w-full my-2 break-words ${
+							className={`box-text my-2 ${
 								!project?.description ? 'italic text-gray-dark' : ''
 							}`}
 						>
