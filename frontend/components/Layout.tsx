@@ -42,7 +42,6 @@ const Layout = (props: LayoutProps) => {
 	const {
 		isAuth,
 		user,
-		success: usersSuccess,
 		client,
 		onTour,
 		noUser,

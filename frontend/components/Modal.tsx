@@ -38,8 +38,8 @@ const Modal = (props: ModalProps) => {
 	}, [isOpen]);
 
 	useEffect(() => {
-		if ((success || error || alert) && !userFeedback) onClose();
-	}, [success, error, alert, onClose, userFeedback]);
+		if ((success || error || alert) && !userFeedback && isOpen) onClose();
+	}, [success, error, alert, onClose, userFeedback, isOpen]);
 
 	if (isOpen) {
 		return (
