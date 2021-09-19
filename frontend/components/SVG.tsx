@@ -458,8 +458,6 @@ const icons: Icons = {
 	},
 	upworkLogo: {
 		props: {
-			// width: '2500',
-			// height: '747',
 			viewBox: '0 0 512 153',
 			xmlns: 'http://www.w3.org/2000/svg'
 		},

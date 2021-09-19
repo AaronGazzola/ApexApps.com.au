@@ -717,7 +717,7 @@ const Index = () => {
 				className='flex justify-center mt-3'
 			>
 				<SVG name='github' classes='fill-current text-green mr-2' />
-				<p className='font-medium italic text-green'>github.com/AaronGazzola</p>
+				<p className='font-medium italic text-green'>Github.com/AaronGazzola</p>
 			</a>
 			<a
 				rel='noopener noreferrer'
@@ -728,7 +728,7 @@ const Index = () => {
 				<div className='relative w-9 h-7 overflow-hidden'>
 					<SVG
 						name='upworkLogo'
-						classes='absolute fill-current text-green w-20 h-16'
+						classes='absolute fill-current text-green w-20 h-16 '
 						style={{
 							top: '-18px',
 							left: '0px'
@@ -736,7 +736,7 @@ const Index = () => {
 					/>
 				</div>
 				<p className='font-medium italic text-green'>
-					upwork.com/freelancers/aarongazzola
+					Upwork.com/Freelancers/AaronGazzola
 				</p>
 			</a>
 		</>

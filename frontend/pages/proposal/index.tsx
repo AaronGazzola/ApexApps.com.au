@@ -427,7 +427,7 @@ const Index = () => {
 									Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 								</p>
 								<p className='text-sm font-medium z-30'>
-									I create elegant and powerful web applications - accessable on
+									I create elegant and powerful web applications - accessible on
 									any device.
 								</p>
 								{breakpoint === 'xs' ? (
@@ -447,7 +447,7 @@ const Index = () => {
 										Developer.
 									</p>
 									<p className='text-sm font-medium opacity-0'>
-										I create elegant and powerful web applications - accessable
+										I create elegant and powerful web applications - accessible
 										on any device.
 									</p>
 								</div>

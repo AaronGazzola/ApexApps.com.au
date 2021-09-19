@@ -21,7 +21,7 @@ const Footer = (props: FooterProps) => {
 				Copyright &copy; Apex Apps {moment().format('YYYY')}
 			</p>
 			<Link href='/terms' passHref>
-				<p className='text-sm text-green-700 font-semibold cursor-pointer'>
+				<p className='text-sm text-green font-semibold cursor-pointer'>
 					Terms and conditions
 				</p>
 			</Link>

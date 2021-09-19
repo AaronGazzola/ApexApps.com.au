@@ -63,7 +63,7 @@ export default function Home() {
 							Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 						</p>
 						<p className='text-sm font-medium z-30'>
-							I create elegant and powerful web applications - accessable on any
+							I create elegant and powerful web applications - accessible on any
 							device.
 						</p>
 						{breakpoint === 'xs' ? (
@@ -82,7 +82,7 @@ export default function Home() {
 								Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
 							</p>
 							<p className='text-sm font-medium opacity-0'>
-								I create elegant and powerful web applications - accessable on
+								I create elegant and powerful web applications - accessible on
 								any device.
 							</p>
 						</div>
@@ -293,7 +293,7 @@ export default function Home() {
 				</p>
 				<div className='box w-full pb-2'>
 					<p className='box-text p-1'>
-						Even though Aaron appeared to be a lot younger and not as the
+						Even though Aaron appeared to be a lot younger and not as
 						experienced as the other Freelancers I feel so blessed that I chose
 						him. His professionalism, insight and communication skills was
 						exactly what I needed.
