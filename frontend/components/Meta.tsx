@@ -16,11 +16,7 @@ const Meta = (props: MetaProps) => {
 			<meta property='og:description' content={description} />
 			<meta
 				property='og:image'
-				content={
-					process.env.NODE_ENV === 'development'
-						? 'http://localhost:3000/assets/images/fb_image_xl.png'
-						: 'https://www.apexapp.com.au/assets/images/fb_image_xl.png'
-				}
+				content='https://apexapps.com.au/assets/images/fb_image_xl.png'
 			/>
 			<meta property='og:url' content='https://www.apexapps.com.au' />
 			<meta property='og:site_name' content='Apex Apps' />

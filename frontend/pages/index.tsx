@@ -117,9 +117,15 @@ export default function Home() {
 								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
 							/>
 						) : (
-							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-								<div className='border-white w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-							</div>
+							<>
+								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+									<div className='border-white w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+								</div>
+								<SVG
+									name='mute'
+									classes='absolute bottom-2 right-2 fill-current text-gray z-30'
+								/>
+							</>
 						)}
 						<div
 							className={`w-full absolute top-0 left-0 z-20 ${
@@ -157,9 +163,15 @@ export default function Home() {
 								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
 							/>
 						) : (
-							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-							</div>
+							<>
+								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+									<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+								</div>
+								<SVG
+									name='mute'
+									classes='absolute bottom-2 right-2 fill-current text-gray z-30'
+								/>
+							</>
 						)}
 						<div
 							className={`w-full absolute top-0 left-0 z-20 ${
@@ -235,9 +247,15 @@ export default function Home() {
 								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
 							/>
 						) : (
-							<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-								<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-							</div>
+							<>
+								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+									<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+								</div>
+								<SVG
+									name='mute'
+									classes='absolute bottom-2 right-2 fill-current text-gray z-30'
+								/>
+							</>
 						)}
 						<div
 							className={`w-full absolute top-0 left-0 z-20 ${

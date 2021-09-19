@@ -714,10 +714,30 @@ const Index = () => {
 				rel='noopener noreferrer'
 				target='_blank'
 				href='https://github.com/AaronGazzola'
-				className='flex justify-center mt-2'
+				className='flex justify-center mt-3'
 			>
 				<SVG name='github' classes='fill-current text-green mr-2' />
 				<p className='font-medium italic text-green'>github.com/AaronGazzola</p>
+			</a>
+			<a
+				rel='noopener noreferrer'
+				target='_blank'
+				href='https://www.upwork.com/freelancers/aarongazzola'
+				className='flex justify-center mt-2 items-center'
+			>
+				<div className='relative w-9 h-7 overflow-hidden'>
+					<SVG
+						name='upworkLogo'
+						classes='absolute fill-current text-green w-20 h-16'
+						style={{
+							top: '-18px',
+							left: '0px'
+						}}
+					/>
+				</div>
+				<p className='font-medium italic text-green'>
+					upwork.com/freelancers/aarongazzola
+				</p>
 			</a>
 		</>
 	);
