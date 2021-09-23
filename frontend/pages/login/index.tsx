@@ -182,7 +182,7 @@ const Index = () => {
 					}
 					type='button'
 					fullWidth
-					color='green-700'
+					color='green-dark'
 					variant='simple'
 					size='small'
 					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm border-green'

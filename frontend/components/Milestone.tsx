@@ -436,49 +436,41 @@ const Milestone = (props: MilestoneProps) => {
 															classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 														/>
 
-														{feature.steps.map((step, index) => {
-															if (!state[`step${step._id}`]) {
-																return (
-																	<React.Fragment key={index}></React.Fragment>
-																);
-															} else {
-																return (
-																	<React.Fragment key={step._id}>
-																		<div className='flex flex-nowrap items-center w-full'>
-																			<Input
-																				type='textarea'
-																				placeholder={`Step ${index + 1}`}
-																				value={state[`step${step._id}`]}
-																				onChange={changeHandler}
-																				label={`Step ${index + 1}`}
-																				id={`step${step._id}`}
-																				validation={false}
-																				rows={1}
-																			/>
-																			<SVG
-																				name='close'
-																				classes={`fill-current text-red w-7 h-7 z-10 cursor-pointer mt-5 -mr-3`}
-																				onClick={() =>
-																					setModalState({
-																						isOpen: true,
-																						type: 'deleteStep',
-																						id: step._id,
-																						content: state[`step${step._id}`]
-																					})
-																				}
-																			/>
-																		</div>
-																		<SVG
-																			onClick={() =>
-																				addStepHandler(feature._id, index + 1)
-																			}
-																			name='add'
-																			classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
-																		/>
-																	</React.Fragment>
-																);
-															}
-														})}
+														{feature.steps.map((step, index) => (
+															<React.Fragment key={step._id}>
+																<div className='flex flex-nowrap items-center w-full'>
+																	<Input
+																		type='textarea'
+																		placeholder={`Step ${index + 1}`}
+																		value={state[`step${step._id}`]}
+																		onChange={changeHandler}
+																		label={`Step ${index + 1}`}
+																		id={`step${step._id}`}
+																		validation={false}
+																		rows={1}
+																	/>
+																	<SVG
+																		name='close'
+																		classes={`fill-current text-red w-7 h-7 z-10 cursor-pointer mt-5 -mr-3`}
+																		onClick={() =>
+																			setModalState({
+																				isOpen: true,
+																				type: 'deleteStep',
+																				id: step._id,
+																				content: state[`step${step._id}`]
+																			})
+																		}
+																	/>
+																</div>
+																<SVG
+																	onClick={() =>
+																		addStepHandler(feature._id, index + 1)
+																	}
+																	name='add'
+																	classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
+																/>
+															</React.Fragment>
+														))}
 													</div>
 												</Collapse>
 											</div>
@@ -510,7 +502,7 @@ const Milestone = (props: MilestoneProps) => {
 	} else {
 		return (
 			<div className='box w-full max-w-sm relative' key={milestoneId}>
-				{milestones && milestones?.length > 1 && (
+				{milestones && (
 					<>
 						<div
 							className={`absolute rounded-full w-7 h-7 right-4 left-3 mt-1 mr-2 transition-opacity duration-300
@@ -541,30 +533,33 @@ const Milestone = (props: MilestoneProps) => {
 							)}
 						</div>
 
-						<SVG
-							name='chevronLeft'
-							classes={`cursor-pointer absolute w-7 h-7 right-4 top-3 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
-								openMilestone === milestoneId
-									? 'rotate-90 translate-y-2 text-blue-dark'
-									: '-rotate-90'
-							}`}
-							onClick={() =>
-								dispatch(
-									setOpenMilestone(
-										openMilestone === milestoneId ? '' : milestoneId
+						{milestones.length > 1 && (
+							<SVG
+								name='chevronLeft'
+								classes={`cursor-pointer absolute w-7 h-7 right-4 top-3 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+									openMilestone === milestoneId
+										? 'rotate-90 translate-y-2 text-blue-dark'
+										: '-rotate-90'
+								}`}
+								onClick={() =>
+									dispatch(
+										setOpenMilestone(
+											openMilestone === milestoneId ? '' : milestoneId
+										)
 									)
-								)
-							}
-						/>
+								}
+							/>
+						)}
 						<div
 							className='w-full cursor-pointer'
-							onClick={() =>
-								dispatch(
-									setOpenMilestone(
-										openMilestone === milestoneId ? '' : milestoneId
-									)
-								)
-							}
+							onClick={() => {
+								if (milestones.length > 1)
+									dispatch(
+										setOpenMilestone(
+											openMilestone === milestoneId ? '' : milestoneId
+										)
+									);
+							}}
 						>
 							<h2 className='title-sm px-7'>{title}</h2>
 						</div>
@@ -649,59 +644,63 @@ const Milestone = (props: MilestoneProps) => {
 							<div
 								className={`flex items-start py-2 cursor-pointer
 							`}
-								onClick={() =>
-									dispatch(
-										setOpenFeature(
-											openFeature === feature._id ? '' : feature._id
-										)
-									)
-								}
-							>
-								<div
-									className={`rounded-full h-5 w-5 mt-1 mr-2 ${
-										feature.state === 'Completed'
-											? 'bg-green'
-											: feature.state === 'In progress'
-											? 'bg-blue-darkest'
-											: 'bg-gray'
-									}`}
-								>
-									{feature.state === 'Completed' ? (
-										<SVG
-											name='checkMark'
-											classes='fill-current text-white h-5 w-5'
-										/>
-									) : feature.state === 'In progress' ? (
-										<SVG
-											name='pulse'
-											classes='fill-current text-white w-4 h-4 mt-0.5 ml-0.5'
-										/>
-									) : (
-										<SVG
-											name='lightBulbFill'
-											classes='fill-current text-white h-4 w-4 mt-0.5 ml-0.5'
-										/>
-									)}
-								</div>
-								<h3 className='font-semibold text-gray-dark mt-0.5 pr-2'>
-									{feature.title}
-								</h3>
-
-								<SVG
-									name='chevronLeft'
-									classes={`cursor-pointer absolute w-6 h-6 right-3 top-1 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
-										openFeature === feature._id
-											? 'rotate-90 translate-y-2 text-blue-dark'
-											: '-rotate-90'
-									}`}
-									onClick={() =>
+								onClick={() => {
+									if (!!feature.steps.length)
 										dispatch(
 											setOpenFeature(
 												openFeature === feature._id ? '' : feature._id
 											)
-										)
-									}
-								/>
+										);
+								}}
+							>
+								<div className='pt-1 pr-2'>
+									<div
+										className={`rounded-full h-5 w-5 flex items-center justify-center ${
+											feature.state === 'Completed'
+												? 'bg-green'
+												: feature.state === 'In progress'
+												? 'bg-blue-darkest'
+												: 'bg-gray'
+										}`}
+									>
+										{feature.state === 'Completed' ? (
+											<SVG
+												name='checkMark'
+												classes='fill-current text-white h-5 w-5'
+											/>
+										) : feature.state === 'In progress' ? (
+											<SVG
+												name='pulse'
+												classes='fill-current text-white w-4 h-4'
+											/>
+										) : (
+											<SVG
+												name='lightBulbFill'
+												classes='fill-current text-white h-4 w-4'
+											/>
+										)}
+									</div>
+								</div>
+								<h3 className='font-semibold text-gray-dark mt-0.5 pr-6'>
+									{feature.title}
+								</h3>
+								{!!feature.steps.length && (
+									<SVG
+										name='chevronLeft'
+										classes={`cursor-pointer absolute w-6 h-6 right-3 top-1 fill-current text-gray-light transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+											openFeature === feature._id
+												? 'rotate-90 translate-y-2 text-blue-dark'
+												: '-rotate-90'
+										}`}
+										onClick={() =>
+											dispatch(
+												setOpenFeature(
+													openFeature === feature._id ? '' : feature._id
+												)
+											)
+										}
+									/>
+								)}
 							</div>
 							<Collapse
 								style={{ width: '100%' }}

@@ -1010,6 +1010,7 @@ const usersSlice = createSlice({
 		builder.addCase(getUsers.fulfilled, (state, action) => {
 			state.loading = false;
 			state.users = action.payload.users;
+			if (action.payload.users?.length === 0) state.noUsers = true;
 		});
 		builder.addCase(getUsers.rejected, (state, action) => {
 			state.error = { message: action.payload as string };

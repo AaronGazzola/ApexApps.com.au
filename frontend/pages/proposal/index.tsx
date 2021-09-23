@@ -424,7 +424,9 @@ const Index = () => {
 								style={{ height: 112 }}
 							>
 								<p className='text-sm font-medium z-30'>
-									Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript Developer.
+									Hi, I&apos;m Aaron Gazzola, an Australian{' '}
+									<span className='whitespace-nowrap'>full-stack</span>{' '}
+									Javascript Developer.
 								</p>
 								<p className='text-sm font-medium z-30'>
 									I create elegant and powerful web applications - accessible on
@@ -443,8 +445,9 @@ const Index = () => {
 								)}
 								<div className='absolute box top-0 left-0 w-full sm:w-80 h-min z-10'>
 									<p className='text-sm font-medium opacity-0'>
-										Hi, I&apos;m Aaron Gazzola, A Full-Stack Javascript
-										Developer.
+										Hi, I&apos;m Aaron Gazzola, an Australian{' '}
+										<span className='whitespace-nowrap'>full-stack</span>{' '}
+										Javascript Developer.
 									</p>
 									<p className='text-sm font-medium opacity-0'>
 										I create elegant and powerful web applications - accessible

@@ -48,6 +48,7 @@ export type UserState = {
 	token?: string;
 	userView?: boolean;
 	noUser?: boolean;
+	noUsers?: boolean;
 	onTour?: boolean;
 	bookings?: Booking[];
 	user?: User;

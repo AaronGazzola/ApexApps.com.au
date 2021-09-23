@@ -45,6 +45,7 @@ const Layout = (props: LayoutProps) => {
 		client,
 		onTour,
 		noUser,
+		noUsers,
 		users,
 		redirect,
 		trigger: usersTrigger
@@ -93,8 +94,9 @@ const Layout = (props: LayoutProps) => {
 				dispatch(setClient(user.clientName));
 			if (user?.isAdmin && !client && users?.length)
 				dispatch(setClient(users[0].clientName));
-			if (!projects?.length) dispatch(getProjects());
-			if (user?.isAdmin && !users?.length) dispatch(getUsers());
+			if (!projects?.length && user?.client?.projects?.length)
+				dispatch(getProjects());
+			if (user?.isAdmin && !users?.length && !noUsers) dispatch(getUsers());
 		} else {
 			if (onAuthRoute() && noUser) {
 				router.push('/login');
@@ -111,7 +113,8 @@ const Layout = (props: LayoutProps) => {
 		noUser,
 		users,
 		client,
-		projects?.length
+		projects?.length,
+		noUsers
 	]);
 
 	useEffect(() => {

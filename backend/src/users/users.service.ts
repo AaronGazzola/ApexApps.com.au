@@ -219,7 +219,7 @@ export class UsersService {
     } catch (err) {
       throw new ErrorResponse('Invalid signup link', 401);
     }
-    if (!user) {
+    if (!user || user.isVerified) {
       throw new ErrorResponse('Invalid signup link', 401);
     } else {
       return {

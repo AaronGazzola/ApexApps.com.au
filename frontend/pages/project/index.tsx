@@ -3,7 +3,6 @@ import {
 	BaseSyntheticEvent,
 	ChangeEvent,
 	SyntheticEvent,
-	useEffect,
 	useState
 } from 'react';
 import Button from '../../components/Button';
