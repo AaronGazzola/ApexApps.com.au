@@ -147,7 +147,9 @@ const Milestone = (props: MilestoneProps) => {
 		feature => feature.state === 'Completed'
 	)
 		? 'Completed'
-		: features.some(feature => feature.state === 'In progress')
+		: features.some(feature =>
+				['In progress', 'Completed'].includes(feature.state)
+		  )
 		? 'In progress'
 		: 'Planned';
 
@@ -266,7 +268,7 @@ const Milestone = (props: MilestoneProps) => {
 									openMilestone === milestoneId
 										? 'text-blue-dark'
 										: 'text-gray-dark'
-								} title-sm text-center mb-2 select-none`}
+								} title-sm text-center mb-2 px-8 select-none`}
 							>
 								{title ? title : 'Milestone'}
 							</h2>
@@ -354,135 +356,129 @@ const Milestone = (props: MilestoneProps) => {
 								name='add'
 								classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 							/>
-							{features?.map((feature, index) => {
-								if (!state[`title${feature._id}`]) {
-									return <React.Fragment key={index}></React.Fragment>;
-								} else {
-									return (
-										<React.Fragment key={feature._id}>
-											<div
-												className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4 flex flex-col items-center
+							{features?.map((feature, index) => (
+								<React.Fragment key={feature._id}>
+									<div
+										className={`border rounded-lg w-full relative overflow-hidden px-3  mt-4 flex flex-col items-center
 												${openFeature === feature._id ? 'border-blue-darkest' : 'border-gray-light'}
 												`}
-											>
-												<SVG
-													name='close'
-													classes={`absolute left-0.5 top-0.5 fill-current text-red w-7 h-7 z-10 cursor-pointer`}
-													onClick={() =>
-														setModalState({
-															isOpen: true,
-															type: 'deleteFeature',
-															id: feature._id,
-															content: state[`title${feature._id}`]
-														})
-													}
-												/>
-												<SVG
-													name='chevronLeft'
-													classes={`absolute right-2 top-1 fill-current text-gray transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+									>
+										<SVG
+											name='close'
+											classes={`absolute left-0.5 top-0.5 fill-current text-red w-7 h-7 z-10 cursor-pointer`}
+											onClick={() =>
+												setModalState({
+													isOpen: true,
+													type: 'deleteFeature',
+													id: feature._id,
+													content: state[`title${feature._id}`]
+												})
+											}
+										/>
+										<SVG
+											name='chevronLeft'
+											classes={`absolute right-2 top-1 fill-current text-gray transform w-4 h-4 transition-transform duration-300 ease-in-out  ${
+												openFeature === feature._id
+													? 'rotate-90 translate-y-1 text-blue-dark'
+													: '-rotate-90'
+											}`}
+										/>
+										<div
+											className='absolute top-0 left-0 w-full h-8 cursor-pointer'
+											onClick={() =>
+												dispatch(
+													setOpenFeature(
+														openFeature === feature._id ? '' : feature._id
+													)
+												)
+											}
+										></div>
+										<Collapse
+											style={{ width: '100%' }}
+											in={openFeature === feature._id}
+											timeout='auto'
+											collapsedSize={30}
+										>
+											<div className='flex flex-col items-center pb-2'>
+												<p
+													className={`font-semibold ${
 														openFeature === feature._id
-															? 'rotate-90 translate-y-1 text-blue-dark'
-															: '-rotate-90'
-													}`}
-												/>
-												<div
-													className='absolute top-0 left-0 w-full h-8 cursor-pointer'
-													onClick={() =>
-														dispatch(
-															setOpenFeature(
-																openFeature === feature._id ? '' : feature._id
-															)
-														)
-													}
-												></div>
-												<Collapse
-													style={{ width: '100%' }}
-													in={openFeature === feature._id}
-													timeout='auto'
-													collapsedSize={30}
+															? 'text-blue-dark'
+															: 'text-gray-dark'
+													} text-sm text-center mt-1 mb-2`}
 												>
-													<div className='flex flex-col items-center pb-2'>
-														<p
-															className={`font-semibold ${
-																openFeature === feature._id
-																	? 'text-blue-dark'
-																	: 'text-gray-dark'
-															} text-sm text-center mt-1 mb-2`}
-														>
-															Feature
-														</p>
-														<Input
-															type='text'
-															placeholder='Title'
-															value={state[`title${feature._id}`]}
-															onChange={changeHandler}
-															label='Title'
-															id={`title${feature._id}`}
-															validation={false}
-														/>
-														<Input
-															type='select'
-															placeholder='State'
-															value={state[`featureState${feature._id}`]}
-															onChange={changeHandler}
-															label='State'
-															id={`featureState${feature._id}`}
-															validation={false}
-															options={['Planned', 'In progress', 'Completed']}
-														/>
+													Feature
+												</p>
+												<Input
+													type='text'
+													placeholder='Title'
+													value={state[`title${feature._id}`]}
+													onChange={changeHandler}
+													label='Title'
+													id={`title${feature._id}`}
+													validation={false}
+												/>
+												<Input
+													type='select'
+													placeholder='State'
+													value={state[`featureState${feature._id}`]}
+													onChange={changeHandler}
+													label='State'
+													id={`featureState${feature._id}`}
+													validation={false}
+													options={['Planned', 'In progress', 'Completed']}
+												/>
+												<SVG
+													onClick={() => addStepHandler(feature._id, 0)}
+													name='add'
+													classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
+												/>
+
+												{feature.steps.map((step, index) => (
+													<React.Fragment key={step._id}>
+														<div className='flex flex-nowrap items-center w-full'>
+															<Input
+																type='textarea'
+																placeholder={`Step ${index + 1}`}
+																value={state[`step${step._id}`]}
+																onChange={changeHandler}
+																label={`Step ${index + 1}`}
+																id={`step${step._id}`}
+																validation={false}
+																rows={1}
+															/>
+															<SVG
+																name='close'
+																classes={`fill-current text-red w-7 h-7 z-10 cursor-pointer mt-5 -mr-3`}
+																onClick={() =>
+																	setModalState({
+																		isOpen: true,
+																		type: 'deleteStep',
+																		id: step._id,
+																		content: state[`step${step._id}`]
+																	})
+																}
+															/>
+														</div>
 														<SVG
-															onClick={() => addStepHandler(feature._id, 0)}
+															onClick={() =>
+																addStepHandler(feature._id, index + 1)
+															}
 															name='add'
 															classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
 														/>
-
-														{feature.steps.map((step, index) => (
-															<React.Fragment key={step._id}>
-																<div className='flex flex-nowrap items-center w-full'>
-																	<Input
-																		type='textarea'
-																		placeholder={`Step ${index + 1}`}
-																		value={state[`step${step._id}`]}
-																		onChange={changeHandler}
-																		label={`Step ${index + 1}`}
-																		id={`step${step._id}`}
-																		validation={false}
-																		rows={1}
-																	/>
-																	<SVG
-																		name='close'
-																		classes={`fill-current text-red w-7 h-7 z-10 cursor-pointer mt-5 -mr-3`}
-																		onClick={() =>
-																			setModalState({
-																				isOpen: true,
-																				type: 'deleteStep',
-																				id: step._id,
-																				content: state[`step${step._id}`]
-																			})
-																		}
-																	/>
-																</div>
-																<SVG
-																	onClick={() =>
-																		addStepHandler(feature._id, index + 1)
-																	}
-																	name='add'
-																	classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
-																/>
-															</React.Fragment>
-														))}
-													</div>
-												</Collapse>
+													</React.Fragment>
+												))}
 											</div>
-											<SVG
-												onClick={() => addFeatureHandler(index + 1)}
-												name='add'
-												classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
-											/>
-										</React.Fragment>
-									);
-								}
-							})}
+										</Collapse>
+									</div>
+									<SVG
+										onClick={() => addFeatureHandler(index + 1)}
+										name='add'
+										classes='fill-current text-green w-6 h-6 cursor-pointer mt-2'
+									/>
+								</React.Fragment>
+							))}
 							<Button
 								label='Save changes'
 								type='submit'
@@ -642,7 +638,9 @@ const Milestone = (props: MilestoneProps) => {
 						}`}
 						>
 							<div
-								className={`flex items-start py-2 cursor-pointer
+								className={`flex items-start py-2 ${
+									feature.steps.length ? 'cursor-pointer' : ''
+								}
 							`}
 								onClick={() => {
 									if (!!feature.steps.length)
@@ -711,7 +709,9 @@ const Milestone = (props: MilestoneProps) => {
 								<ol className='mb-2'>
 									{feature.steps.map(step => (
 										<li key={step._id} className='flex items-start'>
-											<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2 mt-2'></div>
+											<div>
+												<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2 mt-2'></div>
+											</div>
 											<p className='font-medium text-sm'>{step.content}</p>
 										</li>
 									))}

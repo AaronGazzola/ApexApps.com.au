@@ -415,7 +415,7 @@ const Index = () => {
 			) : (
 				<>
 					<div
-						className='flex items-center w-ful mb-6 flex-wrap-reverse justify-center sm:w-auto px-2'
+						className='flex items-center w-ful mb-10 flex-wrap-reverse justify-center sm:w-auto px-2'
 						style={{ maxWidth: breakpoint === 'xs' ? 450 : '' }}
 					>
 						<div className='mr-0 sm:mr-4 flex flex-col items-center'>
@@ -459,7 +459,7 @@ const Index = () => {
 								label='More about Apex Apps'
 								variant='simple'
 								color='green'
-								buttonClasses='border border-green px-1.5 py-0.5 mt-8 sm:mt-4'
+								buttonClasses='border border-green px-1.5 py-0.5 mt-12 sm:mt-4'
 								type='link'
 								path='/'
 							/>
