@@ -9,6 +9,7 @@ import Design from '../components/Design';
 import Develop from '../components/Develop';
 import Deploy from '../components/Deploy';
 import Meta from '../components/Meta';
+import Review from '../components/Review';
 
 export default function Home() {
 	const { breakpoint } = useAppSelector(state => state.utils);
@@ -202,6 +203,7 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
+
 			<Button
 				label='View portfolio'
 				type='link'
@@ -217,7 +219,92 @@ export default function Home() {
 					/>
 				}
 			/>
-			<div className='box w-full max-w-2xl border-blue-darkest border mt-4'>
+
+			{/* <h2 className='title mt-4'>Partners</h2>
+			<div className='flex mb-4 justify-around items-center w-full max-w-xl flex-wrap'>
+				<a
+					href='https://behaviourhelp.com/'
+					rel='noreferrer noopener'
+					target='_blank'
+				>
+					<Image
+						src='/assets/svg/behaviour-help.svg'
+						alt='Behaviour help logo'
+						width={300}
+						height={50}
+						layout='fixed'
+					/>
+				</a>
+				<a
+					href='https://www.nangarra.com/'
+					rel='noreferrer noopener'
+					target='_blank'
+					className='rounded-md p-1 pb-0'
+					style={{ backgroundColor: '#ed3833' }}
+				>
+					<Image
+						src='/assets/images/nangarra-games.png'
+						alt='Behaviour help logo'
+						width={365 * 0.5}
+						height={110 * 0.5}
+						layout='fixed'
+					/>
+				</a>
+			</div> */}
+
+			<h1 className='title mt-6'>Reviews</h1>
+			{[
+				<>
+					He understood the requirements, provided a personalized video to apply
+					for the gig, got to work right away, and delivered on time. Wasn't
+					expecting this kind of work.
+					<br /> It was a delight to work with Aaron. Totally recommended!
+				</>,
+				<>
+					Even though Aaron appeared to be a lot younger and not as experienced
+					as the other Freelancers I feel so blessed that I chose him. His
+					professionalism, insight and communication skills was exactly what I
+					needed.
+					<br /> Thank you Aaron.
+				</>,
+				<>Got the work done quickly, efficiently and effectively!</>
+			].map((review, i) => (
+				<Review review={review} key={i} />
+			))}
+			<h2 className='title-sm mt-4'>100% Job Success</h2>
+			<div className='flex flex-col items-center'>
+				<hr className='w-10/12' />
+				<div className='flex w-full mt-1 mb-2.5'>
+					{[1, 2, 3, 4, 5].map(key => (
+						<SVG
+							key={key}
+							name='starFill'
+							classes=' fill-current text-yellow-400 w-10 h-10'
+						/>
+					))}
+				</div>
+				<hr className='w-7/12' />
+				<p className='font-medium text-sm text-blue-darkest'>5 Star Rated</p>
+				<div className='w-16 mt-1'>
+					<Image
+						alt='upwork.com logo'
+						src='/assets/svg/upwork-logo.svg'
+						width={512}
+						height={153}
+						layout='responsive'
+					/>
+				</div>
+			</div>
+			<Button
+				label={<>Let&apos;s chat!</>}
+				type='link'
+				path='/contact'
+				variant='contained'
+				size='large'
+				buttonClasses=' px-8 py-2 mt-6 text-2xl'
+				color='green'
+			/>
+			<div className='box w-full max-w-2xl border-blue-darkest border mt-8'>
 				<h1 className='title'>Apex Apps Dashboard</h1>
 				<p className='px-4 pt-1'>
 					As a client at Apex Apps, you will gain access to a personalised
@@ -286,89 +373,6 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-
-			<h1 className='title mt-6'>Reviews</h1>
-			<div className='relative'>
-				<p className='absolute top-0 left-0 text-blue-light text-5xl tracking-tighter transform rotate-180 m-1.5'>
-					,,
-				</p>
-				<p className='absolute bottom-0 right-0 text-blue-light text-5xl tracking-tighter transform m-0.5 -translate-y-1/2 -translate-x-1/2'>
-					,,
-				</p>
-				<div className='box w-full pb-2'>
-					<p className='box-text p-1'>
-						Even though Aaron appeared to be a lot younger and not as
-						experienced as the other Freelancers I feel so blessed that I chose
-						him. His professionalism, insight and communication skills was
-						exactly what I needed.
-						<br /> Thank you Aaron.
-					</p>
-					<div className='flex justify-center items-center w-full'>
-						{[1, 2, 3, 4, 5].map(key => (
-							<SVG
-								key={key}
-								name='starFill'
-								classes=' fill-current text-yellow-400'
-							/>
-						))}
-					</div>
-				</div>
-			</div>
-			<div className='relative'>
-				<p className='absolute top-0 left-0 text-blue-light text-5xl tracking-tighter transform rotate-180 m-1.5'>
-					,,
-				</p>
-				<p className='absolute bottom-0 right-0 text-blue-light text-5xl tracking-tighter transform m-0.5 -translate-y-1/2 -translate-x-1/2'>
-					,,
-				</p>
-				<div className='box w-full pb-2'>
-					<p className='box-text p-1'>
-						Got the work done quickly, efficiently and effectively!
-					</p>
-					<div className='flex justify-center items-center w-full'>
-						{[1, 2, 3, 4, 5].map(key => (
-							<SVG
-								key={key}
-								name='starFill'
-								classes=' fill-current text-yellow-400'
-							/>
-						))}
-					</div>
-				</div>
-			</div>
-			<h2 className='title-sm mt-4'>100% Job Success</h2>
-			<div className='flex flex-col items-center'>
-				<hr className='w-10/12' />
-				<div className='flex w-full mt-1 mb-2.5'>
-					{[1, 2, 3, 4, 5].map(key => (
-						<SVG
-							key={key}
-							name='starFill'
-							classes=' fill-current text-yellow-400 w-10 h-10'
-						/>
-					))}
-				</div>
-				<hr className='w-7/12' />
-				<p className='font-medium text-sm text-blue-darkest'>5 Star Rated</p>
-				<div className='w-16 mt-1'>
-					<Image
-						alt='upwork.com logo'
-						src='/assets/svg/upwork-logo.svg'
-						width={512}
-						height={153}
-						layout='responsive'
-					/>
-				</div>
-			</div>
-			<Button
-				label={<>Let&apos;s chat!</>}
-				type='link'
-				path='/contact'
-				variant='contained'
-				size='large'
-				buttonClasses=' px-8 py-2 mt-6 text-2xl'
-				color='green'
-			/>
 			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-10 '>
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
 					<h2 className='title-sm mb-2 '>Let&apos;s chat!</h2>
@@ -391,17 +395,11 @@ export default function Home() {
 			</div>
 			<div className='flex flex-col-reverse sm:flex-row-reverse items-center w-full justify-center max-w-3xl sm:pr-2 mt-6 '>
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
-					<h2 className='title-sm mb-2'>Project strategy</h2>
+					<h2 className='title-sm mb-2'>Design and plan</h2>
 					<div className='box w-full'>
 						<p className='box-text'>
-							Development is divided into separate milestones, with details and
-							progress tracked in your{' '}
-							<Link href='/tour'>
-								<a className='text-green font-semibold italic'>
-									project dashboard
-								</a>
-							</Link>
-							.
+							With your feedback, I create an interactive prototype to showcase
+							the form and function of your web app.
 						</p>
 					</div>
 				</div>
@@ -414,11 +412,17 @@ export default function Home() {
 			</div>
 			<div className='flex flex-col-reverse sm:flex-row items-center w-full justify-center max-w-3xl sm:pl-2 mt-6'>
 				<div className='flex flex-col w-full sm:w-3/4 mt-4 sm:m-0 '>
-					<h2 className='title-sm mb-2'>Dedicated development</h2>
+					<h2 className='title-sm mb-2'>Track my progress</h2>
 					<div className='box w-full'>
 						<p className='box-text'>
-							Apex Apps develops one app at a time. As my one and only client,
-							your app will have my undivided attention.
+							Every step of development is carefully planned and frequently
+							updated in the Apex Apps{' '}
+							<Link href='/tour'>
+								<a className='text-green font-semibold italic'>
+									project dashboard
+								</a>
+							</Link>
+							.
 						</p>
 					</div>
 				</div>
@@ -434,8 +438,8 @@ export default function Home() {
 					<h2 className='title-sm mt-2 mb-2'>Hello, world!</h2>
 					<div className='box w-full'>
 						<p className='box-text'>
-							You will have online access to your app at key stages of
-							development, allowing for testing before deployment.
+							Before you know it, the full potential of your idea will be
+							realised as a highly accessible web application.
 						</p>
 					</div>
 				</div>
