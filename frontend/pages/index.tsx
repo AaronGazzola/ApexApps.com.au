@@ -256,8 +256,8 @@ export default function Home() {
 			{[
 				<>
 					He understood the requirements, provided a personalized video to apply
-					for the gig, got to work right away, and delivered on time. Wasn't
-					expecting this kind of work.
+					for the gig, got to work right away, and delivered on time.
+					Wasn&apos;t expecting this kind of work.
 					<br /> It was a delight to work with Aaron. Totally recommended!
 				</>,
 				<>
