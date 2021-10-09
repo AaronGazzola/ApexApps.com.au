@@ -253,6 +253,7 @@ const Index = () => {
 		// if last booking for today is already passed, skip today
 
 		const lastBookingHasPast =
+			melbourneTime.hour() > 22 ||
 			melbourneTime.add(2, 'h').hour() > bookingHours[bookingHours.length - 1];
 
 		if (lastBookingHasPast) melbourneTime.add(1, 'd');
