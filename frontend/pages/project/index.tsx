@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {
+import React, {
 	BaseSyntheticEvent,
 	ChangeEvent,
 	SyntheticEvent,
@@ -267,6 +267,13 @@ const Index = () => {
 						>
 							{project?.description
 								? project?.description
+										.split('<br/>')
+										.map((paragraph, index) => (
+											<React.Fragment key={index}>
+												{paragraph}
+												<br />
+											</React.Fragment>
+										))
 								: 'Click "Edit project" to add a project description'}
 						</p>
 						<div className='flex justify-end w-full mt-2'>

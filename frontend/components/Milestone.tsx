@@ -722,7 +722,14 @@ const Milestone = (props: MilestoneProps) => {
 					{notes && (
 						<div className='border rounded-md border-gray mt-4 py-2 px-4 w-full'>
 							<p className='font-semibold text-gray-dark'>Notes:</p>
-							<p>{notes}</p>
+							<p>
+								{notes.split('<br/>').map((paragraph, index) => (
+									<React.Fragment key={index}>
+										{paragraph}
+										<br />
+									</React.Fragment>
+								))}
+							</p>
 						</div>
 					)}
 					{buttonLink && buttonLabel && (

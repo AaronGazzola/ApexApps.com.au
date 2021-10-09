@@ -351,6 +351,13 @@ const Index = () => {
 														>
 															{update.publish ? (
 																update.notes
+																	.split('<br/>')
+																	.map((paragraph, index) => (
+																		<React.Fragment key={index}>
+																			{paragraph}
+																			<br />
+																		</React.Fragment>
+																	))
 															) : moment().unix() >=
 															  moment(update.date).unix() ? (
 																'Update will be published shortly'

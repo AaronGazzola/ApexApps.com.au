@@ -93,7 +93,7 @@ const UserFeedback = () => {
 							: ''
 					}`}
 				>
-					{error?.message === 'Unauthorized' && onTour
+					{error?.message === 'Unauthorized'
 						? 'Unauthorized'
 						: error?.title
 						? error?.title
@@ -106,6 +106,8 @@ const UserFeedback = () => {
 				<p className={`font-medium text-gray-dark my-3 px-2`}>
 					{error?.message === 'Unauthorized' && onTour
 						? 'Contact Aaron to request access'
+						: error?.message === 'Unauthorized'
+						? 'Please log in to view this content'
 						: error?.message
 						? error.message
 						: alert?.message
