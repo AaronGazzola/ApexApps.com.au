@@ -12,6 +12,7 @@ export interface Booking {
 	phone: string;
 	zoomName: string;
 	callTime: Date;
+	userCallTime: Date;
 }
 
 export interface Proposal {

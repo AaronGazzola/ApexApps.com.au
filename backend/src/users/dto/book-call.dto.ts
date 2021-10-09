@@ -19,4 +19,6 @@ export class BookCallDto {
   zoomName: string;
   @IsString()
   callTime: string;
+  @IsString()
+  userCallTime: string;
 }

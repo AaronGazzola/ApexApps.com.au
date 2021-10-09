@@ -167,7 +167,9 @@ export class UsersController {
   }
 
   @Post('bookings/confirm')
-  async confirmBooking(@Body() { bookingId }: { bookingId: string }) {
-    return await this.usersService.confirmBooking(bookingId);
+  async confirmBooking(
+    @Body() { bookingId, zoomLink }: { bookingId: string; zoomLink: string },
+  ) {
+    return await this.usersService.confirmBooking(bookingId, zoomLink);
   }
 }

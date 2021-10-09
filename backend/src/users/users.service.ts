@@ -14,7 +14,7 @@ import sendEmail from '../shared/sendEmail';
 import { User } from './interfaces/user.interface';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import ErrorResponse from 'src/shared/errorResponse';
 import { Proposal } from './interfaces/proposal.interface';
 import { Booking } from './interfaces/booking.interface';
@@ -616,11 +616,19 @@ export class UsersService {
       contactMethod,
       phone,
       zoomName,
-      callTime,
+      callTime: submittedCalltime,
+      userCallTime,
     } = bookCallDto;
 
+    const callTime = moment
+      .tz(
+        moment(submittedCalltime, 'HH:mm DD-MM-YYYY ZZ'),
+        'Australia/Melbourne',
+      )
+      .toDate();
+
     const foundBookingByTime = await this.bookingModel.findOne({
-      callTime: moment(callTime, 'HH:mm DD-MM-YYY ZZ').toDate(),
+      callTime,
     });
 
     if (foundBookingByTime)
@@ -632,7 +640,8 @@ export class UsersService {
     const foundBookingByEmail = await this.bookingModel.find({ email });
 
     const futureBooking = foundBookingByEmail.find(
-      (booking) => booking.callTime > moment().toDate(),
+      (booking) =>
+        booking.callTime > moment.tz(moment(), 'Australia/Melbourne').toDate(),
     );
 
     if (futureBooking)
@@ -650,7 +659,8 @@ export class UsersService {
       contactMethod,
       phone,
       zoomName,
-      callTime: moment(callTime, 'HH:mm DD-MM-YYY ZZ').toDate(),
+      callTime,
+      userCallTime,
     });
     const baseUrl = `${this.req.protocol}://${
       process.env.NODE_ENV === 'production'
@@ -673,13 +683,18 @@ export class UsersService {
       contactMethod,
       phone,
       zoomName,
-      callTime: moment(callTime, 'HH:mm DD-MM-YYY ZZ').format('h:mma D-MMM-YY'),
+      callTime: moment
+        .tz(
+          moment(submittedCalltime, 'HH:mm DD-MM-YYYY ZZ'),
+          'Australia/Melbourne',
+        )
+        .format('h:mma D-MMM-YY'),
     });
 
     const bookings = await this.bookingModel.find({
       callTime: {
-        $gte: moment().toDate(),
-        $lte: moment().add(3, 'd').toDate(),
+        $gte: moment.tz(moment(), 'Australia/Melbourne').toDate(),
+        $lte: moment.tz(moment(), 'Australia/Melbourne').add(3, 'd').toDate(),
       },
     });
 
@@ -692,8 +707,8 @@ export class UsersService {
   async getBookings() {
     const bookings = await this.bookingModel.find({
       callTime: {
-        $gte: moment().toDate(),
-        $lte: moment().add(3, 'd').toDate(),
+        $gte: moment.tz(moment(), 'Australia/Melbourne').toDate(),
+        $lte: moment.tz(moment(), 'Australia/Melbourne').add(3, 'd').toDate(),
       },
     });
 
@@ -703,7 +718,7 @@ export class UsersService {
     };
   }
 
-  async confirmBooking(bookingId: string) {
+  async confirmBooking(bookingId: string, zoomLink: string) {
     let booking;
     try {
       booking = await this.bookingModel.findById(bookingId);
@@ -735,7 +750,8 @@ export class UsersService {
       contactMethod: booking.contactMethod,
       phone: booking.phone,
       zoomName: booking.zoomName,
-      callTime: moment(booking.callTime).format('h:mma D-MMM-YY'),
+      userCallTime: booking.userCallTime,
+      zoomLink,
     });
 
     return {

@@ -711,6 +711,7 @@ export const bookCall = createAsyncThunk(
 			phone: string;
 			zoomName: string;
 			callTime: string;
+			userCallTime: string;
 		},
 		{ rejectWithValue, getState }
 	) => {
@@ -774,7 +775,10 @@ export const getBookings = createAsyncThunk(
 
 export const confirmBooking = createAsyncThunk(
 	'users/confirmBooking',
-	async (bookingId: string, { rejectWithValue, getState }) => {
+	async (
+		{ bookingId, zoomLink }: { bookingId: string; zoomLink: string },
+		{ rejectWithValue, getState }
+	) => {
 		const {
 			users: { token }
 		} = getState() as RootState;
@@ -785,7 +789,7 @@ export const confirmBooking = createAsyncThunk(
 						? process.env.BASE_URL + '/api'
 						: 'http://localhost:5000/api'
 				}/users/bookings/confirm`,
-				{ bookingId },
+				{ bookingId, zoomLink },
 				{
 					headers: {
 						'Authorization': `Bearer ${token}`

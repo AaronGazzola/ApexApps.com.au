@@ -19,6 +19,8 @@ const useHtmlTemplate = ({
   phone,
   zoomName,
   callTime,
+  userCallTime,
+  zoomLink,
 }) => {
   const header = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
   <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -296,16 +298,24 @@ ${br === 'after' || br === 'both' ? '<br />' : ''}
         ${heading(
           `${contactMethod[0].toUpperCase()}${contactMethod.slice(
             1,
-          )} call confirmed for ${callTime.slice(0, -10)}`,
+          )} call confirmed for ${userCallTime.slice(0, 7)}`,
         )}
         ${paragraph(`Thank you for booking a call at Apex Apps.`)}
         ${paragraph('', 'after')}
         ${paragraph(
           `I'll give you call you by ${contactMethod} ${
-            contactMethod === 'phone' ? `on ${phone}` : `at ${zoomName}`
-          } at ${callTime}.`,
+            contactMethod === 'phone' ? `on ${phone}` : `via ${zoomName}`
+          } at ${userCallTime}.`,
         )}
-          ${paragraph('', 'after')}
+       ${paragraph('', 'after')}
+          ${
+            zoomLink
+              ? `${paragraph(
+                  `Zoom meeting link: ${zoomLink}`,
+                  'after',
+                )}${paragraph('', 'after')}`
+              : ''
+          }
         ${paragraph(`I look forward to discussing your project!`)}
         ${footer}`,
       ];

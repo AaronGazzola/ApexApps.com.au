@@ -211,7 +211,10 @@ const Index = () => {
 					contactMethod: contactMethod.value,
 					phone: phone.value,
 					zoomName: zoomName.value,
-					callTime
+					callTime,
+					userCallTime: moment(callTime, 'HH:mm DD-MM-YYYY ZZ').format(
+						'h:mma Do-MMM-YY'
+					)
 				})
 			);
 		}
@@ -259,8 +262,8 @@ const Index = () => {
 				// if booking time is more that one hour in the future, add to end of array
 				if (melbourneTime.hour(hour).unix() > moment().add(1, 'h').unix()) {
 					melbourneBookingTimes.push(
-						melbourneTime.hour(hour).minute(0).format('HH:mm DD-MM-YYY ZZ'),
-						melbourneTime.hour(hour).minute(30).format('HH:mm DD-MM-YYY ZZ')
+						melbourneTime.hour(hour).minute(0).format('HH:mm DD-MM-YYYY ZZ'),
+						melbourneTime.hour(hour).minute(30).format('HH:mm DD-MM-YYYY ZZ')
 					);
 				}
 			});
@@ -268,7 +271,7 @@ const Index = () => {
 			melbourneTime.add(1, 'd');
 		}
 		setBookingTimes(
-			melbourneBookingTimes.map(time => moment(time, 'HH:mm DD-MM-YYY ZZ'))
+			melbourneBookingTimes.map(time => moment(time, 'HH:mm DD-MM-YYYY ZZ'))
 		);
 		setLastBookingTodayHasPast(lastBookingHasPast);
 	}, []);
@@ -650,17 +653,22 @@ const Index = () => {
 															type='button'
 															key={`${key} ${time.format('HH:mm DD')}`}
 															className={`rounded-md border-none px-2 py-1 m-0 hover:bg-green hover:text-white hover:font-medium group
-															${callTime === time.format('HH:mm DD-MM-YYY ZZ') ? 'bg-green text-white' : ''}`}
+															${
+																callTime === time.format('HH:mm DD-MM-YYYY ZZ')
+																	? 'bg-green text-white'
+																	: ''
+															}`}
 															onClick={() =>
 																handleSelectTime(
-																	time.format('HH:mm DD-MM-YYY ZZ')
+																	time.format('HH:mm DD-MM-YYYY ZZ')
 																)
 															}
 														>
 															{time.format('h:mm')}
 															<span
 																className={`font-medium group-hover:text-white text-xs ${
-																	callTime === time.format('HH:mm DD-MM-YYY ZZ')
+																	callTime ===
+																	time.format('HH:mm DD-MM-YYYY ZZ')
 																		? 'bg-green text-white'
 																		: 'text-gray-dark'
 																}`}

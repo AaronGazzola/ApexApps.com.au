@@ -10,5 +10,6 @@ export const BookingSchema = new mongoose.Schema({
   phone: String,
   zoomName: String,
   callTime: Date,
+  userCallTime: String,
   confirmed: { type: Boolean, default: false },
 });

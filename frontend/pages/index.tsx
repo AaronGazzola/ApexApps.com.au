@@ -398,8 +398,8 @@ export default function Home() {
 					<h2 className='title-sm mb-2'>Design and plan</h2>
 					<div className='box w-full'>
 						<p className='box-text'>
-							With your feedback, I create an interactive prototype to showcase
-							the form and function of your web app.
+							With your feedback, I create an interactive prototype to
+							demonstrate the form and function of your web app.
 						</p>
 					</div>
 				</div>
