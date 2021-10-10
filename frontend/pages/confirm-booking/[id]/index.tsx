@@ -29,7 +29,6 @@ const Index = () => {
 	return (
 		<>
 			<h1 className='title'>Confirm booking</h1>
-			<h1 className='title'>Log in</h1>
 			<form onSubmit={submitHandler} className='box w-full sm:max-w-xs'>
 				<Input
 					placeholder='Zoom link'

@@ -177,7 +177,7 @@ const Index = () => {
 					startIcon={<div className='w-5'></div>}
 					endIcon={
 						<div className='w-5 h-5'>
-							<SVG name='map' classes='fill-current w-full' />
+							<SVG name='map' classes='fill-current w-full text-green-dark' />
 						</div>
 					}
 					type='button'
@@ -185,7 +185,7 @@ const Index = () => {
 					color='green-dark'
 					variant='simple'
 					size='small'
-					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm border-green'
+					buttonClasses='mt-3 uppercase px-1 py-0.5 border-b shadow-sm border-green text-green-dark'
 					onClick={takeTourHandler}
 				/>
 			</form>
