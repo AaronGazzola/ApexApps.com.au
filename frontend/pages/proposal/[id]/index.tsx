@@ -71,10 +71,12 @@ const Index = () => {
 				!isNaN(Number(value)) && !isNaN(parseFloat(value))
 					? value
 					: phone.value;
-		if (id.includes('mail') || id === 'zoom')
+		if (id === 'email' || id === 'zoom') {
 			isValid = /^\S+@\S+\.\S+$/.test(value);
-		id = 'email';
+			id = 'email';
+		}
 		if (id === 'phone') isValid = value.length >= 5;
+
 		setFormState({
 			...formState,
 			[id]: {
