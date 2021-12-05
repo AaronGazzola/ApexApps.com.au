@@ -195,7 +195,7 @@ export class UsersService {
       actionLink,
       user,
       baseUrl,
-      reason: `You have recieved this email because your email address was used to create an account at<span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
+      reason: `You have recieved this email because your email address was used to create an account at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
       buttonText: 'Verify Email',
     });
 
@@ -332,7 +332,7 @@ export class UsersService {
       actionLink,
       user,
       baseUrl,
-      reason: `You have recieved this email because your email address was used to create an account at<span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
+      reason: `You have recieved this email because an account with your email address requested a password reset at <span class="clear-footer-link" style="color: #474545; text-decoration: none;">ApexApps.com.au</span>, this is not a promotional email.`,
       buttonText: 'Reset password',
     });
 

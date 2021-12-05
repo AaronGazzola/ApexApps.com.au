@@ -151,6 +151,9 @@ const Index = () => {
 							? 'Completed'
 							: milestone?.features?.some(
 									feature => feature.state === 'In progress'
+							  ) ||
+							  milestone?.features?.some(
+									feature => feature.state === 'Completed'
 							  )
 							? 'In progress'
 							: 'Planned';
