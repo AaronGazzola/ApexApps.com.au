@@ -52,7 +52,11 @@ const Index = () => {
 	const { email, contactMethod, phone, callTime, emailComments } = formState;
 
 	const formIsValid =
-		contactMethod.value === 'email' ? email.isValid : email.isValid && callTime;
+		contactMethod.value === 'email'
+			? email.isValid
+			: contactMethod.value === 'phone'
+			? email.isValid && phone.isValid && callTime
+			: email.isValid && callTime;
 
 	const changeHandler = (
 		e: React.FormEvent<
@@ -68,7 +72,7 @@ const Index = () => {
 		}
 		if (id === 'phone')
 			value =
-				!isNaN(Number(value)) && !isNaN(parseFloat(value))
+				(!isNaN(Number(value)) && !isNaN(parseFloat(value))) || value === ''
 					? value
 					: phone.value;
 		if (id === 'email' || id === 'zoom') {
@@ -478,20 +482,45 @@ const Index = () => {
 								containerClasses='mt-2 mb-4'
 							/>
 						) : contactMethod.value === 'phone' ? (
-							<Input
-								type='text'
-								placeholder='Phone number'
-								value={phone.value}
-								label='Phone number'
-								id='phone'
-								onChange={changeHandler}
-								isTouched={phone.isTouched}
-								isValid={phone.isValid}
-								touchHandler={touchHandler}
-								validation
-								containerClasses='mt-2 mb-4'
-								inputClasses='no-spin'
-							/>
+							<>
+								<Input
+									type='text'
+									placeholder='Email'
+									value={email.value}
+									label='Email'
+									id='email'
+									onChange={changeHandler}
+									isTouched={email.isTouched}
+									isValid={email.isValid}
+									helperText={
+										!email.isValid && email.isTouched
+											? 'Please enter a valid email address'
+											: ''
+									}
+									touchHandler={touchHandler}
+									validation
+									containerClasses='mt-2 mb-2'
+								/>
+								<Input
+									type='text'
+									placeholder='Phone number'
+									value={phone.value}
+									label='Phone number'
+									id='phone'
+									onChange={changeHandler}
+									isTouched={phone.isTouched}
+									isValid={phone.isValid}
+									touchHandler={touchHandler}
+									validation
+									containerClasses='mt-2 mb-4'
+									inputClasses='no-spin'
+									helperText={
+										phone.isTouched && !phone.isValid
+											? 'Please enter a valid phone number'
+											: ''
+									}
+								/>
+							</>
 						) : (
 							<Input
 								type='text'
@@ -539,7 +568,13 @@ const Index = () => {
 						<p
 							className={`text-sm text-center w-full mb-4 italictext-gray-dark`}
 						>
-							Select a time and date for our call:
+							<span className='font-medium'>
+								Select a time and date for our call:
+							</span>
+							<br />
+							<span className='italic'>
+								Times are displayed in your local time zone
+							</span>
 						</p>
 						<div className='flex w-full justify-around relative'>
 							{[0, 1, 2].map(key => {
@@ -648,7 +683,7 @@ const Index = () => {
 			<a
 				rel='noopener noreferrer'
 				target='_blank'
-				href='https://www.upwork.com/freelancers/aarongazzola'
+				href='https://www.upwork.com/freelancers/~017424c1cc6bed64e2'
 				className='flex justify-center mt-2 items-center'
 			>
 				<div className='relative w-9 h-7 overflow-hidden'>

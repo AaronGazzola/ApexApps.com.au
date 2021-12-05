@@ -620,7 +620,13 @@ const Index = () => {
 							<p
 								className={`text-sm text-center w-full mb-4 italictext-gray-dark`}
 							>
-								Select a time and date for our call:
+								<span className='font-medium'>
+									Select a time and date for our call:
+								</span>
+								<br />
+								<span className='italic'>
+									Times are displayed in your local time zone
+								</span>
 							</p>
 							<div className='flex w-full justify-around relative'>
 								{[0, 1, 2].map(key => {
@@ -731,7 +737,7 @@ const Index = () => {
 			<a
 				rel='noopener noreferrer'
 				target='_blank'
-				href='https://www.upwork.com/freelancers/aarongazzola'
+				href='https://www.upwork.com/freelancers/~017424c1cc6bed64e2'
 				className='flex justify-center mt-2 items-center'
 			>
 				<div className='relative w-9 h-7 overflow-hidden'>
