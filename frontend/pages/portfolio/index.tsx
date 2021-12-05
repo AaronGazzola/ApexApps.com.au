@@ -12,6 +12,112 @@ const Index = () => {
 			<h1 className='title'>Portfolio</h1>
 			<div className='box w-full max-w-2xl relative'>
 				<h2 className='title-sm text-xl font-medium sm:font-normal sm:text-2xl mb-0 sm:px-20 sm:mb-4'>
+					Generations kampen
+				</h2>
+
+				<a
+					target='_blank'
+					href='https://genapp.nangarra.games'
+					rel='noopener noreferrer'
+					className='mb-4 sm:mb-0 sm:absolute sm:top-3 sm:right-3'
+				>
+					<Button
+						label='Visit app'
+						type='button'
+						variant='simple'
+						size='small'
+						buttonClasses=''
+						color='green'
+						endIcon={
+							<SVG name='signPost' classes='fill-current text-green w-6 h-6' />
+						}
+					/>
+				</a>
+				<p className='box-text mb-4'>
+					Generations kampen is a companion app for a Swedish board game.
+					Players must answer a pop culture question about a nostalgic video
+					before the water drains from the screen.
+				</p>
+
+				<div className='flex flex-col items-center w-full mb-4'>
+					<div className='flex flex-col sm:flex-row sm:w-full sm:justify-around'>
+						<ol className='pr-1 sm:px-2'>
+							{[
+								'Dynamic animations',
+								'Content management system',
+								'Intelligent question selection',
+								'Inline video integration'
+							].map(item => (
+								<li key={item} className='flex items-start'>
+									<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2 mt-2'></div>
+									<p className='font-medium text-sm'>{item}</p>
+								</li>
+							))}
+						</ol>
+						<ol className='sm:px-2'>
+							{[
+								'Admin authentication',
+								'Audio/visual feedback',
+								'Liquid animation timer',
+								'Responsive on any screen'
+							].map(item => (
+								<li key={item} className='flex items-start'>
+									<div className='rounded-full bg-black w-1 h-1 mr-2 ml-2 mt-2'></div>
+									<p className='font-medium text-sm'>{item}</p>
+								</li>
+							))}
+						</ol>
+					</div>
+				</div>
+				<div className='w-full p-2 cursor-pointer'>
+					<div
+						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
+						style={{ paddingTop: '56%' }}
+						onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
+					>
+						{playGif !== 2 ? (
+							<SVG
+								name='playFill'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+							/>
+						) : (
+							<>
+								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
+									<div className='border-white w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+								</div>
+								<SVG
+									name='mute'
+									classes='absolute bottom-2 right-2 fill-current text-gray z-30'
+								/>
+							</>
+						)}
+						<div
+							className={`w-full absolute top-0 left-0 z-20 ${
+								playGif === 2 ? 'opacity-100' : 'opacity-0'
+							}`}
+						>
+							<Image
+								alt='Animated gif of generations kampen web app'
+								src='/assets/gifs/generations-kampen.gif'
+								layout='responsive'
+								width={1598}
+								height={895}
+							/>
+						</div>
+						<div className={`w-full absolute top-0 left-0`}>
+							<Image
+								alt='Screenshot of generations kampen web app'
+								src='/assets/images/generations-kampen-screenshot.jpg'
+								layout='responsive'
+								width={1598}
+								height={895}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className='box w-full max-w-2xl relative'>
+				<h2 className='title-sm text-xl font-medium sm:font-normal sm:text-2xl mb-0 sm:px-20 sm:mb-4'>
 					Rainbow of emotions
 				</h2>
 
@@ -184,12 +290,12 @@ const Index = () => {
 						{playGif !== 2 ? (
 							<SVG
 								name='playFill'
-								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
+								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
 							/>
 						) : (
 							<>
 								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-									<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
+									<div className='border-white w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
 								</div>
 								<SVG
 									name='mute'
