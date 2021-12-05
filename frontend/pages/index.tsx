@@ -10,6 +10,7 @@ import Develop from '../components/Develop';
 import Deploy from '../components/Deploy';
 import Meta from '../components/Meta';
 import Review from '../components/Review';
+import PortfolioSection from '../components/PortfolioSection';
 
 export default function Home() {
 	const { breakpoint } = useAppSelector(state => state.utils);
@@ -108,102 +109,7 @@ export default function Home() {
 					/>
 				</div>
 			</div>
-			<h1 className='title'>Portfolio</h1>
-			<div className='flex flex-col sm:flex-row items-center w-full mb-0 justify-center max-w-6xl mt-2'>
-				<div className='w-full sm:w-1/2 pb-2 sm:px-2'>
-					<div
-						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
-						style={{ paddingTop: '56%' }}
-						onClick={() => setPlayGif(prev => (prev === 1 ? 0 : 1))}
-					>
-						{playGif !== 1 ? (
-							<SVG
-								name='playFill'
-								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-white w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
-							/>
-						) : (
-							<>
-								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-									<div className='border-white w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-								</div>
-								<SVG
-									name='mute'
-									classes='absolute bottom-2 right-2 fill-current text-gray z-30'
-								/>
-							</>
-						)}
-						<div
-							className={`w-full absolute top-0 left-0 z-20 ${
-								playGif === 1 ? 'opacity-100' : 'opacity-0'
-							}`}
-						>
-							<Image
-								alt='animated gif of origami.cool web app'
-								src='/assets/gifs/origami.cool.gif'
-								layout='responsive'
-								width={1598}
-								height={895}
-							/>
-						</div>
-						<div className={`w-full absolute top-0 left-0`}>
-							<Image
-								alt='screenshot of origami.cool web app'
-								src='/assets/images/origami-screenshot.jpg'
-								layout='responsive'
-								width={1598}
-								height={895}
-							/>
-						</div>
-					</div>
-				</div>
-				<div className='w-full sm:w-1/2 pb-2 sm:px-2'>
-					<div
-						className={`relative group cursor-pointer  transform rounded-2xl shadow-lg overflow-hidden border`}
-						style={{ paddingTop: '56%' }}
-						onClick={() => setPlayGif(prev => (prev === 2 ? 0 : 2))}
-					>
-						{playGif !== 2 ? (
-							<SVG
-								name='playFill'
-								classes='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 fill-current text-blue-darkest w-14 h-14 sm:h-24 sm:w-24 opacity-60 group-hover:opacity-100 z-20'
-							/>
-						) : (
-							<>
-								<div className='flex items-center justify-center top-0 left-0 right-0 bottom-0 absolute z-10'>
-									<div className='border-blue-darkest w-14 h-14 sm:h-14 sm:w-14 border-t-2 border-l-2 animate-spin rounded-full'></div>
-								</div>
-								<SVG
-									name='mute'
-									classes='absolute bottom-2 right-2 fill-current text-gray z-30'
-								/>
-							</>
-						)}
-						<div
-							className={`w-full absolute top-0 left-0 z-20 ${
-								playGif === 2 ? 'opacity-100' : 'opacity-0'
-							}`}
-						>
-							<Image
-								alt='animated gif of rainbowofemotions.app web app'
-								src='/assets/gifs/rainbowofemotions.app.gif'
-								layout='responsive'
-								width={1598}
-								height={895}
-							/>
-						</div>
-						<div className={`w-full absolute top-0 left-0`}>
-							<Image
-								alt='screenshot of rainbowofemotions.app web app'
-								src='/assets/images/rainbow-screenshot.jpg'
-								layout='responsive'
-								width={1598}
-								height={895}
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-
+			<PortfolioSection />
 			<Button
 				label='View portfolio'
 				type='link'
@@ -254,6 +160,25 @@ export default function Home() {
 
 			<h1 className='title mt-6'>Reviews</h1>
 			{[
+				<>
+					Working with Aaron has been a real pleasure.
+					<br />
+					From the creative introduction, Aaron caught my attention by sending a
+					video of himself talking about the project and the services we could
+					provide. Fully understanding what we wanted to accomplish.
+					<br />
+					Needless to say, we hired him.
+					<br />
+					<br />
+					The contract was for a streamlined Progressive Web App to be used in
+					connection with our board games. The application needed to be both
+					visually appealing, responsive and contain an admin for us to moderate
+					the game mechanics.
+					<br />
+					<br />
+					Aaron delivered exactly what we requested. On time and with excellent
+					results.
+				</>,
 				<>
 					He understood the requirements, provided a personalized video to apply
 					for the gig, got to work right away, and delivered on time.

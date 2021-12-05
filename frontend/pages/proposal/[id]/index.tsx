@@ -140,7 +140,7 @@ const Index = () => {
 		const melbourneTime = moment.tz(moment(), 'Australia/Melbourne').minute(0);
 
 		// set melbourne time of bookings by hour
-		let bookingHours = [7, 8, 9, 13, 14, 15, 18, 19, 20];
+		let bookingHours = [8, 9, 10, 14, 15, 16, 19, 20];
 
 		// if last booking for today is already passed, skip today
 
