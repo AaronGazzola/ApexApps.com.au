@@ -46,23 +46,14 @@ const Index = () => {
 		contactMethod: {
 			value: 'zoom'
 		},
-		useContactEmail: true,
-		contactEmail: {
-			isValid: false,
-			isTouched: false,
-			value: ''
-		},
-		zoomName: {
-			isValid: false,
-			isTouched: false,
-			value: ''
-		},
 		phone: {
 			isValid: false,
 			isTouched: false,
 			value: ''
 		},
 		emailComments: {
+			isValid: false,
+			isTouched: false,
 			value: ''
 		},
 		callTime: ''
@@ -73,10 +64,7 @@ const Index = () => {
 		projectTitle,
 		projectDescription,
 		contactMethod,
-		useContactEmail,
-		contactEmail,
 		phone,
-		zoomName,
 		callTime,
 		emailComments
 	} = formState;
@@ -84,9 +72,9 @@ const Index = () => {
 	const formIsValid =
 		name.isValid &&
 		email.isValid &&
-		((contactMethod.value === 'email' && contactEmail.isValid) ||
+		((contactMethod.value === 'zoom' && callTime) ||
 			(contactMethod.value === 'phone' && phone.isValid && callTime) ||
-			(contactMethod.value === 'zoom' && zoomName.isValid && callTime));
+			(contactMethod.value === 'email' && emailComments.isValid));
 
 	const changeHandler = (
 		e: React.FormEvent<
@@ -105,73 +93,17 @@ const Index = () => {
 				!isNaN(Number(value)) && !isNaN(parseFloat(value))
 					? value
 					: phone.value;
-		if (id.includes('mail')) isValid = /^\S+@\S+\.\S+$/.test(value);
+		if (id === 'email') isValid = /^\S+@\S+\.\S+$/.test(value);
 		if (id === 'phone') isValid = value.length >= 5;
 
-		if (id === 'email' && useContactEmail) {
-			setFormState({
-				...formState,
-				contactEmail: {
-					...contactEmail,
-					value,
-					isValid
-				},
-				zoomName: {
-					...contactEmail,
-					value,
-					isValid
-				},
-				[id]: {
-					...formState[id],
-					isValid,
-					value
-				}
-			});
-		} else {
-			setFormState({
-				...formState,
-				[id]: {
-					...formState[id],
-					isValid,
-					value
-				},
-				useContactEmail:
-					id === 'contactEmail' || id === 'zoomName'
-						? value === email.value
-						: useContactEmail
-			});
-		}
-	};
-
-	const changeCheckedHandler = (e: React.FormEvent<HTMLInputElement>) => {
-		const checked = e.currentTarget.checked;
-		if (checked) {
-			setFormState(prev => ({
-				...formState,
-				useContactEmail: checked,
-				contactEmail: {
-					...prev.email
-				},
-				zoomName: {
-					...prev.email
-				}
-			}));
-		} else {
-			setFormState(prev => ({
-				...formState,
-				contactEmail: {
-					...prev.contactEmail,
-					isValid: false,
-					value: ''
-				},
-				zoomName: {
-					...prev.zoomName,
-					isValid: false,
-					value: ''
-				},
-				useContactEmail: checked
-			}));
-		}
+		setFormState({
+			...formState,
+			[id]: {
+				...formState[id],
+				isValid,
+				value
+			}
+		});
 	};
 	const touchHandler = (
 		e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -198,9 +130,9 @@ const Index = () => {
 		const formData = {
 			name: name.value,
 			email: email.value,
-			contactEmail: email.value,
 			projectTitle: projectTitle.value,
-			projectDescription: projectDescription.value
+			projectDescription: projectDescription.value,
+			contactEmail: email.value
 		};
 		if (contactMethod.value === 'email') {
 			dispatch(sendEmail({ ...formData, emailComments: emailComments.value }));
@@ -210,11 +142,11 @@ const Index = () => {
 					...formData,
 					contactMethod: contactMethod.value,
 					phone: phone.value,
-					zoomName: zoomName.value,
 					callTime,
 					userCallTime: moment(callTime, 'HH:mm DD-MM-YYYY ZZ').format(
 						'h:mma Do-MMM-YY'
-					)
+					),
+					zoomName: email.value
 				})
 			);
 		}
@@ -305,414 +237,253 @@ const Index = () => {
 				className='flex flex-col item-center w-full items-center'
 			>
 				<div className='box w-full sm:max-w-lg relative'>
-					<div
-						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
-								${step > 1 ? 'bg-green' : 'bg-blue-darkest'}`}
-					>
-						{step === 1 ? (
-							<p className='text-white mt-0.5 font-semibold'>1</p>
-						) : (
-							<SVG name='checkMark' classes='text-white fill-current h-5 w-5' />
-						)}
-					</div>
-					<SVG
-						name='chevronLeft'
-						classes={`fill-current text-gray light transform  absolute top-4 right-4 w-6 h-6
-					transition-transform duration-300 ease-in-out  ${
-						step === 1 ? 'rotate-90 translate-y-2 text-blue-dark' : '-rotate-90'
-					}
-					`}
-					/>
-					<div
-						className='absolute top-0 left-0 w-full h-16 cursor-pointer'
-						onClick={() => setStep(1)}
-					></div>
-					<h2 className='title-sm w-full px-6 cursor-pointer'>Your details</h2>
-					<Collapse
-						in={step === 1}
-						timeout='auto'
-						collapsedSize={0}
-						style={{ width: '100%' }}
-					>
-						{!noUser && !user?.userName ? (
-							<>
-								<div className='skeleton w-full h-10 mt-5 mb-8'></div>
-								<div className='skeleton w-full h-10 my-5'></div>
-							</>
-						) : (
-							<>
-								<Input
-									type='text'
-									placeholder='Name'
-									value={name.value}
-									validation
-									isValid={name.isValid}
-									helperText={
-										name.isTouched && !name.isValid
-											? 'Please enter your name'
-											: ''
-									}
-									label='Name'
-									id='name'
-									onChange={changeHandler}
-									touchHandler={touchHandler}
-									isTouched={name.isTouched}
-								/>
-								<Input
-									type='text'
-									placeholder='Email'
-									value={email.value}
-									validation
-									isValid={email.isValid}
-									helperText={
-										email.isTouched && !email.isValid
-											? 'Please enter a valid email address'
-											: ''
-									}
-									label='Email'
-									id='email'
-									onChange={changeHandler}
-									touchHandler={touchHandler}
-									isTouched={email.isTouched}
-								/>
-							</>
-						)}
-						<div className='flex justify-end w-full'>
-							<Button
-								variant='contained'
-								color='green'
-								disabled={!name.isValid || !email.isValid}
-								label='Next'
-								type='button'
-								onClick={() => {
-									if (name.isValid && email.isValid) setStep(2);
-								}}
-								buttonClasses='px-6 py-1'
+					{!noUser && !user?.userName ? (
+						<>
+							<div className='skeleton w-full h-10 mt-5 mb-8'></div>
+							<div className='skeleton w-full h-10 my-5'></div>
+						</>
+					) : (
+						<>
+							<Input
+								type='text'
+								placeholder='Name'
+								value={name.value}
+								validation
+								isValid={name.isValid}
+								helperText={
+									name.isTouched && !name.isValid
+										? 'Please enter your name'
+										: ''
+								}
+								label='Name'
+								id='name'
+								onChange={changeHandler}
+								touchHandler={touchHandler}
+								isTouched={name.isTouched}
 							/>
-						</div>
-					</Collapse>
-				</div>
-				<div className={`box w-full sm:max-w-lg relative`}>
-					<div
-						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
-								${step > 2 ? 'bg-green' : step === 1 ? 'bg-gray' : 'bg-blue-darkest'}`}
-					>
-						{step !== 3 ? (
-							<p className='text-white mt-0.5 font-semibold'>2</p>
-						) : (
-							<SVG name='checkMark' classes='text-white fill-current h-5 w-5' />
-						)}
-					</div>
-					<SVG
-						name='chevronLeft'
-						classes={`fill-current text-gray light transform  absolute top-4 right-4 w-6 h-6
-					transition-transform duration-300 ease-in-out  ${
-						step === 2 ? 'rotate-90 translate-y-2 text-blue-dark' : '-rotate-90'
-					}
-					`}
+							<Input
+								type='text'
+								placeholder='Email'
+								value={email.value}
+								validation
+								isValid={email.isValid}
+								helperText={
+									email.isTouched && !email.isValid
+										? 'Please enter a valid email address'
+										: ''
+								}
+								label='Email'
+								id='email'
+								onChange={changeHandler}
+								touchHandler={touchHandler}
+								isTouched={email.isTouched}
+							/>
+						</>
+					)}
+
+					<Input
+						type='text'
+						placeholder='Project title (optional)'
+						value={projectTitle.value}
+						label='Project title'
+						id='projectTitle'
+						onChange={changeHandler}
+						isTouched={projectTitle.isTouched}
+						validation={false}
 					/>
-					<div
-						className={`absolute top-0 left-0 w-full h-16 ${
-							name.isValid || email.isValid ? 'cursor-pointer' : ''
-						}`}
-						onClick={() => {
-							if (name.isValid && email.isValid) setStep(2);
-						}}
-					></div>
-					<h2
-						className={`title-sm w-full px-6 ${
-							name.isValid || email.isValid ? 'cursor-pointer' : 'text-gray'
-						}`}
-					>
-						Your project
-					</h2>
+					<Input
+						type='textarea'
+						placeholder='Project description (optional)'
+						value={projectDescription.value}
+						label='Project description'
+						id='projectDescription'
+						onChange={changeHandler}
+						containerClasses='mb-2'
+						validation={false}
+					/>
+
+					<div className='flex justify-center w-full my-4 mb-6'>
+						<Input
+							type='radio'
+							value={contactMethod.value === 'zoom' ? 'zoom' : ''}
+							label='Zoom'
+							id='methodZoom'
+							onChange={changeHandler}
+							containerClasses='mr-4 w-min'
+							validation={false}
+						/>
+						<Input
+							type='radio'
+							value={contactMethod.value === 'phone' ? 'phone' : ''}
+							label='Phone'
+							id='methodPhone'
+							onChange={changeHandler}
+							containerClasses='mr-4 w-min'
+							validation={false}
+						/>
+						<Input
+							type='radio'
+							value={contactMethod.value === 'email' ? 'email' : ''}
+							label='Email'
+							id='methodEmail'
+							onChange={changeHandler}
+							containerClasses='mr-4 w-min'
+							validation={false}
+						/>
+					</div>
+
 					<Collapse
-						in={step === 2}
+						in={contactMethod.value === 'phone'}
 						timeout='auto'
 						collapsedSize={0}
 						style={{ width: '100%' }}
 					>
 						<Input
 							type='text'
-							placeholder='Project title'
-							value={projectTitle.value}
-							label='Project title'
-							id='projectTitle'
+							placeholder='Phone number'
+							value={phone.value}
+							label='Phone number'
+							id='phone'
 							onChange={changeHandler}
-							isTouched={projectTitle.isTouched}
-							validation={false}
+							isTouched={phone.isTouched}
+							isValid={phone.isValid}
+							helperText={
+								!phone.isValid && phone.isTouched
+									? 'Please enter a valid phone number'
+									: ''
+							}
+							touchHandler={touchHandler}
+							validation
+							containerClasses='mb-4'
+							inputClasses='no-spin'
 						/>
-						<Input
-							type='textarea'
-							placeholder='Project description'
-							value={projectDescription.value}
-							label='Project description'
-							id='projectDescription'
-							onChange={changeHandler}
-							containerClasses='mb-2'
-							validation={false}
-						/>
-						<div className='flex justify-end w-full'>
-							<Button
-								variant='contained'
-								color='green'
-								label='Next'
-								type='button'
-								onClick={() => setStep(3)}
-								buttonClasses='px-6 py-1'
-							/>
-						</div>
 					</Collapse>
-				</div>
-				<div className={`box w-full sm:max-w-lg relative`}>
-					<div
-						className={`absolute rounded-full w-6 h-6 right-4 left-3 mt-1 mr-2 transition-opacity duration-300 flex items-center justify-center
-								${step !== 3 ? 'bg-gray' : 'bg-blue-darkest'}`}
-					>
-						<p className='text-white mt-0.5 font-semibold'>3</p>
-					</div>
-					<SVG
-						name='chevronLeft'
-						classes={`fill-current text-gray light transform  absolute top-4 right-4 w-6 h-6
-					transition-transform duration-300 ease-in-out  ${
-						step === 3 ? 'rotate-90 translate-y-2 text-blue-dark' : '-rotate-90'
-					}
-					`}
-					/>
-					<div
-						className={`absolute top-0 left-0 w-full h-16 ${
-							name.isValid || email.isValid ? 'cursor-pointer' : ''
-						}`}
-						onClick={() => {
-							if (name.isValid && email.isValid) setStep(3);
-						}}
-					></div>
-					<h2
-						className={`title-sm w-full px-6 ${
-							name.isValid || email.isValid ? 'cursor-pointer' : 'text-gray'
-						}`}
-					>
-						Contact method
-					</h2>
 					<Collapse
-						in={step === 3}
+						in={contactMethod.value === 'email'}
 						timeout='auto'
 						collapsedSize={0}
 						style={{ width: '100%' }}
 					>
-						<div className='flex justify-center w-full my-4'>
-							<Input
-								type='radio'
-								value={contactMethod.value === 'zoom' ? 'zoom' : ''}
-								label='Zoom'
-								id='methodZoom'
-								onChange={changeHandler}
-								containerClasses='mr-4 w-min'
-								validation={false}
-							/>
-							<Input
-								type='radio'
-								value={contactMethod.value === 'phone' ? 'phone' : ''}
-								label='Phone'
-								id='methodPhone'
-								onChange={changeHandler}
-								containerClasses='mr-4 w-min'
-								validation={false}
-							/>
-							<Input
-								type='radio'
-								value={contactMethod.value === 'email' ? 'email' : ''}
-								label='Email'
-								id='methodEmail'
-								onChange={changeHandler}
-								containerClasses='mr-4 w-min'
-								validation={false}
-							/>
-						</div>
-						<Collapse
-							in={contactMethod.value !== 'phone'}
-							timeout='auto'
-							collapsedSize={0}
-							style={{ width: '100%' }}
+						<Input
+							type='textarea'
+							placeholder='Comments'
+							value={emailComments.value}
+							label='Comments'
+							id='emailComments'
+							onChange={changeHandler}
+							containerClasses=''
+							rows={8}
+							isTouched={emailComments.isTouched}
+							isValid={emailComments.isValid}
+							helperText={
+								!emailComments.isValid && emailComments.isTouched
+									? 'Please enter some comments'
+									: ''
+							}
+							touchHandler={touchHandler}
+							validation
+						/>
+					</Collapse>
+					<Collapse
+						in={contactMethod.value !== 'email'}
+						timeout='auto'
+						collapsedSize={0}
+						style={{ width: '100%' }}
+					>
+						<p
+							className={`text-sm text-center w-full mb-4 italictext-gray-dark`}
 						>
-							<div className='flex justify-center'>
-								<Input
-									type='checkbox'
-									value={useContactEmail}
-									label='Use contact email'
-									id='useContactEmail'
-									onChange={changeCheckedHandler}
-									validation={false}
-									containerClasses='w-min'
-								/>
-							</div>
-						</Collapse>
-
-						{contactMethod.value === 'zoom' ? (
-							<Input
-								type='text'
-								placeholder='Zoom name or email'
-								value={zoomName.value}
-								label='Zoom name or email'
-								id='zoomName'
-								onChange={changeHandler}
-								isTouched={zoomName.isTouched}
-								isValid={zoomName.isValid}
-								helperText={!zoomName.isValid && zoomName.isTouched}
-								touchHandler={touchHandler}
-								validation
-								containerClasses='mt-2 mb-4'
-							/>
-						) : contactMethod.value === 'phone' ? (
-							<Input
-								type='text'
-								placeholder='Phone number'
-								value={phone.value}
-								label='Phone number'
-								id='phone'
-								onChange={changeHandler}
-								isTouched={phone.isTouched}
-								isValid={phone.isValid}
-								helperText={!phone.isValid && phone.isTouched}
-								touchHandler={touchHandler}
-								validation
-								containerClasses='mt-2 mb-4'
-								inputClasses='no-spin'
-							/>
-						) : (
-							<Input
-								type='text'
-								placeholder='Email'
-								value={contactEmail.value}
-								label='Email'
-								id='contactEmail'
-								onChange={changeHandler}
-								isTouched={contactEmail.isTouched}
-								isValid={contactEmail.isValid}
-								helperText={!contactEmail.isValid && contactEmail.isTouched}
-								touchHandler={touchHandler}
-								validation
-								containerClasses='mt-2 mb-2'
-							/>
-						)}
-						<Collapse
-							in={contactMethod.value === 'email'}
-							timeout='auto'
-							collapsedSize={0}
-							style={{ width: '100%' }}
-						>
-							<Input
-								type='textarea'
-								placeholder='Comments'
-								value={emailComments.value}
-								label='Comments'
-								id='emailComments'
-								onChange={changeHandler}
-								containerClasses=''
-							/>
-						</Collapse>
-						<Collapse
-							in={contactMethod.value !== 'email'}
-							timeout='auto'
-							collapsedSize={0}
-							style={{ width: '100%' }}
-						>
-							<p
-								className={`text-sm text-center w-full mb-4 italictext-gray-dark`}
-							>
-								<span className='font-medium'>
-									Select a time and date for our call:
-								</span>
-								<br />
-								<span className='italic'>
-									Times are displayed in your local time zone
-								</span>
-							</p>
-							<div className='flex w-full justify-around relative'>
-								{[0, 1, 2].map(key => {
-									let days = key;
-									if (lastBookingTodayHasPast) days = key + 1;
-									return (
-										<div className='flex flex-col items-center' key={days}>
-											<p
-												className={`font-medium -mb-1 ${
-													moment().date() === moment().add(days, 'd').date()
-														? 'text-blue-darkest'
-														: ''
-												}`}
-											>
-												{moment().add(days, 'd').format('ddd')}
-											</p>
-											<p
-												className={`font-semibold mb-2 ${
-													moment().date() === moment().add(days, 'd').date()
-														? 'text-blue-darkest'
-														: ''
-												}`}
-											>
-												{moment().add(days, 'd').format('D')}
-											</p>
-											{bookingTimes.map(time => {
-												// if booking time is on current date, display
-												if (time.date() === moment().add(days, 'd').date()) {
-													return (
-														<button
-															type='button'
-															key={`${key} ${time.format('HH:mm DD')}`}
-															className={`rounded-md border-none px-2 py-1 m-0 hover:bg-green hover:text-white hover:font-medium group
+							<span className='font-medium'>
+								Select a time and date for our call:
+							</span>
+							<br />
+							<span className='italic'>
+								Times are displayed in your local time zone
+							</span>
+						</p>
+						<div className='flex w-full justify-around relative'>
+							{[0, 1, 2].map(key => {
+								let days = key;
+								if (lastBookingTodayHasPast) days = key + 1;
+								return (
+									<div className='flex flex-col items-center' key={days}>
+										<p
+											className={`font-medium -mb-1 ${
+												moment().date() === moment().add(days, 'd').date()
+													? 'text-blue-darkest'
+													: ''
+											}`}
+										>
+											{moment().add(days, 'd').format('ddd')}
+										</p>
+										<p
+											className={`font-semibold mb-2 ${
+												moment().date() === moment().add(days, 'd').date()
+													? 'text-blue-darkest'
+													: ''
+											}`}
+										>
+											{moment().add(days, 'd').format('D')}
+										</p>
+										{bookingTimes.map(time => {
+											// if booking time is on current date, display
+											if (time.date() === moment().add(days, 'd').date()) {
+												return (
+													<button
+														type='button'
+														key={`${key} ${time.format('HH:mm DD')}`}
+														className={`rounded-md border-none px-2 py-1 m-0 hover:bg-green hover:text-white hover:font-medium group
 															${
 																callTime === time.format('HH:mm DD-MM-YYYY ZZ')
 																	? 'bg-green text-white'
 																	: ''
 															}`}
-															onClick={() =>
-																handleSelectTime(
-																	time.format('HH:mm DD-MM-YYYY ZZ')
-																)
-															}
+														onClick={() =>
+															handleSelectTime(
+																time.format('HH:mm DD-MM-YYYY ZZ')
+															)
+														}
+													>
+														{time.format('h:mm')}
+														<span
+															className={`font-medium group-hover:text-white text-xs ${
+																callTime === time.format('HH:mm DD-MM-YYYY ZZ')
+																	? 'bg-green text-white'
+																	: 'text-gray-dark'
+															}`}
 														>
-															{time.format('h:mm')}
-															<span
-																className={`font-medium group-hover:text-white text-xs ${
-																	callTime ===
-																	time.format('HH:mm DD-MM-YYYY ZZ')
-																		? 'bg-green text-white'
-																		: 'text-gray-dark'
-																}`}
-															>
-																{time.format('a')}
-															</span>
-														</button>
-													);
-												} else {
-													return (
-														<React.Fragment
-															key={`${key} ${time.format('HH:mm DD')}`}
-														></React.Fragment>
-													);
-												}
-											})}
-										</div>
-									);
-								})}
-							</div>
-						</Collapse>
-						<div className='flex flex-col items-center w-full mt-8'>
-							<Button
-								variant='contained'
-								color='green'
-								disabled={!formIsValid}
-								label={
-									contactMethod.value === 'email' ? 'Send email' : 'Book call'
-								}
-								type='submit'
-								size='large'
-								buttonClasses='px-8 py-2'
-								loading={loading}
-								fullWidth
-							/>
+															{time.format('a')}
+														</span>
+													</button>
+												);
+											} else {
+												return (
+													<React.Fragment
+														key={`${key} ${time.format('HH:mm DD')}`}
+													></React.Fragment>
+												);
+											}
+										})}
+									</div>
+								);
+							})}
 						</div>
 					</Collapse>
+					<div className='flex flex-col items-center w-full mt-8'>
+						<Button
+							variant='contained'
+							color='green'
+							disabled={!formIsValid}
+							label={
+								contactMethod.value === 'email' ? 'Send email' : 'Book call'
+							}
+							type='submit'
+							size='large'
+							buttonClasses='px-8 py-2'
+							loading={loading}
+							fullWidth
+						/>
+					</div>
 				</div>
 			</form>
 
