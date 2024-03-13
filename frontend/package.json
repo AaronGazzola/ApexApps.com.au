@@ -11,7 +11,10 @@
     "serve": "serve out"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.12",
+    "@mui/material": "^5.15.12",
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.7",
     "moment": "^2.30.1",

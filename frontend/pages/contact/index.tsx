@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapse } from "@material-ui/core";
+import { Collapse } from "@mui/material";
 import moment, { Moment } from "moment-timezone";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
